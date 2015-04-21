@@ -1,0 +1,20 @@
+# Service example
+#services:
+#    core.example:
+#        class: Forum\CoreBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]
+
+parameters:
+    sluggablePostPersist.class: Forum\CoreBundle\Services\SluggablePostPersist
+    sluggablePrePersist.class: Forum\CoreBundle\Services\SluggablePrePersist
+
+services:
+    sluggablePostPersist:
+        class: %sluggablePostPersist.class%
+        tags:
+            - { name: doctrine.event_listener, event: postPersist, connection: default }
+
+    sluggablePrePersist:
+        class: %sluggablePrePersist.class%
+        tags:
+            - { name: doctrine.event_listener, event: prePersist, connection: default }
