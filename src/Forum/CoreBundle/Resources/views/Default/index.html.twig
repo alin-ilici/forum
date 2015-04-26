@@ -2,7 +2,7 @@
 
 {% block body %}
     {% for forum in forums %}
-        Forum: {{ forum.name }}
+        Forum: <a href="{{ path('forum_core_default_homepage', {forumSlug: forum.slug}) }}">{{ forum.name }}</a>
         <br/>
         {% for category in forum.categories %}
             Category: {{ category.name }}

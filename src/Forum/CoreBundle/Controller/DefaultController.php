@@ -6,11 +6,18 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class DefaultController extends Controller
 {
-    public function indexAction()
+    public function indexAction($forumSlug)
     {
         /** @var \Forum\CoreBundle\Repository\ForumRepository $forumRepository */
         $forumRepository = $this->getDoctrine()->getRepository("CoreBundle:Forum");
-        $forums = $forumRepository->findAll();
+
+        if ($forumSlug == null) {
+            $forums = $forumRepository->findAll();
+        } else {
+            $forums = $forumRepository->findBy(array(
+                'slug' => $forumSlug
+            ));
+        }
 
         /** @var \Forum\CoreBundle\Repository\TopicRepository $topicRepository */
         $topicRepository = $this->getDoctrine()->getRepository("CoreBundle:Topic");
