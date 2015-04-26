@@ -5,12 +5,12 @@
         Forum: <a href="{{ path('forum_core_default_homepage', {forumSlug: forum.slug}) }}">{{ forum.name }}</a>
         <br/>
         {% for category in forum.categories %}
-            Category: {{ category.name }}
+            Category: <a href="{{ path('forum_core_category_category', {categorySlug: category.slug}) }}">{{ category.name }}</a>
             <br/>
             {% set numberOfTopics = 0 %}
             {% set numberOfMessages = 0 %}
             {% for subcategory in category.subcategories %}
-                Subcategory: {{ subcategory.name }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                Subcategory: <a href="{{ path('forum_core_subcategory_subcategory', {subcategorySlug: subcategory.slug}) }}">{{ subcategory.name }}</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 {% set numberOfTopics = numberOfTopics + (subcategory.topics | length) %}
                 {% for topic in subcategory.topics %}
                     {% set numberOfMessages = numberOfMessages + (topic.messages | length) %}
@@ -23,7 +23,7 @@
             <br/>
             Last topic:
             {% if lastTopic[category.slug] != null %}
-                {{ lastTopic[category.slug].name }}
+                <a href="{{ path('forum_core_topic_topic', {topicSlug: lastTopic[category.slug].slug}) }}">{{ lastTopic[category.slug].name }}</a>
             {% else %}
                 -
             {% endif %}

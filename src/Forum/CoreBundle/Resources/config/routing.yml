@@ -1,3 +1,15 @@
 forum_core_default_homepage:
     path: /{forumSlug}
     defaults: { _controller: CoreBundle:Default:index, forumSlug: null }
+
+forum_core_category_category:
+    path: /category/{categorySlug}
+    defaults: { _controller: CoreBundle:Category:category, categorySlug: null }
+
+forum_core_subcategory_subcategory:
+    path: /subcategory/{subcategorySlug}
+    defaults: { _controller: CoreBundle:Subcategory:subcategory, subcategorySlug: null }
+
+forum_core_topic_topic:
+    path: /topic/{topicSlug}
+    defaults: { _controller: CoreBundle:Topic:topic, topicSlug: null }
