@@ -18,3 +18,10 @@ services:
         class: %sluggablePrePersist.class%
         tags:
             - { name: doctrine.event_listener, event: prePersist, connection: default }
+
+    forumBaseTools:
+        class: Forum\CoreBundle\Services\ToolService
+        arguments:
+            - @validator
+            - @service_container
+#        arguments: ["@validator", "@service_container"]

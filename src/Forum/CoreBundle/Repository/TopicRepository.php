@@ -12,4 +12,26 @@ use Doctrine\ORM\EntityRepository;
  */
 class TopicRepository extends EntityRepository
 {
+    /**
+     * Find latest
+     *
+     * @param array $subcategoriesIds
+     *
+     * @return array
+     */
+    public function findLatest($subcategoriesIds)
+    {
+        $qb = $this->createQueryBuilder('t')
+            ->where('t.subcategory IN (:subcategoriesIds)')
+            ->setParameter('subcategoriesIds', $subcategoriesIds)
+            ->orderBy('t.dateUpdated', 'desc')
+            ->setMaxResults(1);
+        $result = $qb->getQuery()->getResult();
+
+        if (count($result) != 0) {
+            return $result[0];
+        } else {
+            return $result;
+        }
+    }
 }

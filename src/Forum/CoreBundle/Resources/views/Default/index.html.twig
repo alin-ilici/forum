@@ -1,5 +1,36 @@
 {% extends "::base.html.twig" %}
 
 {% block body %}
-    Welcome to the forum!
+    {% for forum in forums %}
+        Forum: {{ forum.name }}
+        <br/>
+        {% for category in forum.categories %}
+            Category: {{ category.name }}
+            <br/>
+            {% set numberOfTopics = 0 %}
+            {% set numberOfMessages = 0 %}
+            {% for subcategory in category.subcategories %}
+                Subcategory: {{ subcategory.name }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                {% set numberOfTopics = numberOfTopics + (subcategory.topics | length) %}
+                {% for topic in subcategory.topics %}
+                    {% set numberOfMessages = numberOfMessages + (topic.messages | length) %}
+                {% endfor %}
+            {% endfor %}
+            <br/>
+            Topics: {{ numberOfTopics }}
+            <br/>
+            Messages: {{ numberOfMessages }}
+            <br/>
+            Last topic:
+            {% if lastTopic[category.slug] != null %}
+                {{ lastTopic[category.slug].name }}
+            {% else %}
+                -
+            {% endif %}
+            <br/>
+        {% endfor %}
+        <br/>
+        <br/>
+        <br/>
+    {% endfor %}
 {% endblock %}
