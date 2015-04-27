@@ -1,5 +1,14 @@
-{% extends "::base.html.twig" %}
+{% extends "CoreBundle::layout.html.twig" %}
 
-{% block body %}
-    {{ topic.name }}
+{% block mainBody %}
+    Topic: {{ topic.name }}
+    <br/>
+    <br/>
+    {% for message in topic.messages %}
+        {{ message.name }}
+        <br/>
+        Posted by {{ message.user.username }} on {{ message.dateCreated | date('Y-m-d') }} at {{ message.dateCreated | date('H:i:s') }}
+        <br/>
+        <br/>
+    {% endfor %}
 {% endblock %}

@@ -3,6 +3,7 @@
 namespace Forum\CoreBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Forum\CoreBundle\Entity\Message;
 
 /**
  * MessageRepository
@@ -12,4 +13,26 @@ use Doctrine\ORM\EntityRepository;
  */
 class MessageRepository extends EntityRepository
 {
+    /**
+     * Find latest
+     *
+     * @param array $topicId
+     *
+     * @return Message
+     */
+    public function findLatest($topicId)
+    {
+        $qb = $this->createQueryBuilder('m')
+            ->where('m.topic = (:topicId)')
+            ->setParameter('topicId', $topicId)
+            ->orderBy('m.dateUpdated', 'desc')
+            ->setMaxResults(1);
+        $result = $qb->getQuery()->getResult();
+
+        if (count($result) != 0) {
+            return $result[0];
+        } else {
+            return $result;
+        }
+    }
 }

@@ -18,8 +18,17 @@ class CategoryController extends Controller
             ));
         }
 
+        /** @var \Forum\CoreBundle\Repository\TopicRepository $topicRepository */
+        $topicRepository = $this->getDoctrine()->getRepository("CoreBundle:Topic");
+
+        $subcategories = $category->getSubcategories();
+        foreach ($subcategories as $subcategory) {
+            $lastTopic[$subcategory->getSlug()] = $topicRepository->findLatest(array($subcategory->getId()));
+        }
+
         return $this->render('CoreBundle:Category:category.html.twig', array(
-            'category' => $category
+            'category' => $category,
+            'lastTopic' => $lastTopic
         ));
     }
 }

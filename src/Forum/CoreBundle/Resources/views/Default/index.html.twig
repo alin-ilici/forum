@@ -1,6 +1,6 @@
-{% extends "::base.html.twig" %}
+{% extends "CoreBundle::layout.html.twig" %}
 
-{% block body %}
+{% block mainBody %}
     {% for forum in forums %}
         Forum: <a href="{{ path('forum_core_default_homepage', {forumSlug: forum.slug}) }}">{{ forum.name }}</a>
         <br/>

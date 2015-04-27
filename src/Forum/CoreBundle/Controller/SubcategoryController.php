@@ -18,8 +18,17 @@ class SubcategoryController extends Controller
             ));
         }
 
+        /** @var \Forum\CoreBundle\Repository\MessageRepository $messageRepository */
+        $messageRepository = $this->getDoctrine()->getRepository("CoreBundle:Message");
+
+        $topics = $subcategory->getTopics();
+        foreach ($topics as $topic) {
+            $lastMessage[$topic->getSlug()] = $messageRepository->findLatest($topic->getId());
+        }
+
         return $this->render('CoreBundle:Subcategory:subcategory.html.twig', array(
-            'subcategory' => $subcategory
+            'subcategory' => $subcategory,
+            'lastMessage' => $lastMessage
         ));
     }
 }

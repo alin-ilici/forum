@@ -1,5 +1,16 @@
-{% extends "::base.html.twig" %}
+{% extends "CoreBundle::layout.html.twig" %}
 
-{% block body %}
-    {{ subcategory.name }}
+{% block mainBody %}
+    Subcategory: {{ subcategory.name }}
+    <br/>
+    <br/>
+    {% for topic in subcategory.topics %}
+        Topic: <a href="{{ path('forum_core_topic_topic', {topicSlug: topic.slug}) }}">{{ topic.name }}</a>
+        <br/>
+        Messages: {{ topic.messages | length }}
+        <br/>
+        Last person who commented: {{ lastMessage[topic.slug].user.username }}
+        <br/>
+        <br/>
+    {% endfor %}
 {% endblock %}

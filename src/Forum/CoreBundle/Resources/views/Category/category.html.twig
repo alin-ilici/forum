@@ -1,5 +1,27 @@
-{% extends "::base.html.twig" %}
+{% extends "CoreBundle::layout.html.twig" %}
 
-{% block body %}
-    {{ category.name }}
+{% block mainBody %}
+    Category: {{ category.name }}
+    <br/>
+    <br/>
+    {% for subcategory in category.subcategories %}
+        Subcategory: <a href="{{ path('forum_core_subcategory_subcategory', {subcategorySlug: subcategory.slug}) }}">{{ subcategory.name }}</a>
+        <br/>
+        {% set numberOfTopics = subcategory.topics | length %}
+        {% set numberOfMessages = 0 %}
+        {% for topic in subcategory.topics %}
+            {% set numberOfMessages = numberOfMessages + (topic.messages | length) %}
+        {% endfor %}
+        Topics: {{ numberOfTopics }}
+        <br/>
+        Messages: {{ numberOfMessages }}
+        <br/>
+        {% if lastTopic[subcategory.slug] != null %}
+            Last topic: <a href="{{ path('forum_core_topic_topic', {topicSlug: lastTopic[subcategory.slug].slug}) }}">{{ lastTopic[subcategory.slug].name }}</a>
+        {% else %}
+            Last topic: -
+        {% endif %}
+        <br/>
+        <br/>
+    {% endfor %}
 {% endblock %}
