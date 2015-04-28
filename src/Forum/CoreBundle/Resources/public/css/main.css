@@ -7,6 +7,10 @@ header img {
     height: 80px;
 }
 
+.modal-body {
+    text-align: center;
+}
+
 /*
 #logInForm {
     position: fixed;
