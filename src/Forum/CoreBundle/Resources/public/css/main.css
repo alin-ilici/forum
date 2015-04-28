@@ -1,4 +1,21 @@
+body {
+    margin: 10px;
+}
+
 header img {
     width: 64px;
     height: 80px;
 }
+
+/*
+#logInForm {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 500px;
+    height: 300px;
+    margin-top: -150px; set to a negative number --> 1/2 of your height
+    margin-left: -250px; set to a negative number --> 1/2 of your width
+    border: 1px solid #ccc;
+    background-color: #f3f3f3;
+}*/

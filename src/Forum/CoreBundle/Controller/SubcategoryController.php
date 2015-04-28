@@ -22,6 +22,7 @@ class SubcategoryController extends Controller
         $messageRepository = $this->getDoctrine()->getRepository("CoreBundle:Message");
 
         $topics = $subcategory->getTopics();
+        $lastMessage = null;
         foreach ($topics as $topic) {
             $lastMessage[$topic->getSlug()] = $messageRepository->findLatest($topic->getId());
         }

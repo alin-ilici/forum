@@ -22,6 +22,7 @@ class CategoryController extends Controller
         $topicRepository = $this->getDoctrine()->getRepository("CoreBundle:Topic");
 
         $subcategories = $category->getSubcategories();
+        $lastTopic = null;
         foreach ($subcategories as $subcategory) {
             $lastTopic[$subcategory->getSlug()] = $topicRepository->findLatest(array($subcategory->getId()));
         }

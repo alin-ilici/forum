@@ -22,6 +22,8 @@ class DefaultController extends Controller
         /** @var \Forum\CoreBundle\Repository\TopicRepository $topicRepository */
         $topicRepository = $this->getDoctrine()->getRepository("CoreBundle:Topic");
 
+        $lastTopic = null;
+
         foreach ($forums as $forum) {
             $categories = $forum->getCategories();
             foreach ($categories as $category) {
