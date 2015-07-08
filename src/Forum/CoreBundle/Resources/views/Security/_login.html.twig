@@ -1,0 +1,28 @@
+<!-- Modal -->
+<form id="formToSubmit">
+    <div class="modal fade" id="logInForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="logInFormLabel">Log In</h4>
+                </div>
+                <div class="modal-body">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="_username" value="{{ last_username }}" />
+
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="_password" />
+
+                    <br/><br/>
+                    <input type="checkbox" id="remember_me" name="_remember_me" />
+                    <label for="remember_me">Remember me</label>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="submitLoginForm" class="btn btn-default">Log In</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

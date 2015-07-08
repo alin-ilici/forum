@@ -6,14 +6,15 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * User
  *
- * @ORM\Table()
+ * @ORM\Table(name="app_users")
  * @ORM\Entity(repositoryClass="Forum\CoreBundle\Repository\UserRepository")
  */
-class User extends Timestampable
+class User extends Timestampable implements UserInterface, \Serializable
 {
     const ROLE_USER = "user";
     const ROLE_MODERATOR = "moderator";
@@ -31,7 +32,7 @@ class User extends Timestampable
     /**
      * @var string
      *
-     * @ORM\Column(name="username", type="string", length=50, unique=true)
+     * @ORM\Column(name="username", type="string", length=64, unique=true)
      * @Assert\NotBlank
      */
     private $username;
@@ -39,7 +40,7 @@ class User extends Timestampable
     /**
      * @var string
      *
-     * @ORM\Column(name="password", type="string", length=50)
+     * @ORM\Column(name="password", type="string", length=64)
      * @Assert\NotBlank
      */
     private $password;
@@ -70,7 +71,7 @@ class User extends Timestampable
     /**
      * @var string
      *
-     * @ORM\Column(name="email", type="string", length=100)
+     * @ORM\Column(name="email", type="string", length=128, unique=true)
      * @Assert\NotBlank
      */
     private $email;
@@ -79,6 +80,11 @@ class User extends Timestampable
      * @ORM\Column(name="role", type="userRoleEnumType")
      */
     private $role;
+
+    /**
+     * @ORM\Column(name="is_active", type="boolean")
+     */
+    private $isActive;
 
     /**
      * @var ArrayCollection
@@ -104,6 +110,9 @@ class User extends Timestampable
         $this->messages = new \Doctrine\Common\Collections\ArrayCollection();
 
         $this->role = self::ROLE_USER;
+        $this->isActive = true;
+        // may not be needed, see section on salt below
+        // $this->salt = md5(uniqid(null, true));
     }
 
     /**
@@ -341,5 +350,45 @@ class User extends Timestampable
     public function getMessages()
     {
         return $this->messages;
+    }
+
+    public function getSalt()
+    {
+        // you *may* need a real salt depending on your encoder
+        // see section on salt below
+        return null;
+    }
+
+    public function getRoles()
+    {
+        return array('ROLE_USER');
+    }
+
+    public function eraseCredentials()
+    {
+    }
+
+    /** @see \Serializable::serialize() */
+    public function serialize()
+    {
+        return serialize(array(
+            $this->id,
+            $this->username,
+            $this->password,
+            // see section on salt below
+            // $this->salt,
+        ));
+    }
+
+    /** @see \Serializable::unserialize() */
+    public function unserialize($serialized)
+    {
+        list (
+            $this->id,
+            $this->username,
+            $this->password,
+            // see section on salt below
+            // $this->salt
+            ) = unserialize($serialized);
     }
 }

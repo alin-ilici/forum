@@ -3,8 +3,8 @@
 /app/bootstrap.php.cache
 /app/cache/*
 /app/logs/*
-!app/cache/.gitkeep
-!app/logs/.gitkeep
+#!app/cache/.gitkeep
+#!app/logs/.gitkeep
 /app/phpunit.xml
 /bin/
 /build/

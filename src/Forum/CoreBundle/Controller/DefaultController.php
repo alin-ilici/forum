@@ -3,10 +3,20 @@
 namespace Forum\CoreBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller
 {
-    public function indexAction($forumSlug)
+    public function indexAction()
+    {
+        return $this->redirect($this->generateUrl('forum_core_default_homepage'));
+    }
+
+    public function adminAction() {
+        return new Response('Admin page!');
+    }
+
+    public function homepageAction($forumSlug)
     {
         /** @var \Forum\CoreBundle\Repository\ForumRepository $forumRepository */
         $forumRepository = $this->getDoctrine()->getRepository("CoreBundle:Forum");

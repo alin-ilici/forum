@@ -25,3 +25,10 @@ services:
             - @validator
             - @service_container
 #        arguments: ["@validator", "@service_container"]
+
+    forum.security.authentication_handler:
+        class: Forum\CoreBundle\Services\AuthenticationHandler
+        public: false
+        arguments:
+            - @router
+            - @session
