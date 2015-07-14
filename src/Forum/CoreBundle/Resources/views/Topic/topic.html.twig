@@ -1,6 +1,17 @@
 {% extends "CoreBundle::layout.html.twig" %}
 
 {% block mainBody %}
+    {% for type, messages in app.session.flashbag.all() %}
+        {% if type == 'success' %}
+            {% set flashbagClass = 'flashbagSuccess' %}
+        {% else %}
+            {% set flashbagClass = 'flashbagFail' %}
+        {% endif %}
+        {% for message in messages %}
+            <p class="{{ flashbagClass }}">{{ message }}</p>
+        {% endfor %}
+    {% endfor %}
+
     Topic: {{ topic.name }}
     <br/>
     <br/>
@@ -11,4 +22,13 @@
         <br/>
         <br/>
     {% endfor %}
+
+    {% if app.user %}
+        {{ form_start(form) }}
+        {{ form_row(form.name) }}
+        <br/>
+        {{ form_row(form.save) }}
+        {{ form_end(form) }}
+    {% endif %}
+
 {% endblock %}

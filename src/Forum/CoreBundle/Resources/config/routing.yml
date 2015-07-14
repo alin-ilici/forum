@@ -18,6 +18,10 @@ forum_core_topic_topic:
     path: /topic/{topicSlug}
     defaults: { _controller: CoreBundle:Topic:topic, topicSlug: null }
 
+forum_core_topic_post_message:
+    path: /topic/{topicSlug}/postMessage
+    defaults: { _controller: CoreBundle:Topic:postMessage, topicSlug: null }
+
 forum_core_default_admin:
     path: /admin
     defaults: { _controller: CoreBundle:Default:admin }
