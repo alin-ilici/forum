@@ -16,9 +16,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class User extends Timestampable implements UserInterface, \Serializable
 {
-    const ROLE_USER = "user";
-    const ROLE_MODERATOR = "moderator";
-    const ROLE_ADMINISTRATOR = "administrator";
+    const ROLE_USER = "ROLE_USER";
+    const ROLE_MODERATOR = "ROLE_MODERATOR";
+    const ROLE_ADMINISTRATOR = "ROLE_ADMINISTRATOR";
 
     /**
      * @var integer
@@ -77,9 +77,9 @@ class User extends Timestampable implements UserInterface, \Serializable
     private $email;
 
     /**
-     * @ORM\Column(name="role", type="userRoleEnumType")
+     * @ORM\Column(name="roles", type="userRolesSetType")
      */
-    private $role;
+    private $roles;
 
     /**
      * @ORM\Column(name="is_active", type="boolean")
@@ -269,9 +269,9 @@ class User extends Timestampable implements UserInterface, \Serializable
      * @param string $role
      * @return User
      */
-    public function setRole($role)
+    public function setRoles($roles)
     {
-        $this->role = $role;
+        $this->roles = $roles;
 
         return $this;
     }
@@ -281,9 +281,9 @@ class User extends Timestampable implements UserInterface, \Serializable
      *
      * @return string 
      */
-    public function getRole()
+    public function getRoles()
     {
-        return $this->role;
+        return array($this->roles);
     }
 
     /**
@@ -357,11 +357,6 @@ class User extends Timestampable implements UserInterface, \Serializable
         // you *may* need a real salt depending on your encoder
         // see section on salt below
         return null;
-    }
-
-    public function getRoles()
-    {
-        return array('ROLE_USER');
     }
 
     public function eraseCredentials()

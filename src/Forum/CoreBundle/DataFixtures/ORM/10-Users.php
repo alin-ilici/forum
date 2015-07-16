@@ -31,7 +31,7 @@ class Users extends AbstractFixture implements OrderedFixtureInterface
         $u1->setFirstName('Alin');
         $u1->setLastName('Ilici');
         $u1->setEmail('nicolae-alin.ilici@my.fmi.unibuc.ro');
-        $u1->setRole('administrator');
+        $u1->setRoles('ROLE_ADMINISTRATOR');
 
         $manager->persist($u1);
 
@@ -41,7 +41,7 @@ class Users extends AbstractFixture implements OrderedFixtureInterface
         $u2->setFirstName('Bogdan');
         $u2->setLastName('Catalin');
         $u2->setEmail('bogdan.catalin@my.fmi.unibuc.ro');
-        $u2->setRole('user');
+        $u2->setRoles('ROLE_USER');
 
         $manager->persist($u2);
 
@@ -51,7 +51,7 @@ class Users extends AbstractFixture implements OrderedFixtureInterface
         $u3->setFirstName('Cosmin');
         $u3->setLastName('Nicolae');
         $u3->setEmail('cosmin.nicolae@my.fmi.unibuc.ro');
-        $u3->setRole('moderator');
+        $u3->setRoles('ROLE_MODERATOR');
 
         $manager->persist($u3);
 

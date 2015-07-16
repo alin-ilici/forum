@@ -22,6 +22,11 @@ forum_core_topic_post_message:
     path: /topic/{topicSlug}/postMessage
     defaults: { _controller: CoreBundle:Topic:postMessage, topicSlug: null }
 
+forum_core_register_send_mail:
+    path: /register/sendMail
+    defaults: { _controller: CoreBundle:Register:sendMail }
+
+
 forum_core_default_admin:
     path: /admin
     defaults: { _controller: CoreBundle:Default:admin }
