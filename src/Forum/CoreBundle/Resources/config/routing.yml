@@ -26,6 +26,14 @@ forum_core_register_send_mail:
     path: /register/sendMail
     defaults: { _controller: CoreBundle:Register:sendMail }
 
+forum_core_register_index:
+    path: /register
+    defaults: { _controller: CoreBundle:Register:index }
+
+forum_core_register_register_account:
+    path: /register/registerAccount
+    defaults: { _controller: CoreBundle:Register:registerAccount }
+
 
 forum_core_default_admin:
     path: /admin

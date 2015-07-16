@@ -1,0 +1,19 @@
+{% extends "CoreBundle::layout.html.twig" %}
+
+{% block mainBody %}
+
+    {{ form_start(form) }}
+    {{ form_row(form.username) }}
+    <br/>
+    {{ form_row(form.password) }}
+    <br/>
+    {{ form_row(form.firstName) }}
+    <br/>
+    {{ form_row(form.lastName) }}
+    <br/>
+    {{ form_row(form.email) }}
+    <br/>
+    {{ form_row(form.save) }}
+    {{ form_end(form) }}
+
+{% endblock %}

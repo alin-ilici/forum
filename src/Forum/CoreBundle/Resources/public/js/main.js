@@ -19,6 +19,10 @@ $(document).ready(function()
         window.location = '/logout';
     });
 
+    $('#registerButton').click(function() {
+        window.location = '/register';
+    });
+
     $(document).on('click', '#submitLoginForm', function() {
         $.ajax({
             type: 'post',

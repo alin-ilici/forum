@@ -109,7 +109,7 @@ class User extends Timestampable implements UserInterface, \Serializable
         $this->topics = new \Doctrine\Common\Collections\ArrayCollection();
         $this->messages = new \Doctrine\Common\Collections\ArrayCollection();
 
-        $this->role = self::ROLE_USER;
+        $this->roles = self::ROLE_USER;
         $this->isActive = true;
         // may not be needed, see section on salt below
         // $this->salt = md5(uniqid(null, true));
