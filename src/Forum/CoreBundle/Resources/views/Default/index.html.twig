@@ -1,35 +1,65 @@
 {% extends "CoreBundle::layout.html.twig" %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/core/css/default.css') }}" />
+{% endblock %}
+
 {% block mainBody %}
     {% for forum in forums %}
-        Forum: <a href="{{ path('forum_core_default_homepage', {forumSlug: forum.slug}) }}">{{ forum.name }}</a>
-        <br/>
-        {% for category in forum.categories %}
-            Category: <a href="{{ path('forum_core_category_category', {categorySlug: category.slug}) }}">{{ category.name }}</a>
-            <br/>
-            {% set numberOfTopics = 0 %}
-            {% set numberOfMessages = 0 %}
-            {% for subcategory in category.subcategories %}
-                Subcategory: <a href="{{ path('forum_core_subcategory_subcategory', {subcategorySlug: subcategory.slug}) }}">{{ subcategory.name }}</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                {% set numberOfTopics = numberOfTopics + (subcategory.topics | length) %}
-                {% for topic in subcategory.topics %}
-                    {% set numberOfMessages = numberOfMessages + (topic.messages | length) %}
-                {% endfor %}
+        <table id="forumPageTable">
+            <caption class="forumName">
+                <a href="{{ path('forum_core_default_homepage', {forumSlug: forum.slug}) }}">{{ forum.name }}</a>
+            </caption>
+            {% for category in forum.categories %}
+                <tr>
+                    <td class="categoryAndSubcategoryPictureColumn">
+                        {% if app.user %}
+                            <img src="{{ asset('bundles/core/images/forumLoggedIn.png') }}" alt="Category and subcategory picture" class="categoryAndSubcategoryPicture"/>
+                        {% else %}
+                            <img src="{{ asset('bundles/core/images/forumNotLoggedIn.png') }}" alt="Category and subcategory picture" class="categoryAndSubcategoryPicture"/>
+                        {% endif %}
+                    </td>
+
+                    <td class="categoryAndSubcategoryColumn">
+                        <a href="{{ path('forum_core_category_category', {categorySlug: category.slug}) }}" class="category">{{ category.name }}</a>
+                        <br/>
+                        {% set numberOfTopics = 0 %}
+                        {% set numberOfMessages = 0 %}
+                        {% for subcategory in category.subcategories %}
+                            {% if app.user %}
+                                <img src="{{ asset('bundles/core/images/subforum_loggedIn.png') }}" alt="Mark as read" class="markAsReadPicture"/>
+                            {% else %}
+                                <img src="{{ asset('bundles/core/images/subforum_notLoggedIn.png') }}" alt="Mark as read" class="markAsReadPicture"/>
+                            {% endif %}
+                            <a href="{{ path('forum_core_subcategory_subcategory', {subcategorySlug: subcategory.slug}) }}" class="subcategory">{{ subcategory.name }}</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            {% set numberOfTopics = numberOfTopics + (subcategory.topics | length) %}
+                            {% for topic in subcategory.topics %}
+                                {% set numberOfMessages = numberOfMessages + (topic.messages | length) %}
+                            {% endfor %}
+                        {% endfor %}
+                    </td>
+
+                    <td class="topicsAndMessagesColumn">
+                        {{ numberOfTopics }} topics
+                        <br/>
+                        {{ numberOfMessages }} messages
+                    </td>
+
+                    <td class="lastTopicColumn">
+                        {% if lastTopic[category.slug] != null %}
+                            <a href="{{ path('forum_core_topic_topic', {topicSlug: lastTopic[category.slug].slug}) }}">{{ lastTopic[category.slug].name }}</a>
+                            <br/>
+                            {{ lastTopic[category.slug].dateUpdated | date('d-m-Y H:i') }}
+                            <br/>
+                            By {{ lastTopic[category.slug].user.username }}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                </tr>
             {% endfor %}
-            <br/>
-            Topics: {{ numberOfTopics }}
-            <br/>
-            Messages: {{ numberOfMessages }}
-            <br/>
-            Last topic:
-            {% if lastTopic[category.slug] != null %}
-                <a href="{{ path('forum_core_topic_topic', {topicSlug: lastTopic[category.slug].slug}) }}">{{ lastTopic[category.slug].name }}</a>
-            {% else %}
-                -
-            {% endif %}
-            <br/>
-        {% endfor %}
-        <br/>
+        </table>
         <br/>
         <br/>
     {% endfor %}

@@ -1,5 +1,10 @@
 {% extends "CoreBundle::layout.html.twig" %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/core/css/topic.css') }}" />
+{% endblock %}
+
 {% block mainBody %}
     {% for type, messages in app.session.flashbag.all() %}
         {% if type == 'success' %}

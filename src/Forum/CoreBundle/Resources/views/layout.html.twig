@@ -17,26 +17,31 @@
 
 {% block body %}
     <header>
-        <a href="{{ path('forum_core_default_homepage') }}">
-            <img src="{{ asset('bundles/core/images/forum_logo.jpg') }}" alt="Home" />
-        </a>
-
-        {% if app.user %}
-            <button id="logOutButton" type="button" class="btn btn-primary btn-sm">
-                Log Out
-            </button>
-        {% else %}
-            <!-- Button trigger modal -->
-            <button id="logInButton" type="button" class="btn btn-primary btn-sm">
-                Log In
-            </button>
-            <button id="registerButton" type="button" class="btn btn-primary btn-sm">
-                Register
-            </button>
-        {% endif %}
+        <div id="logInLogOutToolbar">
+            <img src="{{ asset('bundles/core/images/no-profile-img.gif') }}" alt="Profile picture" id="profilePicture"/>
+            {% if app.user %}
+                <span class="makeSpace">{{ app.user.username }}</span>
+                <button id="logOutButton" type="button" class="btn btn-primary btn-sm makeSpace">
+                    Log Out
+                </button>
+            {% else %}
+                <!-- Button trigger modal -->
+                <button id="logInButton" type="button" class="btn btn-primary btn-sm makeSpace">
+                    Log In
+                </button>
+                <button id="registerButton" type="button" class="btn btn-primary btn-sm makeSpace">
+                    Register
+                </button>
+            {% endif %}
+        </div>
 
         <div id="logInModal"></div>
 
+        <div id="forumLogoToolbar">
+            <a href="{{ path('forum_core_default_homepage') }}">
+                <img src="{{ asset('bundles/core/images/forumLogo.png') }}" alt="Home" id="forumLogo"/>
+            </a>
+        </div>
     </header>
     <br/>
 

@@ -1,0 +1,67 @@
+#forumPageTable {
+    margin-left: auto;
+    margin-right: auto;
+    width: 98%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+#forumPageTable td {
+    border: 1px solid black;
+    border-radius: 5px;
+    /*padding: 3px;*/
+}
+
+#forumPageTable caption {
+    background-color: #33CC33;
+    padding: 10px;
+    border-radius: 5px;
+    border: 2px solid black;
+    margin-bottom: 1px;
+}
+
+#forumPageTable caption a {
+    font-weight: bold;
+    color: white;
+    font-size: 18px;
+}
+
+.categoryAndSubcategoryPictureColumn {
+    width: 5%;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.categoryAndSubcategoryPicture {
+    widht: 32px; /*25%*/
+    height: 32px; /*25%*/
+}
+
+.categoryAndSubcategoryColumn {
+    width: 60%;
+    padding: 10px;
+}
+
+.topicsAndMessagesColumn {
+    width: 10%;
+    padding: 10px;
+}
+
+.lastTopicColumn {
+    width: 25%;
+    padding: 10px;
+}
+
+.category {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.subcategory {
+    font-size: 14px;
+}
+
+.markAsReadPicture {
+    position: relative;
+    bottom: 2px;
+}
