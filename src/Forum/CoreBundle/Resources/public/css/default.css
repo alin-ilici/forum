@@ -4,12 +4,13 @@
     width: 98%;
     border-collapse: separate;
     border-spacing: 0;
+    border: 1px solid black;
 }
 
-#forumPageTable td {
-    border: 1px solid black;
-    border-radius: 5px;
-    /*padding: 3px;*/
+#forumPageTable tr td {
+    border: 1px solid white;
+    background-color: #C2FFA3;
+    border-radius: 3px;
 }
 
 #forumPageTable caption {
