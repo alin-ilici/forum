@@ -6,6 +6,8 @@
 {% endblock %}
 
 {% block mainBody %}
+    <div id="whereAmI">{{ whereAmI | raw }}</div>
+
     {% for type, messages in app.session.flashbag.all() %}
         {% if type == 'success' %}
             {% set flashbagClass = 'flashbagSuccess' %}

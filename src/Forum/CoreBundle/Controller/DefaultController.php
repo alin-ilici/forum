@@ -12,15 +12,12 @@ class DefaultController extends Controller
         return $this->redirect($this->generateUrl('forum_core_default_homepage'));
     }
 
-    public function adminAction() {
-        return new Response('Admin page!');
-    }
-
     public function homepageAction($forumSlug)
     {
         /** @var \Forum\CoreBundle\Repository\ForumRepository $forumRepository */
         $forumRepository = $this->getDoctrine()->getRepository("CoreBundle:Forum");
 
+        /** @var \Forum\CoreBundle\Entity\Forum[] $forums */
         if ($forumSlug == null) {
             $forums = $forumRepository->findAll();
         } else {
@@ -46,9 +43,19 @@ class DefaultController extends Controller
             }
         }
 
+        $whereAmI = '<a href="' . $this->generateUrl('forum_core_default_homepage') . '">Forum</a>';
+        if ($forumSlug != null) {
+            $whereAmI .= ' > ' . '<a href="' . $this->generateUrl('forum_core_default_homepage', array('forumSlug' => $forumSlug)) . '">' . $forums[0]->getName() . '</a>';
+        }
+
         return $this->render('CoreBundle:Default:index.html.twig', array(
             'forums' => $forums,
+            'whereAmI' => $whereAmI,
             'lastTopic' => $lastTopic
         ));
+    }
+
+    public function adminAction() {
+        return new Response('Admin page!');
     }
 }

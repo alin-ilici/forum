@@ -11,6 +11,7 @@ class CategoryController extends Controller
         /** @var \Forum\CoreBundle\Repository\CategoryRepository $categoryRepository */
         $categoryRepository = $this->getDoctrine()->getRepository("CoreBundle:Category");
 
+        /** @var \Forum\CoreBundle\Entity\Category $category */
         $category = null;
         if ($categorySlug != null) {
             $category = $categoryRepository->findOneBy(array(
@@ -27,8 +28,15 @@ class CategoryController extends Controller
             $lastTopic[$subcategory->getSlug()] = $topicRepository->findLatest(array($subcategory->getId()));
         }
 
+        $whereAmI = '<a href="' . $this->generateUrl('forum_core_default_homepage') . '">Forum</a>';
+        $whereAmI .= ' > ' . '<a href="' . $this->generateUrl('forum_core_default_homepage', array('forumSlug' => $category->getForum()->getSlug())) . '">' . $category->getForum()->getName() . '</a>';
+        if ($categorySlug != null) {
+            $whereAmI .= ' > ' . '<a href="' . $this->generateUrl('forum_core_category_category', array('categorySlug' => $categorySlug)) . '">' . $category->getName() . '</a>';
+        }
+
         return $this->render('CoreBundle:Category:category.html.twig', array(
             'category' => $category,
+            'whereAmI' => $whereAmI,
             'lastTopic' => $lastTopic
         ));
     }

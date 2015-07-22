@@ -6,6 +6,8 @@
 {% endblock %}
 
 {% block mainBody %}
+    <div id="whereAmI">{{ whereAmI | raw }}</div>
+
     {% for forum in forums %}
         <table id="forumPageTable">
             <caption class="forumName">

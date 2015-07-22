@@ -14,6 +14,7 @@ class TopicController extends Controller
         /** @var \Forum\CoreBundle\Repository\TopicRepository $topicRepository */
         $topicRepository = $this->getDoctrine()->getRepository("CoreBundle:Topic");
 
+        /** @var \Forum\CoreBundle\Entity\Topic $topic */
         $topic = null;
         if ($topicSlug != null) {
             $topic = $topicRepository->findOneBy(array(
@@ -29,8 +30,14 @@ class TopicController extends Controller
             )
         );
 
+        $whereAmI = '<a href="' . $this->generateUrl('forum_core_default_homepage') . '">Forum</a>';
+        $whereAmI .= ' > ' . '<a href="' . $this->generateUrl('forum_core_default_homepage', array('forumSlug' => $topic->getSubcategory()->getCategory()->getForum()->getSlug())) . '">' . $topic->getSubcategory()->getCategory()->getForum()->getName() . '</a>';
+        $whereAmI .= ' > ' . '<a href="' . $this->generateUrl('forum_core_category_category', array('categorySlug' => $topic->getSubcategory()->getCategory()->getSlug())) . '">' . $topic->getSubcategory()->getCategory()->getName() . '</a>';
+        $whereAmI .= ' > ' . '<a href="' . $this->generateUrl('forum_core_subcategory_subcategory', array('subcategorySlug' => $topic->getSubcategory()->getSlug())) . '">' . $topic->getSubcategory()->getName() . '</a>';
+
         return $this->render('CoreBundle:Topic:topic.html.twig', array(
             'topic' => $topic,
+            'whereAmI' => $whereAmI,
             'form' => $form->createView(),
         ));
     }
