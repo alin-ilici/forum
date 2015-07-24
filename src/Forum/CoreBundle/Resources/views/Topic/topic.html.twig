@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block mainBody %}
-    <div id="whereAmI">{{ whereAmI | raw }}</div>
+    <div class="whereAmI">{{ whereAmI | raw }}</div>
 
     {% for type, messages in app.session.flashbag.all() %}
         {% if type == 'success' %}
@@ -38,4 +38,5 @@
         {{ form_end(form) }}
     {% endif %}
 
+    <div class="whereAmI">{{ whereAmI | raw }}</div>
 {% endblock %}

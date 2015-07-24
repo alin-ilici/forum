@@ -43,36 +43,42 @@ class Categories extends AbstractFixture implements OrderedFixtureInterface
 
         $c1 = new Category();
         $c1->setName('Nulla');
+        $c1->setDescription('Suspendisse ullamcorper tellus ac felis.');
         $c1->setForum($forumIds[0]);
 
         $manager->persist($c1);
 
         $c2 = new Category();
         $c2->setName('Maecenas');
+        $c2->setDescription('Vestibulum at rhoncus ante, at.');
         $c2->setForum($forumIds[0]);
 
         $manager->persist($c2);
 
         $c3 = new Category();
         $c3->setName('Donec');
+        $c3->setDescription('Cras vel eleifend turpis. Integer.');
         $c3->setForum($forumIds[1]);
 
         $manager->persist($c3);
 
         $c4 = new Category();
         $c4->setName('Etiam');
+        $c4->setDescription('Class aptent taciti sociosqu ad.');
         $c4->setForum($forumIds[1]);
 
         $manager->persist($c4);
 
         $c5 = new Category();
         $c5->setName('Mauris');
+        $c5->setDescription('In pretium luctus tellus, in.');
         $c5->setForum($forumIds[2]);
 
         $manager->persist($c5);
 
         $c6 = new Category();
         $c6->setName('Aliquam');
+        $c6->setDescription('Nam tristique dignissim lacus, eu feugiat tellus ullamcorper.');
         $c6->setForum($forumIds[2]);
 
         $manager->persist($c6);

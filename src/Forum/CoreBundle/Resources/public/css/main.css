@@ -1,14 +1,18 @@
 html,
 body {
-    margin:0;
-    padding:0;
-    height:100%;
+    margin: 0;
+    padding: 0;
+    height: 100%;
 }
 
 #wrapper {
     min-height: 100%;
     position: relative;
     background: linear-gradient(#009900, #FFFFFF);
+}
+
+#header {
+    height: 140px;
 }
 
 #content {
@@ -45,17 +49,13 @@ body {
     margin-right: 5px;
 }
 
-/*#forumLogoToolbar {*/
-    /*background-color: #009900;*/
-/*}*/
-
 #forumLogo {
     width: 15%;
     height: 15%;
-    margin-left: 5px;
+    margin-left: 7px;
 }
 
-#whereAmI {
+.whereAmI {
     margin-left: auto;
     margin-right: auto;
     width: 98%;
@@ -66,4 +66,60 @@ body {
     vertical-align: middle;
     padding-left: 10px;
     margin-bottom: 15px;
+    opacity: 1;
+}
+
+.categoryOrSubcategoryDescription {
+    font-size: 12px;
+}
+
+.pageName {
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.pageNameAndDescription {
+    margin-bottom: 20px;
+    margin-left: 13px;
+    margin-right: 13px;
+}
+
+.categoryAndSubcategoryPictureColumn {
+    width: 5%;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.categoryAndSubcategoryPicture {
+    widht: 32px; /*25%*/
+    height: 32px; /*25%*/
+}
+
+.categoryAndSubcategoryColumn {
+    width: 60%;
+    padding: 10px;
+}
+
+.topicsAndMessagesColumn {
+    width: 10%;
+    padding: 10px;
+}
+
+.lastTopicColumn {
+    width: 25%;
+    padding: 10px;
+}
+
+.category {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.subcategory {
+    font-size: 14px;
+}
+
+.markAsReadPicture {
+    position: relative;
+    bottom: 2px;
 }

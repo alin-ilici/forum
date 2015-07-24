@@ -1,29 +1,66 @@
 {% extends "CoreBundle::layout.html.twig" %}
 
-{% block mainBody %}
-    <div id="whereAmI">{{ whereAmI | raw }}</div>
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/core/css/category.css') }}" />
+{% endblock %}
 
-    Category: {{ category.name }}
-    <br/>
-    <br/>
-    {% for subcategory in category.subcategories %}
-        Subcategory: <a href="{{ path('forum_core_subcategory_subcategory', {subcategorySlug: subcategory.slug}) }}">{{ subcategory.name }}</a>
-        <br/>
-        {% set numberOfTopics = subcategory.topics | length %}
-        {% set numberOfMessages = 0 %}
-        {% for topic in subcategory.topics %}
-            {% set numberOfMessages = numberOfMessages + (topic.messages | length) %}
-        {% endfor %}
-        Topics: {{ numberOfTopics }}
-        <br/>
-        Messages: {{ numberOfMessages }}
-        <br/>
-        {% if lastTopic[subcategory.slug] != null %}
-            Last topic: <a href="{{ path('forum_core_topic_topic', {topicSlug: lastTopic[subcategory.slug].slug}) }}">{{ lastTopic[subcategory.slug].name }}</a>
-        {% else %}
-            Last topic: -
+{% block mainBody %}
+    <div class="whereAmI">{{ whereAmI | raw }}</div>
+
+    <div class="pageNameAndDescription">
+        <div class="pageName">{{ category.name }}</div>
+        {% if category.description is not null %}
+            <div class="categoryOrSubcategoryDescription">{{ category.description }}</div>
         {% endif %}
-        <br/>
-        <br/>
-    {% endfor %}
+    </div>
+
+    <table id="categoryPageTable">
+        <caption class="forumName">
+            Subcategories
+        </caption>
+        {% for subcategory in category.subcategories %}
+            <tr>
+                <td class="categoryAndSubcategoryPictureColumn">
+                    {% if app.user %}
+                        <img src="{{ asset('bundles/core/images/forumLoggedIn.png') }}" alt="Category and subcategory picture" class="categoryAndSubcategoryPicture"/>
+                    {% else %}
+                        <img src="{{ asset('bundles/core/images/forumNotLoggedIn.png') }}" alt="Category and subcategory picture" class="categoryAndSubcategoryPicture"/>
+                    {% endif %}
+                </td>
+
+                <td class="categoryAndSubcategoryColumn">
+                    <a href="{{ path('forum_core_subcategory_subcategory', {subcategorySlug: subcategory.slug}) }} " class="category">{{ subcategory.name }}</a>
+                    <br/>
+                    <span class="categoryOrSubcategoryDescription">{{ subcategory.description }}</span>
+                    {% set numberOfTopics = subcategory.topics | length %}
+                    {% set numberOfMessages = 0 %}
+                    {% for topic in subcategory.topics %}
+                        {% set numberOfMessages = numberOfMessages + (topic.messages | length) %}
+                    {% endfor %}
+                </td>
+
+                <td class="topicsAndMessagesColumn">
+                    {{ numberOfTopics }} topics
+                    <br/>
+                    {{ numberOfMessages }} messages
+                </td>
+
+                <td class="lastTopicColumn">
+                    {% if lastTopic[subcategory.slug] != null %}
+                        <a href="{{ path('forum_core_topic_topic', {topicSlug: lastTopic[subcategory.slug].slug}) }}">{{ lastTopic[subcategory.slug].name }}</a>
+                        <br/>
+                        {{ lastTopic[subcategory.slug].dateUpdated | date('d-m-Y H:i') }}
+                        By {{ lastTopic[subcategory.slug].user.username }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    <br/>
+    <br/>
+
+    <div class="whereAmI">{{ whereAmI | raw }}</div>
 {% endblock %}

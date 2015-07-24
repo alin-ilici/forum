@@ -41,6 +41,13 @@ class Category extends Timestampable
     private $slug;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="string", length=255, nullable=true)
+     */
+    private $description;
+
+    /**
      * @var Forum
      *
      * @ORM\ManyToOne(targetEntity="Forum", inversedBy="categories")
@@ -102,7 +109,7 @@ class Category extends Timestampable
      * Set slug
      *
      * @param string $slug
-     * @return Forum
+     * @return Category
      */
     public function setSlug($slug)
     {
@@ -119,6 +126,29 @@ class Category extends Timestampable
     public function getSlug()
     {
         return $this->slug;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     * @return Category
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 
     /**

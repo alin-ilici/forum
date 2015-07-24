@@ -1,7 +1,7 @@
 {% extends "CoreBundle::layout.html.twig" %}
 
 {% block mainBody %}
-    <div id="whereAmI">{{ whereAmI | raw }}</div>
+    <div class="whereAmI">{{ whereAmI | raw }}</div>
 
     Subcategory: {{ subcategory.name }}
     <br/>
@@ -15,4 +15,6 @@
         <br/>
         <br/>
     {% endfor %}
+
+    <div class="whereAmI">{{ whereAmI | raw }}</div>
 {% endblock %}

@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block mainBody %}
-    <div id="whereAmI">{{ whereAmI | raw }}</div>
+    <div class="whereAmI">{{ whereAmI | raw }}</div>
 
     {% for forum in forums %}
         <table id="forumPageTable">
@@ -26,6 +26,10 @@
                     <td class="categoryAndSubcategoryColumn">
                         <a href="{{ path('forum_core_category_category', {categorySlug: category.slug}) }}" class="category">{{ category.name }}</a>
                         <br/>
+                        {% if category.description is not null%}
+                            <span class="categoryOrSubcategoryDescription">{{ category.description }}</span>
+                            <br/>
+                        {% endif %}
                         {% set numberOfTopics = 0 %}
                         {% set numberOfMessages = 0 %}
                         {% for subcategory in category.subcategories %}
@@ -65,4 +69,6 @@
         <br/>
         <br/>
     {% endfor %}
+
+    <div class="whereAmI">{{ whereAmI | raw }}</div>
 {% endblock %}
