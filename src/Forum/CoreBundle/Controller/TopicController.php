@@ -73,8 +73,11 @@ class TopicController extends Controller
             $message->setName($formParams['name']);
             $message->setTopic($topic);
             $message->setUser($this->getUser());
-
             $em->persist($message);
+
+            $topic = $message->getTopic()->setDateUpdated($message->getDateUpdated());
+            $em->persist($topic);
+
             $em->flush();
 
             $this->get('session')->getFlashBag()->add('success', 'Your comment was submitted successfully!');

@@ -64,4 +64,33 @@ $(document).ready(function()
         }
     });
 
+    // w and h are the actual photo's width and height
+    var newDimensions = function(w, h, maxWidth, maxHeight) {
+        var MAX_WIDTH = maxWidth;
+        var MAX_HEIGHT = maxHeight;
+
+        if (w > h) {
+            if (w > MAX_WIDTH) {
+                h *= MAX_WIDTH / w;
+                w = MAX_WIDTH;
+            }
+        } else {
+            if (w < h) {
+                if (h > MAX_HEIGHT) {
+                    w *= MAX_HEIGHT / h;
+                    h = MAX_HEIGHT;
+                }
+            } else {
+                if (w == h) {
+                    w = MAX_WIDTH;
+                    h = MAX_WIDTH;
+                }
+            }
+        }
+        return {
+            width: w,
+            height: h
+        };
+    }
+
 });

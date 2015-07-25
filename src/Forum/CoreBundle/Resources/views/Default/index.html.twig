@@ -56,9 +56,9 @@
                         {% if lastTopic[category.slug] != null %}
                             <a href="{{ path('forum_core_topic_topic', {topicSlug: lastTopic[category.slug].slug}) }}">{{ lastTopic[category.slug].name }}</a>
                             <br/>
-                            {{ lastTopic[category.slug].dateUpdated | date('d-m-Y H:i') }}
+                            {{ lastTopic[category.slug].dateUpdated | date('d-m-Y H:i:s') }}
                             <br/>
-                            By {{ lastTopic[category.slug].user.username }}
+                            By {{ lastMessagePersonForLastTopic[category.slug][0].user.username }}
                         {% else %}
                             -
                         {% endif %}

@@ -17,6 +17,9 @@ class DefaultController extends Controller
         /** @var \Forum\CoreBundle\Repository\ForumRepository $forumRepository */
         $forumRepository = $this->getDoctrine()->getRepository("CoreBundle:Forum");
 
+        /** @var \Forum\CoreBundle\Repository\MessageRepository $messageRepository */
+        $messageRepository = $this->getDoctrine()->getRepository("CoreBundle:Message");
+
         /** @var \Forum\CoreBundle\Entity\Forum[] $forums */
         if ($forumSlug == null) {
             $forums = $forumRepository->findAll();
@@ -30,6 +33,7 @@ class DefaultController extends Controller
         $topicRepository = $this->getDoctrine()->getRepository("CoreBundle:Topic");
 
         $lastTopic = null;
+        $lastMessagePersonForLastTopic = array();
 
         foreach ($forums as $forum) {
             $categories = $forum->getCategories();
@@ -40,6 +44,14 @@ class DefaultController extends Controller
                     $subcategoriesIds[] = $subcategory->getId();
                 }
                 $lastTopic[$category->getSlug()] = $topicRepository->findLatest($subcategoriesIds);
+
+                if ($lastTopic[$category->getSlug()] != null) {
+                    $lastMessagePersonForLastTopic[$category->getSlug()] = $messageRepository->findBy(
+                        array('topic' => $lastTopic[$category->getSlug()]->getId()),
+                        array('dateUpdated' => 'DESC'),
+                        1
+                    );
+                }
             }
         }
 
@@ -51,7 +63,8 @@ class DefaultController extends Controller
         return $this->render('CoreBundle:Default:index.html.twig', array(
             'forums' => $forums,
             'whereAmI' => $whereAmI,
-            'lastTopic' => $lastTopic
+            'lastTopic' => $lastTopic,
+            'lastMessagePersonForLastTopic' => $lastMessagePersonForLastTopic
         ));
     }
 

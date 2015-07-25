@@ -1,20 +1,55 @@
 {% extends "CoreBundle::layout.html.twig" %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/core/css/subcategory.css') }}" />
+{% endblock %}
+
 {% block mainBody %}
     <div class="whereAmI">{{ whereAmI | raw }}</div>
 
-    Subcategory: {{ subcategory.name }}
+    <div class="pageNameAndDescription">
+        <div class="pageName">{{ subcategory.name }}</div>
+        {% if subcategory.description is not null %}
+            <div class="categoryOrSubcategoryDescription">{{ subcategory.description }}</div>
+        {% endif %}
+    </div>
+
+    <table id="subcategoryPageTable">
+        <caption>
+            <div>
+                <span class="circleTopicFilter">Recently updated</span>
+            </div>
+        </caption>
+
+        {% for topic in topics %}
+            <tr>
+                <td class="categoryAndSubcategoryPictureColumn">
+                    {% if app.user %}
+                        <img src="{{ asset('bundles/core/images/forumLoggedIn.png') }}" alt="Category and subcategory picture" class="categoryAndSubcategoryPicture"/>
+                    {% else %}
+                        <img src="{{ asset('bundles/core/images/forumNotLoggedIn.png') }}" alt="Category and subcategory picture" class="categoryAndSubcategoryPicture"/>
+                    {% endif %}
+                </td>
+
+                <td class="categoryAndSubcategoryColumn">
+                    <a href="{{ path('forum_core_topic_topic', {topicSlug: topic.slug}) }}">{{ topic.name }}</a>
+                </td>
+
+                <td class="topicsAndMessagesColumn">
+                    {{ topic.messages | length }}
+                </td>
+
+                <td class="lastTopicColumn">
+                    {{ lastMessage[topic.slug].user.username }}
+                    <br/>
+                    {{ lastMessage[topic.slug].dateUpdated | date('d-m-Y H:i:s') }}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
     <br/>
     <br/>
-    {% for topic in subcategory.topics %}
-        Topic: <a href="{{ path('forum_core_topic_topic', {topicSlug: topic.slug}) }}">{{ topic.name }}</a>
-        <br/>
-        Messages: {{ topic.messages | length }}
-        <br/>
-        Last person who commented: {{ lastMessage[topic.slug].user.username }}
-        <br/>
-        <br/>
-    {% endfor %}
 
     <div class="whereAmI">{{ whereAmI | raw }}</div>
 {% endblock %}

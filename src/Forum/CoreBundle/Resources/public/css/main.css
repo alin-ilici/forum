@@ -38,10 +38,10 @@ body {
 }
 
 #profilePicture {
-    width: 3%;
-    height: 3%;
+    max-width: 45px;
+    max-height: 45px;
     padding: 5px;
-    margin-left: 10px;
+    margin-left: 5px;
 }
 
 .makeSpace {
