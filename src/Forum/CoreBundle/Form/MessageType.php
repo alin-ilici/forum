@@ -18,7 +18,7 @@ class MessageType extends AbstractType
                 array(
                     'label' => 'Reply to this topic',
                     'attr' => array(
-                        'class' => 'form-control',
+                        'class' => 'form-control makeSpaceBottom',
                         'rows' => 5
                     )
                 )
@@ -27,7 +27,10 @@ class MessageType extends AbstractType
                 'save',
                 'submit',
                 array(
-                    'label' => 'Post'
+                    'label' => 'Post',
+                    'attr' => array(
+                        'class' => 'btn btn-primary btn-sm submitMessageButton'
+                    )
                 )
             );
     }

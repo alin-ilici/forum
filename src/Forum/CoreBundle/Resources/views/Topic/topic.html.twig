@@ -8,6 +8,11 @@
 {% block mainBody %}
     <div class="whereAmI">{{ whereAmI | raw }}</div>
 
+    <div class="pageNameAndDescription">
+        <div class="pageName">{{ topic.name }}</div>
+        <div class="categoryOrSubcategoryDescription">Started by {{ topic.user.username }}, {{ topic.dateCreated | date('d-M-Y H:i:s') }}</div>
+    </div>
+
     {% for type, messages in app.session.flashbag.all() %}
         {% if type == 'success' %}
             {% set flashbagClass = 'flashbagSuccess' %}
@@ -19,24 +24,85 @@
         {% endfor %}
     {% endfor %}
 
-    Topic: {{ topic.name }}
-    <br/>
-    <br/>
-    {% for message in topic.messages %}
-        {{ message.name }}
-        <br/>
-        Posted by {{ message.user.username }} on {{ message.dateCreated | date('Y-m-d') }} at {{ message.dateCreated | date('H:i:s') }}
-        <br/>
-        <br/>
-    {% endfor %}
+    <table id="topicPageTable">
+        <caption>
+            {{ topic.messages | length }} replies to this topic
+        </caption>
 
-    {% if app.user %}
-        {{ form_start(form) }}
-        {{ form_row(form.name) }}
-        <br/>
-        {{ form_row(form.save) }}
-        {{ form_end(form) }}
-    {% endif %}
+        {% set messageNumber = 1 %}
+        {% for message in topic.messages %}
+            <tr>
+                <td colspan="2"><div class="messageMarginTop"></div></td>
+            </tr>
+
+            <tr class="messageReplierAndPostDate">
+                <td>
+                    {{ message.user.username }}
+                </td>
+                <td>
+                    <div class="leftPosition">
+                        Posted on {{ message.dateCreated | date('Y-m-d H:i:s') }}
+                    </div>
+                    <div class="rightPosition">
+                        #{{ messageNumber }}
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="aboutReplier">
+                    {% if message.user.avatar is not null %}
+                        <img src="{{ asset('bundles/core/users_avatars/' ~ message.user.avatar) }}" class="userAvatarImage" alt="User avatar image"/>
+                    {% else %}
+                        <img src="{{ asset('bundles/core/images/no-profile-img.gif') }}" class="userAvatarImage" alt="User avatar image"/>
+                    {% endif %}
+                    <br>
+                    <br/>
+                    Posts: {{ message.user.messages | length }}
+                </td>
+                <td class="messageContent">
+                    {{ message.name }}
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="2" class="messageOptions">
+                    <div class="leftPosition">
+                        <button type="button" class="btn btn-primary btn-sm backToTop">
+                            Back to top
+                        </button>
+                    </div>
+                    <div class="rightPosition">
+                        <button type="button" class="btn btn-primary btn-sm editMessage" value="{{ message.id }}">
+                            Edit
+                        </button>
+                        <button type="button" class="btn btn-primary btn-sm deleteMessage" value="{{ message.id }}">
+                            Delete
+                        </button>
+                        <button type="button" class="btn btn-primary btn-sm moveMessage" value="{{ message.id }}">
+                            Move
+                        </button>
+                        <button type="button" class="btn btn-primary btn-sm quoteMessage" value="{{ message.id }}">
+                            Quote
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            {% set messageNumber = messageNumber + 1 %}
+        {% endfor %}
+    </table>
+    <br/>
+
+    <div id="replyMessageBox">
+        {% if app.user %}
+            {{ form_start(form) }}
+            {{ form_row(form.name) }}
+            {{ form_row(form.save) }}
+            {{ form_end(form) }}
+        {% endif %}
+    </div>
+    <br/>
+    <br/>
 
     <div class="whereAmI">{{ whereAmI | raw }}</div>
 {% endblock %}

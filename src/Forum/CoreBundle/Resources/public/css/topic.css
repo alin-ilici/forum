@@ -5,3 +5,86 @@
 .flashbagFail {
     background-color: red;
 }
+
+#topicPageTable {
+    margin-left: auto;
+    margin-right: auto;
+    width: 98%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid black;
+}
+
+#topicPageTable tr td {
+    border: 1px solid white;
+    background-color: #C2FFA3;
+    border-radius: 3px;
+}
+
+#topicPageTable caption {
+    background-color: #33CC33;
+    padding: 10px;
+    border-radius: 5px;
+    border: 2px solid black;
+    margin-bottom: 1px;
+    font-weight: bold;
+    color: white;
+    font-size: 12px;
+}
+
+.circleTopicFilter {
+    background-color: green;
+    padding: 5px;
+    border-radius: 10px;
+}
+
+.messageMarginTop {
+    background-color: green;
+    height: 10px;
+}
+
+.aboutReplier {
+    width: 15%;
+    padding: 7px;
+    /*text-align: center;*/
+}
+
+.messageContent {
+    width:85%;
+    vertical-align: top;
+    padding: 7px;
+}
+
+#topicPageTable tr.messageReplierAndPostDate td {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 0;
+}
+
+.userAvatarImage {
+    max-width: 100px;
+    max-height: 100px;
+}
+
+.messageOptions {
+    background-color: green;
+    padding: 5px;
+}
+
+.leftPosition {
+    float: left;
+}
+
+.rightPosition {
+    float: right;
+}
+
+.makeSpaceBottom {
+    margin-bottom: 15px;
+}
+
+#replyMessageBox {
+    width: 98%;
+    margin-left: auto;
+    margin-right: auto;
+}
