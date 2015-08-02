@@ -5,6 +5,13 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('bundles/core/css/topic.css') }}" />
 {% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/core/js/ba-emotify.js') }}"></script>
+    <script src="{{ asset('bundles/core/js/topic.js') }}"></script>
+    <script src="{{ asset('bundles/core/js/emoticons.js') }}"></script>
+{% endblock %}
+
 {% block mainBody %}
     <div class="whereAmI">{{ whereAmI | raw }}</div>
 
@@ -15,12 +22,17 @@
 
     {% for type, messages in app.session.flashbag.all() %}
         {% if type == 'success' %}
-            {% set flashbagClass = 'flashbagSuccess' %}
+            {% set flashbagClass = 'alert alert-success alert-dismissible flashbag' %}
         {% else %}
-            {% set flashbagClass = 'flashbagFail' %}
+            {% set flashbagClass = 'alert alert-danger alert-dismissible flashbag' %}
         {% endif %}
         {% for message in messages %}
-            <p class="{{ flashbagClass }}">{{ message }}</p>
+            <div class="{{ flashbagClass }}" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                {{ message }}
+            </div>
         {% endfor %}
     {% endfor %}
 
@@ -37,7 +49,20 @@
 
             <tr class="messageReplierAndPostDate">
                 <td>
-                    {{ message.user.username }}
+                    {% if app.user %}
+                        <div class="dropdown">
+                            <button class="btn btn-default btn-sm dropdown-toggle" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                {{ message.user.username }}
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu">
+                                <li><a href="#" class="viewProfile" data-value="{{ message.id }}">View profile</a></li>
+                                <li><a href="#" class="sendMeAMessage" data-value="{{ message.id }}">Send me a message</a></li>
+                            </ul>
+                        </div>
+                    {% else %}
+                        {{ message.user.username }}
+                    {% endif %}
                 </td>
                 <td>
                     <div class="leftPosition">
@@ -51,17 +76,22 @@
 
             <tr>
                 <td class="aboutReplier">
-                    {% if message.user.avatar is not null %}
-                        <img src="{{ asset('bundles/core/users_avatars/' ~ message.user.avatar) }}" class="userAvatarImage" alt="User avatar image"/>
-                    {% else %}
-                        <img src="{{ asset('bundles/core/images/no-profile-img.gif') }}" class="userAvatarImage" alt="User avatar image"/>
+                    {% if app.user %}
+                        {% if message.user.avatar is not null %}
+                            <img src="{{ asset('bundles/core/users_avatars/' ~ message.user.avatar) }}" class="userAvatarImage" alt="User avatar image"/>
+                        {% else %}
+                            <img src="{{ asset('bundles/core/images/no-profile-img.gif') }}" class="userAvatarImage" alt="User avatar image"/>
+                        {% endif %}
+                        <br/>
+                        <br/>
                     {% endif %}
-                    <br>
-                    <br/>
                     Posts: {{ message.user.messages | length }}
                 </td>
                 <td class="messageContent">
-                    {{ message.name }}
+                    <script>
+                        var text = $('<div/>').html("{{ message.name }}").text();
+                        document.write(emotify_message(text));
+                    </script>
                 </td>
             </tr>
 
@@ -69,23 +99,36 @@
                 <td colspan="2" class="messageOptions">
                     <div class="leftPosition">
                         <button type="button" class="btn btn-primary btn-sm backToTop">
-                            Back to top
+                            <span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
+                            <a href="#" class="cd-top">&nbsp;Back to top</a>
                         </button>
                     </div>
-                    <div class="rightPosition">
-                        <button type="button" class="btn btn-primary btn-sm editMessage" value="{{ message.id }}">
-                            Edit
-                        </button>
-                        <button type="button" class="btn btn-primary btn-sm deleteMessage" value="{{ message.id }}">
-                            Delete
-                        </button>
-                        <button type="button" class="btn btn-primary btn-sm moveMessage" value="{{ message.id }}">
-                            Move
-                        </button>
-                        <button type="button" class="btn btn-primary btn-sm quoteMessage" value="{{ message.id }}">
-                            Quote
-                        </button>
-                    </div>
+                    {% if app.user %}
+                        <div class="rightPosition">
+                            {% if (app.user.id == message.user.id and message.dateUpdated >= date("now") | date_modify("-1 hour"))
+                                or 'ROLE_MODERATOR' in app.user.roles
+                                or 'ROLE_ADMINISTRATOR' in app.user.roles %}
+                                <button type="button" class="btn btn-primary btn-sm editMessage" value="{{ message.id }}">
+                                    Edit
+                                </button>
+                            {% endif %}
+                            {% if 'ROLE_MODERATOR' in app.user.roles
+                                or 'ROLE_ADMINISTRATOR' in app.user.roles %}
+                                <button type="button" class="btn btn-primary btn-sm deleteMessage" value="{{ message.id }}">
+                                    Delete
+                                </button>
+                            {% endif %}
+                            {% if 'ROLE_ADMINISTRATOR' in app.user.roles %}
+                                <button type="button" class="btn btn-primary btn-sm moveMessage" value="{{ message.id }}">
+                                    Move
+                                </button>
+                            {% endif %}
+
+                            <button type="button" class="btn btn-primary btn-sm quoteMessage" value="{{ message.id }}">
+                                Quote
+                            </button>
+                        </div>
+                    {% endif %}
                 </td>
             </tr>
             {% set messageNumber = messageNumber + 1 %}
@@ -93,14 +136,48 @@
     </table>
     <br/>
 
-    <div id="replyMessageBox">
-        {% if app.user %}
-            {{ form_start(form) }}
-            {{ form_row(form.name) }}
-            {{ form_row(form.save) }}
-            {{ form_end(form) }}
-        {% endif %}
-    </div>
+    {% if app.user %}
+        <div id="replyToThisTopic">
+            Reply to this topic
+        </div>
+        <div id="replyMessageBox">
+            <div class="replyMessage-left">
+                {% if app.user.avatar is not null %}
+                    <img src="{{ asset('bundles/core/users_avatars/' ~ app.user.avatar) }}" class="userAvatarImage" alt="User avatar image"/>
+                {% else %}
+                    <img src="{{ asset('bundles/core/images/no-profile-img.gif') }}" class="userAvatarImage" alt="User avatar image"/>
+                {% endif %}
+            </div>
+            <div class="replyMessage-right">
+                <div id="replyMessageOptions" class="noSelect">
+                    <div class="hoverReplyMessageOption">
+                        <span class="glyphicon glyphicon-bold makeSpace" aria-hidden="true"></span>
+                    </div>
+                    <div class="hoverReplyMessageOption">
+                        <span class="glyphicon glyphicon-italic makeSpace" aria-hidden="true"></span>
+                    </div>
+                    <div class="hoverReplyMessageOption">
+                        <span class="glyphicon glyphicon-text-width makeSpace" aria-hidden="true"></span>
+                    </div>
+                    <div class="hoverReplyMessageOption" id="showSmiles">
+                        <span class="glyphicon glyphicon-tree-conifer makeSpace" aria-hidden="true"></span>
+                    </div>
+                    <div class="hoverReplyMessageOption">
+                        <span class="glyphicon glyphicon-link makeSpace" aria-hidden="true"></span>
+                    </div>
+                    <div class="hoverReplyMessageOption">
+                        <span class="glyphicon glyphicon-paperclip makeSpace" aria-hidden="true"></span>
+                    </div>
+
+                    <div id="emoticonsZone"></div>
+                </div>
+                {{ form_start(form) }}
+                {{ form_widget(form.name) }}
+                {{ form_row(form.save) }}
+                {{ form_end(form) }}
+            </div>
+        </div>
+    {% endif %}
     <br/>
     <br/>
 

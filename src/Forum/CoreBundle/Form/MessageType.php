@@ -29,7 +29,7 @@ class MessageType extends AbstractType
                 array(
                     'label' => 'Post',
                     'attr' => array(
-                        'class' => 'btn btn-primary btn-sm submitMessageButton'
+                        'class' => 'btn btn-primary btn-sm submitMessageButton rightPosition makeSpaceBottom'
                     )
                 )
             );

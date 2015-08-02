@@ -9,7 +9,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * Subcategory
  *
- * @ORM\Table()
+ * @ORM\Table(name="subcategory")
  * @ORM\Entity(repositoryClass="Forum\CoreBundle\Repository\SubcategoryRepository")
  */
 class Subcategory extends Timestampable

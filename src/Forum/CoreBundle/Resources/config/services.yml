@@ -32,3 +32,8 @@ services:
         arguments:
             - @router
             - @session
+
+    forum.security.logout_success_handler:
+        class: Forum\CoreBundle\Services\LogoutSuccessHandler
+        arguments:
+            - @router

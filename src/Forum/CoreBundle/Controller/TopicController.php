@@ -80,7 +80,7 @@ class TopicController extends Controller
 
             $em->flush();
 
-            $this->get('session')->getFlashBag()->add('success', 'Your comment was submitted successfully!');
+            $this->get('session')->getFlashBag()->add('success', 'Your comment was successfully submitted!');
         } else {
             $this->get('session')->getFlashBag()->add('fail', 'There was a problem submitting your comment!');
         }

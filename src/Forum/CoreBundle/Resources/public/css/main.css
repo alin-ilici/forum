@@ -35,6 +35,8 @@ body {
 #logInLogOutToolbar {
     background-color: #33CC33;
     padding-left: 15px;
+    height: 45px;
+    line-height: 43px;
 }
 
 #profilePicture {

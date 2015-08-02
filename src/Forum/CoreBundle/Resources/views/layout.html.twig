@@ -20,7 +20,11 @@
         <div id="header">
             <header>
                 <div id="logInLogOutToolbar">
-                    <img src="{{ asset('bundles/core/images/no-profile-img.gif') }}" alt="Profile picture" id="profilePicture"/>
+                    {% if app.user and app.user.avatar is not null %}
+                        <img src="{{ asset('bundles/core/users_avatars/' ~ app.user.avatar) }}" alt="Profile picture" id="profilePicture"/>
+                    {% else %}
+                        <img src="{{ asset('bundles/core/images/no-profile-img.gif') }}" alt="Profile picture" id="profilePicture"/>
+                    {% endif %}
                     {% if app.user %}
                         <span class="makeSpace">{{ app.user.username }}</span>
                         <button id="logOutButton" type="button" class="btn btn-primary btn-sm makeSpace">

@@ -9,7 +9,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * Message
  *
- * @ORM\Table()
+ * @ORM\Table(name="message")
  * @ORM\Entity(repositoryClass="Forum\CoreBundle\Repository\MessageRepository")
  */
 class Message extends Timestampable
