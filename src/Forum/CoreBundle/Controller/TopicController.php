@@ -5,6 +5,7 @@ namespace Forum\CoreBundle\Controller;
 use Forum\CoreBundle\Entity\Message;
 use Forum\CoreBundle\Form\MessageType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class TopicController extends Controller
@@ -42,7 +43,7 @@ class TopicController extends Controller
         ));
     }
 
-    public function postMessageAction(Request $request, $topicSlug)
+    public function postMessageAction(Request $request, $topicSlug, $messageId)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -69,10 +70,24 @@ class TopicController extends Controller
         if ($form->isValid()) {
             $formParams = $request->request->get('message');
 
-            $message = new Message();
-            $message->setName($formParams['name']);
-            $message->setTopic($topic);
-            $message->setUser($this->getUser());
+            $message = null;
+            if ($messageId !== null) {
+                $message = $em->getRepository('CoreBundle:Message')->findOneBy(
+                    array(
+                        'id' => $messageId
+                    )
+                );
+            }
+
+            if ($message === null) {
+                $message = new Message();
+                $message->setName(preg_replace( "/\r|\n/", " ", $formParams['name']));
+                $message->setTopic($topic);
+                $message->setUser($this->getUser());
+            } else {
+                $message->setName(preg_replace( "/\r|\n/", " ", $formParams['name']));
+            }
+
             $em->persist($message);
 
             $topic = $message->getTopic()->setDateUpdated($message->getDateUpdated());
@@ -80,11 +95,36 @@ class TopicController extends Controller
 
             $em->flush();
 
-            $this->get('session')->getFlashBag()->add('success', 'Your comment was successfully submitted!');
+            $this->get('session')->getFlashBag()->add('success', 'Your comment was successfully submitted/updated!');
         } else {
-            $this->get('session')->getFlashBag()->add('fail', 'There was a problem submitting your comment!');
+            $this->get('session')->getFlashBag()->add('fail', 'There was a problem submitting/updating your comment!');
         }
 
         return $this->redirect($this->generateUrl('forum_core_topic_topic', array('topicSlug' => $topicSlug)));
+    }
+
+    public function deleteMessageAction($messageId)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        /** @var \Forum\CoreBundle\Entity\Message $message */
+        $message = $em->getRepository('CoreBundle:Message')->findOneBy(
+            array(
+                'id' => $messageId
+            )
+        );
+
+        if (!empty($message)) {
+            $em->remove($message);
+            $em->flush();
+
+            $this->get('session')->getFlashBag()->add('success', 'The message was successfully deleted!');
+
+            return new JsonResponse('success');
+        } else {
+            $this->get('session')->getFlashBag()->add('fail', 'There was a problem deleting your message!');
+
+            return new JsonResponse('fail');
+        }
     }
 }

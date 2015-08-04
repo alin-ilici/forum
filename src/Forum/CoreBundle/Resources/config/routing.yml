@@ -19,8 +19,12 @@ forum_core_topic_topic:
     defaults: { _controller: CoreBundle:Topic:topic, topicSlug: null }
 
 forum_core_topic_post_message:
-    path: /topic/{topicSlug}/postMessage
-    defaults: { _controller: CoreBundle:Topic:postMessage, topicSlug: null }
+    path: /topic/{topicSlug}/postMessage/{messageId}
+    defaults: { _controller: CoreBundle:Topic:postMessage, topicSlug: null, messageId: null }
+
+forum_core_topic_delete_message:
+    path: /topic/delete/{messageId}
+    defaults: { _controller: CoreBundle:Topic:deleteMessage }
 
 forum_core_register_send_mail:
     path: /register/sendMail

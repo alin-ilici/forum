@@ -51,6 +51,10 @@ body {
     margin-right: 5px;
 }
 
+.noDisplay {
+    display: none;
+}
+
 #forumLogo {
     width: 15%;
     height: 15%;
