@@ -25,6 +25,14 @@ forum_core_topic_post_message:
 forum_core_topic_delete_message:
     path: /topic/delete/{messageId}
     defaults: { _controller: CoreBundle:Topic:deleteMessage }
+    options:
+        expose: true
+
+forum_core_topic_move_message:
+    path: /topic/move/{messageId}
+    defaults: { _controller: CoreBundle:Topic:moveMessage }
+    options:
+        expose: true
 
 forum_core_register_send_mail:
     path: /register/sendMail
@@ -46,10 +54,14 @@ forum_core_default_admin:
 forum_core_security_login:
     path: /login
     defaults: { _controller: CoreBundle:Security:login }
+    options:
+        expose: true
 
 forum_core_security_login_check:
     path: /login_check
     defaults: { _controller: CoreBundle:Security:loginCheck }
+    options:
+        expose: true
 
 forum_core_security_logout:
     path: /logout

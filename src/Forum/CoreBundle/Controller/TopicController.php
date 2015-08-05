@@ -23,6 +23,16 @@ class TopicController extends Controller
             ));
         }
 
+        /** @var \Forum\CoreBundle\Entity\Forum[] $forum */
+        $forum = null;
+
+        $forum = $this->getDoctrine()->getRepository('CoreBundle:Forum')->findAll();
+
+        $forums = array('---' => 'noValue');
+        foreach ($forum as $data) {
+            $forums[$data->getName()] = $data->getSlug();
+        }
+
         $form = $this->createForm(
             new MessageType(),
             null,
@@ -39,6 +49,7 @@ class TopicController extends Controller
         return $this->render('CoreBundle:Topic:topic.html.twig', array(
             'topic' => $topic,
             'whereAmI' => $whereAmI,
+            'forums' => $forums,
             'form' => $form->createView(),
         ));
     }
@@ -125,6 +136,125 @@ class TopicController extends Controller
             $this->get('session')->getFlashBag()->add('fail', 'There was a problem deleting your message!');
 
             return new JsonResponse('fail');
+        }
+    }
+
+    public function moveMessageAction(Request $request, $messageId) {
+        $em = $this->getDoctrine()->getManager();
+        $forumParam = $request->request->get('forum', 'false');
+        $categoryParam = $request->request->get('category', 'false');
+        $subcategoryParam = $request->request->get('subcategory', 'false');
+        $topicParam = $request->request->get('topic', 'false');
+
+        /** @var \Forum\CoreBundle\Entity\Message $message */
+        $message = null;
+
+        $message = $em->getRepository('CoreBundle:Message')->findOneBy(
+            array(
+                'id' => $messageId
+            )
+        );
+
+        if ($message === null) {
+            throw new \Exception("An error ocurred when selecting the message by id (moveAction)!");
+        }
+
+        if ($forumParam !== 'false') {
+            if ($forumParam === 'noValue') {
+                return new JsonResponse("showOnlyForum");
+            }
+
+            /** @var \Forum\CoreBundle\Entity\Forum $forum */
+            $forum = $em->getRepository('CoreBundle:Forum')->findOneBy(
+                array(
+                    'slug' => $forumParam
+                )
+            );
+
+            /** @var \Forum\CoreBundle\Entity\Category[] $category */
+            $category = $em->getRepository('CoreBundle:Category')->findBy(
+                array(
+                    'forum' => $forum->getId()
+                )
+            );
+
+            $categories = array('---' => 'noValue');
+            foreach ($category as $data) {
+                $categories[$data->getName()] = $data->getSlug();
+            }
+
+            return new JsonResponse($categories);
+        }
+
+        if ($categoryParam !== 'false') {
+            if ($categoryParam === 'noValue') {
+                return new JsonResponse("showOnlyCategory");
+            }
+
+            /** @var \Forum\CoreBundle\Entity\Category $category */
+            $category = $em->getRepository('CoreBundle:Category')->findOneBy(
+                array(
+                    'slug' => $categoryParam
+                )
+            );
+
+            /** @var \Forum\CoreBundle\Entity\Subcategory[] $subcategory */
+            $subcategory = $em->getRepository('CoreBundle:Subcategory')->findBy(
+                array(
+                    'category' => $category->getId()
+                )
+            );
+
+            $subcategories = array('---' => 'noValue');
+            foreach ($subcategory as $data) {
+                $subcategories[$data->getName()] = $data->getSlug();
+            }
+
+            return new JsonResponse($subcategories);
+        }
+
+        if ($subcategoryParam !== 'false') {
+            if ($subcategoryParam === 'noValue') {
+                return new JsonResponse("showOnlySubcategory");
+            }
+
+            /** @var \Forum\CoreBundle\Entity\Subcategory $subcategory */
+            $subcategory = $em->getRepository('CoreBundle:Subcategory')->findOneBy(
+                array(
+                    'slug' => $subcategoryParam
+                )
+            );
+
+            /** @var \Forum\CoreBundle\Entity\Topic[] $topic */
+            $topic = $em->getRepository('CoreBundle:Topic')->findBy(
+                array(
+                    'subcategory' => $subcategory->getId()
+                )
+            );
+
+            $topics = array('---' => 'noValue');
+            foreach ($topic as $data) {
+                $topics[$data->getName()] = $data->getSlug();
+            }
+
+            return new JsonResponse($topics);
+        }
+
+        if ($topicParam !== 'false') {
+            /** @var \Forum\CoreBundle\Entity\Topic $topic */
+            $topic = $em->getRepository('CoreBundle:Topic')->findOneBy(
+                array(
+                    'slug' => $topicParam
+                )
+            );
+
+            $message->setTopic($topic);
+            $em->persist($message);
+            $em->flush();
+
+            $pageToLoad = $this->generateUrl('forum_core_topic_topic', array('topicSlug' => $topicParam));
+
+            return new JsonResponse($pageToLoad);
         }
     }
 }

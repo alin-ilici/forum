@@ -185,4 +185,40 @@
     <br/>
 
     <div class="whereAmI">{{ whereAmI | raw }}</div>
+
+    <div class="modal fade" id="moveMessageModalWindow">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Move message</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="forumSelect">
+                        Forum:
+                        <select>
+                            {% for name, value in forums %}
+                                <option value="{{ value }}">{{ name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div id="categorySelect" class="noDisplay makeSpaceTop">
+                    </div>
+
+                    <div id="subcategorySelect" class="noDisplay makeSpaceTop">
+                    </div>
+
+                    <div id="topicSelect" class="noDisplay makeSpaceTop">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary disabled" id="finishMovingMessage">Move message</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

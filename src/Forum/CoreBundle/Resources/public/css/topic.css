@@ -90,6 +90,10 @@
     margin-bottom: 15px;
 }
 
+.makeSpaceTop {
+    margin-top: 15px;
+}
+
 #replyMessageBox {
     width: 98%;
     margin-left: auto;

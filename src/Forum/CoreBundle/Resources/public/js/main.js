@@ -3,7 +3,7 @@ $(document).ready(function()
     $('#logInButton').click(function() {
         $.ajax({
             type: 'post',
-            url: '/login',
+            url: Routing.generate('forum_core_security_login'),
             data: '',
             success: function(result) {
                 if ($("#logInModal").children.length > 0) {
@@ -26,7 +26,7 @@ $(document).ready(function()
     $(document).on('click', '#submitLoginForm', function() {
         $.ajax({
             type: 'post',
-            url: '/login_check',
+            url: Routing.generate('forum_core_security_login_check'),
             data: {
                 _username: $('#username').val(),
                 _password: $('#password').val(),

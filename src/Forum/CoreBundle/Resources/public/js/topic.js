@@ -5,6 +5,7 @@ $(document).ready(function($) {
     var backToTopAnchor = $('.cd-top');
     var backToTopButton = $('.backToTop');
     var firstFormActionUrl = $('[name="message"]').attr('action');
+    var messageId = null;
 
     function preventDefault(e) {
         e = e || window.event;
@@ -66,13 +67,13 @@ $(document).ready(function($) {
     $('.deleteMessage').on('click', function () {
         $.ajax({
             type: 'post',
-            url: '/topic/delete/' + $(this).val(),
+            url: Routing.generate('forum_core_topic_delete_message', { messageId: $(this).val() }),
             dataType: 'json',
             success: function(result) {
                 window.location.replace(window.location.href);
             },
             fail: function() {
-                alert("An error occured!");
+                alert("An error occured when trying to delete the message!");
             }
         });
     });
@@ -106,5 +107,153 @@ $(document).ready(function($) {
         $('[name="message"]').attr('action', firstFormActionUrl);
         $('#message_name').val('');
         $(this).hide();
+    });
+
+    $('.moveMessage').on('click', function() {
+        messageId = $(this).val();
+
+        $('#forumSelect select').val('noValue');
+        $('#categorySelect').empty();
+        $('#subcategorySelect').empty();
+        $('#topicSelect').empty();
+
+        $('#categorySelect').hide();
+        $('#subcategorySelect').hide();
+        $('#topicSelect').hide();
+        $('#finishMovingMessage').addClass('disabled');
+
+        $('#moveMessageModalWindow').modal('show');
+    });
+
+    $('#forumSelect select').on('change', function() {
+        $.ajax({
+            type: 'post',
+            url: Routing.generate('forum_core_topic_move_message', { messageId: messageId }),
+            data: { forum: $('#forumSelect select').find(":selected").val() },
+            dataType: 'json',
+            success: function(result) {
+                if (result != 'showOnlyForum') {
+                    $('#categorySelect').empty();
+                    $('#categorySelect').hide();
+                    $('#subcategorySelect').hide();
+                    $('#topicSelect').hide();
+                    $('#finishMovingMessage').addClass('disabled');
+
+                    var html = 'Category: <select>';
+                    for (var key in result) {
+                        if (result.hasOwnProperty(key)) {
+                            html = html + '<option value="' + result[key] + '">' + key + '</option>';
+                        }
+                    }
+                    html = html + '</select>';
+
+                    $('#categorySelect').append(html);
+                    $('#categorySelect').show();
+
+                    $('#categorySelect select').on('change', function() {
+                        $.ajax({
+                            type: 'post',
+                            url: Routing.generate('forum_core_topic_move_message', { messageId: messageId }),
+                            data: { category: $('#categorySelect select').find(":selected").val() },
+                            dataType: 'json',
+                            success: function(result) {
+                                if (result != 'showOnlyCategory') {
+                                    $('#subcategorySelect').empty();
+                                    $('#subcategorySelect').hide();
+                                    $('#topicSelect').hide();
+                                    $('#finishMovingMessage').addClass('disabled');
+
+                                    var html = 'Subcategory: <select>';
+                                    for (var key in result) {
+                                        if (result.hasOwnProperty(key)) {
+                                            html = html + '<option value="' + result[key] + '">' + key + '</option>';
+                                        }
+                                    }
+                                    html = html + '</select>';
+
+                                    $('#subcategorySelect').append(html);
+                                    $('#subcategorySelect').show();
+
+                                    $('#subcategorySelect select').on('change', function() {
+                                        $.ajax({
+                                            type: 'post',
+                                            url: Routing.generate('forum_core_topic_move_message', { messageId: messageId }),
+                                            data: { subcategory: $('#subcategorySelect select').find(":selected").val() },
+                                            dataType: 'json',
+                                            success: function(result) {
+                                                if (result != 'showOnlySubcategory') {
+                                                    $('#topicSelect').empty();
+                                                    $('#topicSelect').hide();
+                                                    $('#finishMovingMessage').addClass('disabled');
+
+                                                    var html = 'Topic: <select>';
+                                                    for (var key in result) {
+                                                        if (result.hasOwnProperty(key)) {
+                                                            html = html + '<option value="' + result[key] + '">' + key + '</option>';
+                                                        }
+                                                    }
+                                                    html = html + '</select>';
+                                                    if (Object.keys(result).length == 1) {
+                                                        html = 'Nu exista nici un topic in subcategoria selectata!';
+                                                        $('#finishMovingMessage').addClass('disabled');
+                                                    }
+
+                                                    $('#topicSelect').append(html);
+                                                    $('#topicSelect').show();
+
+                                                    $('#topicSelect select').on('change', function() {
+                                                        if ($('#topicSelect select').find(":selected").val() != 'noValue') {
+                                                            $('#finishMovingMessage').removeClass('disabled');
+                                                        } else {
+                                                            $('#finishMovingMessage').addClass('disabled');
+                                                        }
+                                                    });
+                                                } else {
+                                                    $('#topicSelect').hide();
+                                                    $('#finishMovingMessage').addClass('disabled');
+                                                }
+                                            },
+                                            fail: function() {
+                                                alert("An error occured when trying to move the message!");
+                                            }
+                                        });
+                                    });
+                                } else {
+                                    $('#subcategorySelect').hide();
+                                    $('#topicSelect').hide();
+                                    $('#finishMovingMessage').addClass('disabled');
+                                }
+                            },
+                            fail: function() {
+                                alert("An error occured when trying to move the message!");
+                            }
+                        });
+                    });
+                } else {
+                    $('#categorySelect').hide();
+                    $('#subcategorySelect').hide();
+                    $('#topicSelect').hide();
+                    $('#finishMovingMessage').addClass('disabled');
+                }
+            },
+            fail: function() {
+                alert("An error occured when trying to move the message!");
+            }
+        });
+    });
+
+    $('#finishMovingMessage').on('click', function() {
+        $.ajax({
+            type: 'post',
+            url: Routing.generate('forum_core_topic_move_message', { messageId: messageId }),
+            data: { topic: $('#topicSelect select').find(":selected").val() },
+            dataType: 'json',
+            success: function(result) {
+                window.location.href = result;
+            },
+            fail: function() {
+                alert("An error occured when trying to move the message!");
+            }
+        });
     });
 });
