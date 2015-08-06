@@ -386,4 +386,30 @@ class User extends Timestampable implements UserInterface, \Serializable
             // $this->salt
             ) = unserialize($serialized);
     }
+
+    public function getUploadRootDir() {
+        return 'bundles/core/users_avatars';
+    }
+
+    public function uploadAvatar()
+    {
+        // the file property can be empty if the field is not required
+        if (null === $this->getAvatar()) {
+            return;
+        }
+
+        $now = new \DateTime();
+        $newAvatarName = mt_rand(10000, 99999) . '-' . $now->format('d-m-y-h-i-s') . '.' . $this->getAvatar()->getClientOriginalExtension();;
+
+        // move takes the target directory and then the
+        // target filename to move to
+        // second param is the new photo name uploaded to server
+        $this->getAvatar()->move(
+            $this->getUploadRootDir(),
+            $newAvatarName
+        );
+
+        // set the path property to the filename where you've saved the file
+        $this->avatar = $newAvatarName;
+    }
 }

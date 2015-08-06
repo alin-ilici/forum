@@ -5,6 +5,12 @@ body {
     height: 100%;
 }
 
+.flashbag {
+    margin-left: auto;
+    margin-right: auto;
+    width: 30%;
+}
+
 #wrapper {
     min-height: 100%;
     position: relative;

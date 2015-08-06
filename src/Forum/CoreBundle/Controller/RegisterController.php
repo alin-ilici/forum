@@ -18,8 +18,11 @@ class RegisterController extends Controller
             )
         );
 
+        $whereAmI = '<a href="' . $this->generateUrl('forum_core_default_homepage') . '">Forum</a> > Registration page';
+
         return $this->render('CoreBundle:Register:registerPage.html.twig', array(
             'form' => $form->createView(),
+            'whereAmI' => $whereAmI
         ));
     }
 
@@ -40,8 +43,16 @@ class RegisterController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
+            $user->uploadAvatar();
+
             $em->persist($user);
-            $em->flush();
+
+            try {
+                $em->flush();
+            } catch (\Exception $e) {
+                $this->get('session')->getFlashBag()->add('fail', 'There was a problem registering your account!<br/>' . $e->getMessage());
+                return $this->redirect($this->generateUrl('forum_core_register_index'));
+            }
         }
 
         return $this->redirect($this->generateUrl('forum_core_default_index'));

@@ -18,17 +18,19 @@ class UserType extends AbstractType
                 array(
                     'label' => 'Username',
                     'attr' => array(
-                        'class' => ''
+                        'class' => 'form-control',
+                        'autocomplete' => 'off'
                     )
                 )
             )
             ->add(
                 'password',
-                'text',
+                'password',
                 array(
                     'label' => 'Password',
                     'attr' => array(
-                        'class' => ''
+                        'class' => 'form-control',
+                        'autocomplete' => 'off'
                     )
                 )
             )
@@ -38,7 +40,7 @@ class UserType extends AbstractType
                 array(
                     'label' => 'First name',
                     'attr' => array(
-                        'class' => ''
+                        'class' => 'form-control'
                     )
                 )
             )
@@ -48,7 +50,7 @@ class UserType extends AbstractType
                 array(
                     'label' => 'Last name',
                     'attr' => array(
-                        'class' => ''
+                        'class' => 'form-control'
                     )
                 )
             )
@@ -58,15 +60,25 @@ class UserType extends AbstractType
                 array(
                     'label' => 'Email',
                     'attr' => array(
-                        'class' => ''
+                        'class' => 'form-control'
                     )
+                )
+            )
+            ->add(
+                'avatar',
+                'file',
+                array(
+                    'required' => false
                 )
             )
             ->add(
                 'save',
                 'submit',
                 array(
-                    'label' => 'Register account'
+                    'label' => 'Create account',
+                    'attr' => array(
+                        'class' => 'btn btn-primary'
+                    )
                 )
             );
     }

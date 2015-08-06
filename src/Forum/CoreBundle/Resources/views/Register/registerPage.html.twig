@@ -1,19 +1,93 @@
 {% extends "CoreBundle::layout.html.twig" %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/core/css/register.css') }}" />
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/core/js/register.js') }}"></script>
+{% endblock %}
+
 {% block mainBody %}
 
-    {{ form_start(form) }}
-    {{ form_row(form.username) }}
+    <div class="whereAmI">{{ whereAmI | raw }}</div>
+
+    {% for type, messages in app.session.flashbag.all() %}
+        {% if type == 'success' %}
+            {% set flashbagClass = 'alert alert-success alert-dismissible flashbag' %}
+        {% else %}
+            {% set flashbagClass = 'alert alert-danger alert-dismissible flashbag' %}
+        {% endif %}
+        {% for message in messages %}
+            <div class="{{ flashbagClass }}" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                {{ message | raw }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+    <div id="registerPageWelcome">
+        Join Our Comunity
+    </div>
+
     <br/>
-    {{ form_row(form.password) }}
     <br/>
-    {{ form_row(form.firstName) }}
+    <div id="registerForm">
+        <div id="requiredInfo">
+            * Required information
+        </div>
+        {{ form_start(form) }}
+        <div class="form-group">
+            <label for="user_username" class="required">Username</label>
+            {{ form_widget(form.username) }}
+        </div>
+
+        <div class="form-group">
+            <label for="user_password" class="required">Password</label>
+            {{ form_widget(form.password) }}
+        </div>
+
+        <div class="form-group">
+            <label for="userPasswordVerification" class="required">Retype password</label>
+            <input type="password" id="userPasswordVerification" required="required" class="form-control" autocomplete="off" aria-describedby="inputPassVerStatus">
+        </div>
+
+        <div class="form-group">
+            <label for="user_firstName" class="required">First name</label>
+            {{ form_widget(form.firstName) }}
+        </div>
+
+        <div class="form-group">
+            <label for="user_lastName" class="required">Last name</label>
+            {{ form_widget(form.lastName) }}
+        </div>
+
+        <div class="form-group">
+            <label for="user_email" class="required">Email</label>
+            {{ form_widget(form.email) }}
+        </div>
+
+        <div class="form-group">
+            <label for="user_avatar">Profile picture</label>
+            {{ form_widget(form.avatar) }}
+        </div>
+
+        <div id="avatarPreview"></div>
+
+        <div id="errorMessages" class="alert alert-danger" role="alert"></div>
+
+        <div id="registerButtonDiv">
+            {{ form_row(form.save) }}
+        </div>
+
+        {{ form_end(form) }}
+    </div>
     <br/>
-    {{ form_row(form.lastName) }}
     <br/>
-    {{ form_row(form.email) }}
-    <br/>
-    {{ form_row(form.save) }}
-    {{ form_end(form) }}
+    <div class="whereAmI">{{ whereAmI | raw }}</div>
 
 {% endblock %}

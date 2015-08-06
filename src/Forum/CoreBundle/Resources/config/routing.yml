@@ -41,6 +41,8 @@ forum_core_register_send_mail:
 forum_core_register_index:
     path: /register
     defaults: { _controller: CoreBundle:Register:index }
+    options:
+        expose: true
 
 forum_core_register_register_account:
     path: /register/registerAccount
@@ -65,3 +67,5 @@ forum_core_security_login_check:
 
 forum_core_security_logout:
     path: /logout
+    options:
+        expose: true

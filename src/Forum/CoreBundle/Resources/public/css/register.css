@@ -1,0 +1,53 @@
+#registerPageWelcome {
+    background-color: #33CC33;
+    padding: 10px;
+    border-radius: 5px;
+    border: 2px solid black;
+    margin-bottom: 1px;
+    font-weight: bold;
+    color: white;
+    font-size: 12px;
+    width: 98%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#registerForm {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#registerButtonDiv {
+    width: 121px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#errorMessages {
+    display: none;
+}
+
+.required:after {
+    color: red;
+    content: ' *';
+    display: inline;
+}
+
+#requiredInfo {
+    text-align: center;
+    color: #CC0000;
+    font-weight: bold;
+}
+
+#avatarPreview {
+    display: none;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#avatarPreview img {
+    border: 10px solid green;
+    border-radius: 5px;
+    border-style: groove;
+}
