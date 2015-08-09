@@ -64,7 +64,7 @@ class TopicController extends Controller
             )
         );
 
-        if ($topic === null) {
+        if ($topic == null) {
             throw $this->createNotFoundException('Topic was not found!');
         }
 
@@ -90,7 +90,7 @@ class TopicController extends Controller
                 );
             }
 
-            if ($message === null) {
+            if ($message == null) {
                 $message = new Message();
                 $message->setName(preg_replace( "/\r|\n/", " ", $formParams['name']));
                 $message->setTopic($topic);
@@ -155,7 +155,7 @@ class TopicController extends Controller
             )
         );
 
-        if ($message === null) {
+        if ($message == null) {
             throw new \Exception("An error ocurred when selecting the message by id (moveAction)!");
         }
 

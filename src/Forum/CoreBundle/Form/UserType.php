@@ -19,7 +19,8 @@ class UserType extends AbstractType
                     'label' => 'Username',
                     'attr' => array(
                         'class' => 'form-control',
-                        'autocomplete' => 'off'
+                        'autocomplete' => 'off',
+                        'aria-describedby' => 'inputUsernameVerStatus'
                     )
                 )
             )
@@ -60,7 +61,8 @@ class UserType extends AbstractType
                 array(
                     'label' => 'Email',
                     'attr' => array(
-                        'class' => 'form-control'
+                        'class' => 'form-control',
+                        'aria-describedby' => 'inputEmailVerStatus'
                     )
                 )
             )
@@ -77,7 +79,7 @@ class UserType extends AbstractType
                 array(
                     'label' => 'Create account',
                     'attr' => array(
-                        'class' => 'btn btn-primary'
+                        'class' => 'btn btn-primary disabled'
                     )
                 )
             );

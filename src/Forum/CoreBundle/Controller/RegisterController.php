@@ -5,6 +5,7 @@ namespace Forum\CoreBundle\Controller;
 use Forum\CoreBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Forum\CoreBundle\Form\UserType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class RegisterController extends Controller
@@ -56,6 +57,32 @@ class RegisterController extends Controller
         }
 
         return $this->redirect($this->generateUrl('forum_core_default_index'));
+    }
+
+    public function checkForAction(Request $request) {
+        $what = $request->request->get('what', null);
+        $whatValue = $request->request->get('whatValue', null);
+
+        $em = $this->getDoctrine()->getManager();
+
+        /** @var \Forum\CoreBundle\Repository\UserRepository $userRepository */
+        $userRepository = $this->getDoctrine()->getRepository("CoreBundle:User");
+
+        /*$query = $userRepository->createQueryBuilder('u');
+        $result = $query->where($query->expr()->like("u.$what", ':user'))
+            ->setParameter('user',"%$whatValue%")
+            ->getQuery()
+            ->getResult();*/
+
+        $result = $userRepository->findBy(array(
+            $what => $whatValue
+        ));
+
+        if ($result == null) {
+            return new JsonResponse('success');
+        } else {
+            return new JsonResponse('fail');
+        }
     }
 
     public function sendMailAction()

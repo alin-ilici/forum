@@ -48,6 +48,11 @@ forum_core_register_register_account:
     path: /register/registerAccount
     defaults: { _controller: CoreBundle:Register:registerAccount }
 
+forum_core_register_check_for:
+    path: /register/checkFor
+    defaults: { _controller: CoreBundle:Register:checkFor }
+    options:
+        expose: true
 
 forum_core_default_admin:
     path: /admin
