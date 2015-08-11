@@ -29,7 +29,11 @@
                         <img src="{{ asset('bundles/core/images/no-profile-img.gif') }}" alt="Profile picture" id="profilePicture"/>
                     {% endif %}
                     {% if app.user %}
-                        <span class="makeSpace">{{ app.user.username }}</span>
+                        <span class="makeSpace">
+                            <a href="{{ path('forum_core_profile_page_profile_page', {'username': app.user.username }) }}">
+                                {{ app.user.username }}
+                            </a>
+                        </span>
                         <button id="logOutButton" type="button" class="btn btn-primary btn-sm makeSpace">
                             Log Out
                         </button>

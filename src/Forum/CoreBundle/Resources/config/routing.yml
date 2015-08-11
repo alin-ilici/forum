@@ -1,3 +1,24 @@
+forum_core_default_admin:
+    path: /admin
+    defaults: { _controller: CoreBundle:Default:admin }
+
+forum_core_security_login:
+    path: /login
+    defaults: { _controller: CoreBundle:Security:login }
+    options:
+        expose: true
+
+forum_core_security_login_check:
+    path: /login_check
+    defaults: { _controller: CoreBundle:Security:loginCheck }
+    options:
+        expose: true
+
+forum_core_security_logout:
+    path: /logout
+    options:
+        expose: true
+
 forum_core_default_index:
     path: /
     defaults: { _controller: CoreBundle:Default:index }
@@ -54,23 +75,8 @@ forum_core_register_check_for:
     options:
         expose: true
 
-forum_core_default_admin:
-    path: /admin
-    defaults: { _controller: CoreBundle:Default:admin }
-
-forum_core_security_login:
-    path: /login
-    defaults: { _controller: CoreBundle:Security:login }
-    options:
-        expose: true
-
-forum_core_security_login_check:
-    path: /login_check
-    defaults: { _controller: CoreBundle:Security:loginCheck }
-    options:
-        expose: true
-
-forum_core_security_logout:
-    path: /logout
+forum_core_profile_page_profile_page:
+    path: /profilePage/{username}
+    defaults: { _controller: CoreBundle:ProfilePage:profilePage, username: null }
     options:
         expose: true

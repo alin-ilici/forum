@@ -1,0 +1,135 @@
+{% extends "CoreBundle::layout.html.twig" %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/core/css/profilePage.css') }}" />
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/core/js/ba-emotify.js') }}"></script>
+    <script src="{{ asset('bundles/core/js/profilePage.js') }}"></script>
+    <script src="{{ asset('bundles/core/js/emoticons.js') }}"></script>
+{% endblock %}
+
+{% block mainBody %}
+
+    <div class="whereAmI">{{ whereAmI | raw }}</div>
+
+    <div id="mainBody">
+        <div id="actualUsername">
+            {{ user.username }}
+        </div>
+
+        <div id="middleMainBody">
+            {% if user.avatar is not null %}
+                <img src="{{ asset('bundles/core/users_avatars/' ~ user.avatar) }}" class="userAvatarImage" alt="User avatar image"/>
+            {% else %}
+                <img src="{{ asset('bundles/core/images/no-profile-img.gif') }}" class="userAvatarImage" alt="User avatar image"/>
+            {% endif %}
+
+            <div id="topUserInfo" class="rightPosition">
+                <span id="userInfoUsername">{{ user.username }}</span>
+                <br/>
+                Member since: {{ user.dateCreated | date('d M Y') }}
+            </div>
+            <br/>
+
+            <!-- Nav tabs -->
+            <ul class="nav nav-pills nav-stacked" role="tablist">
+                <li role="presentation" class="active">
+                    <a href="#general" aria-controls="general" role="tab" data-toggle="tab">General</a>
+                </li>
+                <li role="presentation">
+                    <a href="#topics" aria-controls="topics" role="tab" data-toggle="tab">Topics</a>
+                </li>
+                <li role="presentation">
+                    <a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Messages</a>
+                </li>
+                {% if user.username == app.user.username %}
+                    <li role="presentation">
+                        <a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a>
+                    </li>
+                {% endif %}
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="general">
+                    Rank:
+                    {% if user.roles[0] == 'ROLE_USER' %}
+                        User
+                    {% elseif user.roles[0] == 'ROLE_MODERATOR' %}
+                        Moderator
+                    {% elseif user.roles[0] == 'ROLE_ADMINISTRATOR' %}
+                        Administrator
+                    {% endif %}
+                    <br/>
+                    Topics: {{ user.topics | length }}
+                    <br/>
+                    Messages: {{ user.messages | length }}
+                    {% if user.username != app.user.username %}
+                        <br/>
+                        <br/>
+                        <button type="button" id="sendMeAPrivateMessage" class="btn btn-success btn-sm" value="{{ user.username }}">Send me a private message</button>
+                    {% endif %}
+                </div>
+
+                <div role="tabpanel" class="tab-pane" id="topics">
+                    <div id="topicsByThisUser">
+                        {% for data in topicsWithFirstMessage %}
+                            <div class="topicNameByUser">
+                                <a href="{{ path('forum_core_topic_topic', { 'topicSlug': data.topic.slug }) }}">
+                                    {{ data.topic.name }}
+                                </a>
+                            </div>
+                            <div class="firstMessageNameFromTopicByUser">
+                                {{ data.topic.dateCreated | date('d M Y - H:i') }}
+                                <br/>
+                                <br/>
+                                {{ data.message.name }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div role="tabpanel" class="tab-pane" id="messages">
+                    <div id="messagesByThisUser">
+                        {% for message in user.messages %}
+                            <div class="topicNameByUser">
+                                In topic:
+                                <a href="{{ path('forum_core_topic_topic', { 'topicSlug': message.topic.slug }) }}#{{ message.id }}">
+                                    {{ message.topic.name }}
+                                </a>
+                            </div>
+                            <div class="messagesFromTopicByUser">
+                                {{ message.dateCreated | date('d M Y - H:i') }}
+                                <br/>
+                                <br/>
+                                <script>
+                                    var text = $('<div/>').html("{{ message.name }}").text();
+                                    document.write(emotify_message(text));
+                                </script>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div role="tabpanel" class="tab-pane" id="settings">
+                    <button type="button" id="removeAvatar" class="btn btn-danger btn-sm" value="{{ user.username }}">Remove avatar</button>
+                    <br/>
+                    <br/>
+                    <button type="button" id="changeAvatar" class="btn btn-success btn-sm" value="{{ user.username }}">Change avatar</button>
+                    <br/>
+                    <br/>
+                    <button type="button" id="changePassword" class="btn btn-warning btn-sm" value="{{ user.username }}">Change password</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br/>
+    <br/>
+    <div class="whereAmI">{{ whereAmI | raw }}</div>
+
+{% endblock %}
