@@ -10,10 +10,18 @@ use Symfony\Component\HttpFoundation\Request;
 
 class TopicController extends Controller
 {
-    public function topicAction($topicSlug)
+    public function topicAction($topicSlug, $page)
     {
+        $maxMessagesPerPage = $this->container->getParameter('maxMessagesPerPage');;
+        if ($page == null) {
+            $page = 1;
+        }
+
         /** @var \Forum\CoreBundle\Repository\TopicRepository $topicRepository */
         $topicRepository = $this->getDoctrine()->getRepository("CoreBundle:Topic");
+
+        /** @var \Forum\CoreBundle\Repository\MessageRepository $messageRepository */
+        $messageRepository = $this->getDoctrine()->getRepository("CoreBundle:Message");
 
         /** @var \Forum\CoreBundle\Entity\Topic $topic */
         $topic = null;
@@ -22,6 +30,24 @@ class TopicController extends Controller
                 'slug' => $topicSlug
             ));
         }
+
+        $countMessages = $messageRepository->createQueryBuilder('m')
+            ->select('COUNT(m.id)')
+            ->where('m.topic = :topic_id')
+            ->setParameter('topic_id', $topic->getId())
+            ->getQuery()
+            ->getSingleResult();
+
+        /** @var \Forum\CoreBundle\Entity\Message[] $messages */
+        $messages = null;
+
+        $messages = $messageRepository->createQueryBuilder('m')
+            ->where('m.topic = :topic_id')
+            ->setParameter('topic_id', $topic->getId())
+            ->setFirstResult(($page - 1) * $maxMessagesPerPage)
+            ->setMaxResults($maxMessagesPerPage)
+            ->getQuery()
+            ->getResult();
 
         /** @var \Forum\CoreBundle\Entity\Forum[] $forum */
         $forum = null;
@@ -48,7 +74,11 @@ class TopicController extends Controller
 
         return $this->render('CoreBundle:Topic:topic.html.twig', array(
             'topic' => $topic,
+            'messages' => $messages,
             'whereAmI' => $whereAmI,
+            'totalPages' => (int)((int)$countMessages[1] / $maxMessagesPerPage + 1),
+            'currentPage' => (int)$page,
+            'maxMessagesPerPage' => $maxMessagesPerPage,
             'forums' => $forums,
             'form' => $form->createView(),
         ));

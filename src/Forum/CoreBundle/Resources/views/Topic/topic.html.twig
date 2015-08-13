@@ -20,6 +20,28 @@
         <div class="categoryOrSubcategoryDescription">Started by {{ topic.user.username }}, {{ topic.dateCreated | date('d-M-Y H:i:s') }}</div>
     </div>
 
+    <nav class="pagePagination noSelect">
+        <ul class="pagination">
+            {% if currentPage == 1 %}
+                <li class="disabled"><span aria-label="Previous" aria-hidden="true">«</span></li>
+            {% else %}
+                <li><a href="{{ path('forum_core_topic_topic', { 'topicSlug': topic.slug, 'page': 1 }) }}" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
+            {% endif %}
+            {% for page in 1..totalPages %}
+                {% if currentPage == page %}
+                    <li class="active"><a href="{{ path('forum_core_topic_topic', { 'topicSlug': topic.slug, 'page': page }) }}">{{ page }} <span class="sr-only">(current)</span></a></li>
+                {% else %}
+                    <li><a href="{{ path('forum_core_topic_topic', { 'topicSlug': topic.slug, 'page': page }) }}">{{ page }}</a></li>
+                {% endif %}
+            {% endfor %}
+            {% if currentPage == totalPages %}
+                <li class="disabled"><span aria-label="Next" aria-hidden="true">»</span></li>
+            {% else %}
+                <li><a href="{{ path('forum_core_topic_topic', { 'topicSlug': topic.slug, 'page': totalPages }) }}" aria-label="Next"><span aria-hidden="true">»</span></a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
     {% for type, messages in app.session.flashbag.all() %}
         {% if type == 'success' %}
             {% set flashbagClass = 'alert alert-success alert-dismissible flashbag' %}
@@ -41,8 +63,8 @@
             {{ topic.messages | length }} replies to this topic
         </caption>
 
-        {% set messageNumber = 1 %}
-        {% for message in topic.messages %}
+        {% set messageNumber = maxMessagesPerPage * (currentPage - 1)  + 1%}
+        {% for message in messages %}
             <tr>
                 <td colspan="2">
                     <div id="{{ message.id }}" class="messageMarginTop"></div>
@@ -95,8 +117,12 @@
                 </td>
                 <td class="messageContent">
                     <script>
+                        if (Object.getOwnPropertyNames(emotify.emoticons()).length === 0) {
+                            emotify.emoticons('/bundles/core/emoticons/', smilies);
+                        }
+
                         var text = $('<div/>').html("{{ message.name }}").text();
-                        document.write(emotify_message(text));
+                        document.write(emotify(text));
                     </script>
                 </td>
             </tr>
@@ -178,6 +204,7 @@
                     <div id="emoticonsZone"></div>
                 </div>
                 {{ form_start(form) }}
+                {#<div id="messageNameEditableDiv" class="form-control makeSpaceBottom" required="required" contenteditable="true"></div>#}
                 {{ form_widget(form.name) }}
                 {{ form_row(form.save) }}
                 <button type="button" id="cancelEditMessage" class="btn btn-primary btn-sm rightPosition makeSpaceBottom makeSpace noDisplay">
@@ -187,8 +214,28 @@
             </div>
         </div>
     {% endif %}
-    <br/>
-    <br/>
+
+    <nav class="pagePagination noSelect">
+        <ul class="pagination">
+            {% if currentPage == 1 %}
+                <li class="disabled"><span aria-label="Previous" aria-hidden="true">«</span></li>
+            {% else %}
+                <li><a href="{{ path('forum_core_topic_topic', { 'topicSlug': topic.slug, 'page': 1 }) }}" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
+            {% endif %}
+            {% for page in 1..totalPages %}
+                {% if currentPage == page %}
+                    <li class="active"><a href="{{ path('forum_core_topic_topic', { 'topicSlug': topic.slug, 'page': page }) }}">{{ page }} <span class="sr-only">(current)</span></a></li>
+                {% else %}
+                    <li><a href="{{ path('forum_core_topic_topic', { 'topicSlug': topic.slug, 'page': page }) }}">{{ page }}</a></li>
+                {% endif %}
+            {% endfor %}
+            {% if currentPage == totalPages %}
+                <li class="disabled"><span aria-label="Next" aria-hidden="true">»</span></li>
+            {% else %}
+                <li><a href="{{ path('forum_core_topic_topic', { 'topicSlug': topic.slug, 'page': totalPages }) }}" aria-label="Next"><span aria-hidden="true">»</span></a></li>
+            {% endif %}
+        </ul>
+    </nav>
 
     <div class="whereAmI">{{ whereAmI | raw }}</div>
 

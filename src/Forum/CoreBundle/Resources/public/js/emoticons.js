@@ -99,14 +99,12 @@ var smilies = {
     "[..]":  [ "transformer.gif", "transformer"                                 ]
 };
 
-function emotify_message(message) {
-    // Add the smilies, setting the appropirate base_url.
-    emotify.emoticons( '../../../../../bundles/core/emoticons/', smilies );
-
-    return emotify(message);
-}
-
 $(document).ready(function($) {
+    // Add the smilies, setting the appropirate base_url.
+    if (Object.getOwnPropertyNames(emotify.emoticons()).length === 0) {
+        emotify.emoticons('/bundles/core/emoticons/', smilies);
+    }
+
     var html = '';
 
     // Generate "emoticons key" table for this example.

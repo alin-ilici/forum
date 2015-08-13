@@ -152,3 +152,20 @@
 #emoticonsZone img {
     margin: 5px;
 }
+
+.pageNameAndDescription {
+    margin-bottom: 0px;
+}
+
+.pagePagination {
+    margin-left: 15px;
+}
+
+/*#message_name {*/
+    /*display: none;*/
+/*}*/
+
+/*#messageNameEditableDiv {*/
+    /*height: 150px;*/
+    /*background-color: white;*/
+/*}*/

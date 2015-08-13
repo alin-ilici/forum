@@ -63,6 +63,35 @@ $(document).ready(function($) {
         backToTopAnchor[0].click();
     });
 
+//    function placeCaretAtEnd(el) {
+//        el.focus();
+//        if (typeof window.getSelection != "undefined"
+//            && typeof document.createRange != "undefined") {
+//            var range = document.createRange();
+//            range.selectNodeContents(el);
+//            range.collapse(false);
+//            var sel = window.getSelection();
+//            sel.removeAllRanges();
+//            sel.addRange(range);
+//        } else if (typeof document.body.createTextRange != "undefined") {
+//            var textRange = document.body.createTextRange();
+//            textRange.moveToElementText(el);
+//            textRange.collapse(false);
+//            textRange.select();
+//        }
+//    }
+//
+//    $('#messageNameEditableDiv').on('keyup', function(e) {
+////        if (e.keyCode == 32) {
+////        }
+////        setTimeout(function() {
+//            var emotifiedMessage = emotify($('#messageNameEditableDiv').html());
+//            $(this).html(emotifiedMessage);
+//            placeCaretAtEnd(document.getElementById("messageNameEditableDiv"));
+////        }, 1000);
+//        console.log($(this).html());
+//    });
+
     // page buttons functionality
     $('.deleteMessage').on('click', function () {
         $.ajax({

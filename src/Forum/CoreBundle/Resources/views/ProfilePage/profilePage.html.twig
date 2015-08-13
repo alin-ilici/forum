@@ -107,8 +107,12 @@
                                 <br/>
                                 <br/>
                                 <script>
+                                    if (Object.getOwnPropertyNames(emotify.emoticons()).length === 0) {
+                                        emotify.emoticons('/bundles/core/emoticons/', smilies);
+                                    }
+
                                     var text = $('<div/>').html("{{ message.name }}").text();
-                                    document.write(emotify_message(text));
+                                    document.write(emotify(text));
                                 </script>
                             </div>
                         {% endfor %}
