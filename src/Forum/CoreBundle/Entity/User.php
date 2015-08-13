@@ -391,8 +391,15 @@ class User extends Timestampable implements UserInterface, \Serializable
         return 'bundles/core/users_avatars';
     }
 
-    public function uploadAvatar()
+    public function uploadAvatar($oldAvatarName = null)
     {
+        if ($oldAvatarName != null) {
+            $filePath = $this->getUploadRootDir() . '/' . $oldAvatarName;
+            if (file_exists($filePath)) {
+                unlink($filePath);
+            }
+        }
+
         // the file property can be empty if the field is not required
         if (null === $this->getAvatar()) {
             return;

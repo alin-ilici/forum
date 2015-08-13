@@ -28,18 +28,6 @@
     display: none;
 }
 
-.required:after {
-    color: red;
-    content: ' *';
-    display: inline;
-}
-
-#requiredInfo {
-    text-align: center;
-    color: #CC0000;
-    font-weight: bold;
-}
-
 #avatarPreview {
     display: none;
     text-align: center;

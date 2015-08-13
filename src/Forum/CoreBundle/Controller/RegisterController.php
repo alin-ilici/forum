@@ -62,6 +62,7 @@ class RegisterController extends Controller
     public function checkForAction(Request $request) {
         $what = $request->request->get('what', null);
         $whatValue = $request->request->get('whatValue', null);
+        $username = $request->request->get('username', null);
 
         $em = $this->getDoctrine()->getManager();
 
@@ -73,6 +74,23 @@ class RegisterController extends Controller
             ->setParameter('user',"%$whatValue%")
             ->getQuery()
             ->getResult();*/
+
+        if ($username != null) {
+            /** @var \Forum\CoreBundle\Entity\User $user */
+            $user = $userRepository->findOneBy(array(
+                'username' => $username
+            ));
+
+            if (!$user instanceof User) {
+                throw new \Exception('User not found in database!');
+            }
+
+            if ($user->getPassword() == $whatValue) {
+                return new JsonResponse('success');
+            } else {
+                return new JsonResponse('fail');
+            }
+        }
 
         $result = $userRepository->findBy(array(
             $what => $whatValue

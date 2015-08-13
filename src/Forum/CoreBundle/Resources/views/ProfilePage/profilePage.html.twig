@@ -128,6 +128,99 @@
         </div>
     </div>
 
+    <!-- Remove avatar modal -->
+    <div class="modal fade" id="removeAvatarModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Remove avatar</h4>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to remove your avatar?
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="yesRemoveAvatarButton" class="btn btn-default btn-danger">Yes</button>
+                    <button type="button" class="btn btn-default btn-success" data-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Change avatar modal -->
+    <form action="{{ path('forum_core_profile_page_change_or_remove_avatar', { 'username': user.username }) }}" method="post" enctype="multipart/form-data" id="changeAvatarFormToSubmit">
+        <div class="modal fade" id="changeAvatarModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Change avatar</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div id="currentAvatar" class="leftPosition">
+                            Current avatar:
+                            <br/>
+                            {% if user.avatar is not null %}
+                                <img src="{{ asset('bundles/core/users_avatars/' ~ user.avatar) }}" class="currentOrNewUserAvatarImage" alt="User avatar image"/>
+                            {% else %}
+                                <img src="{{ asset('bundles/core/images/no-profile-img.gif') }}" class="currentOrNewUserAvatarImage" alt="User avatar image"/>
+                            {% endif %}
+                        </div>
+
+                        <div id="newAvatar" class="rightPosition"></div>
+
+                        <div id="errorMessages" class="alert alert-danger noDisplay" role="alert"></div>
+
+                        <input type="file" id="avatar" name="avatar" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" id="submitChangeAvatarForm" class="btn btn-default disabled">Change avatar</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <!-- Change password modal -->
+    <form action="{{ path('forum_core_profile_page_change_password', { 'username': user.username }) }}" method="post" enctype="multipart/form-data" id="changePasswordFormToSubmit">
+        <div class="modal fade" id="changePasswordModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Change password</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="requiredInfo">
+                            * Required information
+                        </div>
+                        <br/>
+
+                        <div class="form-group">
+                            <label for="userOldPassword" class="required">Old password</label>
+                            <input type="password" id="userOldPassword" required="required" class="form-control" autocomplete="off" aria-describedby="inputOldPass">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="userNewPassword" class="required">New password</label>
+                            <input type="password" id="userNewPassword" name="newPassword" required="required" class="form-control" autocomplete="off" aria-describedby="inputNewPass">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="userNewPasswordVerification" class="required">Retype new password</label>
+                            <input type="password" id="userNewPasswordVerification" required="required" class="form-control" autocomplete="off" aria-describedby="inputNewPassVerStatus">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" id="submitChangePassword" class="btn btn-default disabled">Change password</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
     <br/>
     <br/>
     <div class="whereAmI">{{ whereAmI | raw }}</div>

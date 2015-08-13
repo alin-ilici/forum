@@ -3,9 +3,14 @@
 namespace Forum\CoreBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 class ProfilePageController extends Controller
 {
+    protected $whereAmI;
+    protected $topicsWithFirstMessage;
+
     public function profilePageAction($username)
     {
         /** @var \Forum\CoreBundle\Repository\UserRepository $userRepository */
@@ -30,7 +35,7 @@ class ProfilePageController extends Controller
         /** @var \Forum\CoreBundle\Entity\Message $message */
         $message = null;
 
-        $topicsWithFirstMessage = array();
+        $this->topicsWithFirstMessage = array();
 
         foreach ($topics as $topic) {
             $data = array();
@@ -45,17 +50,67 @@ class ProfilePageController extends Controller
             $topicsWithFirstMessage[] = $data;
         }
 
-//        echo "<pre>";
-//        \Doctrine\Common\Util\Debug::dump($topicsWithFirstMessage, 3);
-//        echo "</pre>";
-//        die;
-
-        $whereAmI = '<a href="' . $this->generateUrl('forum_core_default_homepage') . '">Forum</a> > Viewing Profile: ' . $user->getUsername();
+        $this->whereAmI = '<a href="' . $this->generateUrl('forum_core_default_homepage') . '">Forum</a> > Viewing Profile: ' . $user->getUsername();
 
         return $this->render('CoreBundle:ProfilePage:profilePage.html.twig', array(
             'user' => $user,
-            'whereAmI' => $whereAmI,
-            'topicsWithFirstMessage' => $topicsWithFirstMessage
+            'whereAmI' => $this->whereAmI,
+            'topicsWithFirstMessage' => $this->topicsWithFirstMessage
+        ));
+    }
+
+    public function changeOrRemoveAvatarAction(Request $request, $username)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        /** @var \Forum\CoreBundle\Repository\UserRepository $userRepository */
+        $userRepository = $this->getDoctrine()->getRepository("CoreBundle:User");
+
+        /** @var \Forum\CoreBundle\Entity\User $user */
+        $user = $userRepository->findOneBy(array(
+            'username' => $username
+        ));
+
+        $oldAvatarName = $user->getAvatar();
+
+        $user->setAvatar($request->files->get('avatar'));
+        $user->uploadAvatar($oldAvatarName);
+
+        $em->persist($user);
+        $em->flush();
+
+        if ($request->files->get('avatar') == null) {
+            return new JsonResponse('success');
+        }
+
+        return $this->render('CoreBundle:ProfilePage:profilePage.html.twig', array(
+            'user' => $user,
+            'whereAmI' => $this->whereAmI,
+            'topicsWithFirstMessage' => $this->topicsWithFirstMessage
+        ));
+    }
+
+    public function changePasswordAction(Request $request, $username)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        /** @var \Forum\CoreBundle\Repository\UserRepository $userRepository */
+        $userRepository = $this->getDoctrine()->getRepository("CoreBundle:User");
+
+        /** @var \Forum\CoreBundle\Entity\User $user */
+        $user = $userRepository->findOneBy(array(
+            'username' => $username
+        ));
+
+        $user->setPassword($request->request->get('newPassword'));
+
+        $em->persist($user);
+        $em->flush();
+
+        return $this->render('CoreBundle:ProfilePage:profilePage.html.twig', array(
+            'user' => $user,
+            'whereAmI' => $this->whereAmI,
+            'topicsWithFirstMessage' => $this->topicsWithFirstMessage
         ));
     }
 }

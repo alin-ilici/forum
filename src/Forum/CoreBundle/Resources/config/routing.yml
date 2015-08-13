@@ -80,3 +80,13 @@ forum_core_profile_page_profile_page:
     defaults: { _controller: CoreBundle:ProfilePage:profilePage, username: null }
     options:
         expose: true
+
+forum_core_profile_page_change_or_remove_avatar:
+    path: /changeAvatar/{username}
+    defaults: { _controller: CoreBundle:ProfilePage:changeOrRemoveAvatar, username: null }
+    options:
+        expose: true
+
+forum_core_profile_page_change_password:
+    path: /changePassword/{username}
+    defaults: { _controller: CoreBundle:ProfilePage:changePassword, username: null }

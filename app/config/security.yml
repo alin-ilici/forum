@@ -38,9 +38,9 @@ security:
                 success_handler: forum.security.authentication_handler
                 failure_handler: forum.security.authentication_handler
             logout:
-                success_handler: forum.security.logout_success_handler
-#                path: /logout
-#                target: /
+#                success_handler: forum.security.logout_success_handler
+                path: /logout
+                target: /
             provider: our_db_provider
             remember_me:
                 key: %secret%

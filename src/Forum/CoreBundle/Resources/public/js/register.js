@@ -80,6 +80,25 @@ $(document).ready(function($) {
                 $('#inputRetypePasswordVerMessage').remove();
                 activateRegisterButtonIfPossible();
             }
+        } else if (($('#userPasswordVerification').val() == '' && $('#user_password').val() != '') ||
+            ($('#userPasswordVerification').val() == '' && $('#user_password').val() == '')) {
+            parent.removeClass();
+            parent.addClass('form-group');
+            parent.find('span').remove();
+            $('#inputRetypePasswordVerMessage').remove();
+            $('#user_save').addClass('disabled');
+        } else if ($('#userPasswordVerification').val() != '' &&
+            $('#user_password').val() == '') {
+            parent.removeClass();
+            parent.addClass("form-group has-error has-feedback");
+            parent.find('span').remove();
+            parent.append(
+                '<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>' +
+                '<span id="inputPassVerStatus" class="sr-only">(error)</span>'
+            );
+            $('#inputRetypePasswordVerMessage').remove();
+            parent.after('<div id="inputRetypePasswordVerMessage" class="alert alert-danger" role="alert">The passwords do not match!</div>');
+            $('#user_save').addClass('disabled');
         }
     });
 
