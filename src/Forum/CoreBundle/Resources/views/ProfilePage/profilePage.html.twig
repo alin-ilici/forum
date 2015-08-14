@@ -95,15 +95,15 @@
 
                 <div role="tabpanel" class="tab-pane" id="messages">
                     <div id="messagesByThisUser">
-                        {% for message in user.messages %}
+                        {% for message in messages %}
                             <div class="topicNameByUser">
                                 In topic:
-                                <a href="{{ path('forum_core_topic_topic', { 'topicSlug': message.topic.slug }) }}#{{ message.id }}">
-                                    {{ message.topic.name }}
+                                <a href="{{ path('forum_core_topic_topic', { 'topicSlug': message['message'].topic.slug, 'page': message['page'] }) }}#{{ message['message'].id }}">
+                                    {{ message['message'].topic.name }}
                                 </a>
                             </div>
                             <div class="messagesFromTopicByUser">
-                                {{ message.dateCreated | date('d M Y - H:i') }}
+                                {{ message['message'].dateCreated | date('d M Y - H:i') }}
                                 <br/>
                                 <br/>
                                 <script>
@@ -111,7 +111,7 @@
                                         emotify.emoticons('/bundles/core/emoticons/', smilies);
                                     }
 
-                                    var text = $('<div/>').html("{{ message.name }}").text();
+                                    var text = $('<div/>').html("{{ message['message'].name }}").text();
                                     document.write(emotify(text));
                                 </script>
                             </div>

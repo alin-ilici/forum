@@ -12,7 +12,7 @@ class TopicController extends Controller
 {
     public function topicAction($topicSlug, $page)
     {
-        $maxMessagesPerPage = $this->container->getParameter('maxMessagesPerPage');;
+        $maxMessagesPerPage = $this->container->getParameter('maxMessagesPerPage');
         if ($page == null) {
             $page = 1;
         }
@@ -33,8 +33,8 @@ class TopicController extends Controller
 
         $countMessages = $messageRepository->createQueryBuilder('m')
             ->select('COUNT(m.id)')
-            ->where('m.topic = :topic_id')
-            ->setParameter('topic_id', $topic->getId())
+            ->where('m.topic = :id_topic')
+            ->setParameter('id_topic', $topic->getId())
             ->getQuery()
             ->getSingleResult();
 
@@ -42,8 +42,8 @@ class TopicController extends Controller
         $messages = null;
 
         $messages = $messageRepository->createQueryBuilder('m')
-            ->where('m.topic = :topic_id')
-            ->setParameter('topic_id', $topic->getId())
+            ->where('m.topic = :id_topic')
+            ->setParameter('id_topic', $topic->getId())
             ->setFirstResult(($page - 1) * $maxMessagesPerPage)
             ->setMaxResults($maxMessagesPerPage)
             ->getQuery()
@@ -72,11 +72,14 @@ class TopicController extends Controller
         $whereAmI .= ' > ' . '<a href="' . $this->generateUrl('forum_core_category_category', array('categorySlug' => $topic->getSubcategory()->getCategory()->getSlug())) . '">' . $topic->getSubcategory()->getCategory()->getName() . '</a>';
         $whereAmI .= ' > ' . '<a href="' . $this->generateUrl('forum_core_subcategory_subcategory', array('subcategorySlug' => $topic->getSubcategory()->getSlug())) . '">' . $topic->getSubcategory()->getName() . '</a>';
 
+        $totalPages = ((int)$countMessages[1] % $maxMessagesPerPage == 0) ?
+            (int)((int)$countMessages[1] / $maxMessagesPerPage) : (int)((int)$countMessages[1] / $maxMessagesPerPage + 1);
+
         return $this->render('CoreBundle:Topic:topic.html.twig', array(
             'topic' => $topic,
             'messages' => $messages,
             'whereAmI' => $whereAmI,
-            'totalPages' => (int)((int)$countMessages[1] / $maxMessagesPerPage + 1),
+            'totalPages' => $totalPages,
             'currentPage' => (int)$page,
             'maxMessagesPerPage' => $maxMessagesPerPage,
             'forums' => $forums,

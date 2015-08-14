@@ -10,9 +10,15 @@ class ProfilePageController extends Controller
 {
     protected $whereAmI;
     protected $topicsWithFirstMessage;
+    protected $messages;
 
     public function profilePageAction($username)
     {
+        $maxMessagesPerPage = $this->container->getParameter('maxMessagesPerPage');
+
+        /** @var \Doctrine\ORM\EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+
         /** @var \Forum\CoreBundle\Repository\UserRepository $userRepository */
         $userRepository = $this->getDoctrine()->getRepository("CoreBundle:User");
 
@@ -47,7 +53,43 @@ class ProfilePageController extends Controller
             ));
 
             $data['message'] = $message;
-            $topicsWithFirstMessage[] = $data;
+            $this->topicsWithFirstMessage[] = $data;
+        }
+
+        /** @var \Forum\CoreBundle\Entity\Message[] $userMessages */
+        /*$userMessages = $messageRepository->findBy(array(
+            'user' => $user->getId()
+        ));*/
+        $userMessages = $messageRepository->createQueryBuilder('m')
+            ->where('m.user = :id')
+            ->setParameter('id', $user->getId())
+            ->getQuery()
+            ->getResult();
+
+        $this->messages = array();
+
+        foreach ($userMessages as $userMessage) {
+            $query = 'SELECT m.id, @Rank:= @Rank + 1 AS rank
+                FROM message m
+                JOIN (SELECT @Rank:= 0) r
+                WHERE m.id_topic = ' . $userMessage->getTopic()->getId() . '
+                ORDER BY m.date_created ASC';
+
+            $stmt = $em->getConnection()->prepare($query);
+            $stmt->execute();
+            $results = $stmt->fetchAll();
+
+            $data = array();
+            foreach ($results as $result) {
+                $data[$result['id']] = $result['rank'];
+            }
+
+            $page = ((int)$data[$userMessage->getId()] % $maxMessagesPerPage == 0) ?
+                (int)((int)$data[$userMessage->getId()] / $maxMessagesPerPage) : (int)((int)$data[$userMessage->getId()] / $maxMessagesPerPage + 1);
+
+            $this->messages[$userMessage->getId()]['message'] = $userMessage;
+            $this->messages[$userMessage->getId()]['page'] = $page;
+
         }
 
         $this->whereAmI = '<a href="' . $this->generateUrl('forum_core_default_homepage') . '">Forum</a> > Viewing Profile: ' . $user->getUsername();
@@ -55,7 +97,8 @@ class ProfilePageController extends Controller
         return $this->render('CoreBundle:ProfilePage:profilePage.html.twig', array(
             'user' => $user,
             'whereAmI' => $this->whereAmI,
-            'topicsWithFirstMessage' => $this->topicsWithFirstMessage
+            'topicsWithFirstMessage' => $this->topicsWithFirstMessage,
+            'messages' => $this->messages
         ));
     }
 
@@ -86,7 +129,8 @@ class ProfilePageController extends Controller
         return $this->render('CoreBundle:ProfilePage:profilePage.html.twig', array(
             'user' => $user,
             'whereAmI' => $this->whereAmI,
-            'topicsWithFirstMessage' => $this->topicsWithFirstMessage
+            'topicsWithFirstMessage' => $this->topicsWithFirstMessage,
+            'messages' => $this->messages
         ));
     }
 
@@ -110,7 +154,8 @@ class ProfilePageController extends Controller
         return $this->render('CoreBundle:ProfilePage:profilePage.html.twig', array(
             'user' => $user,
             'whereAmI' => $this->whereAmI,
-            'topicsWithFirstMessage' => $this->topicsWithFirstMessage
+            'topicsWithFirstMessage' => $this->topicsWithFirstMessage,
+            'messages' => $this->messages
         ));
     }
 }

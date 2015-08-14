@@ -15,6 +15,28 @@
         {% endif %}
     </div>
 
+    <nav class="pagePagination noSelect">
+        <ul class="pagination">
+            {% if currentPage == 1 %}
+                <li class="disabled"><span aria-label="Previous" aria-hidden="true">«</span></li>
+            {% else %}
+                <li><a href="{{ path('forum_core_subcategory_subcategory', { 'subcategorySlug': subcategory.slug, 'page': 1 }) }}" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
+            {% endif %}
+            {% for page in 1..totalPages %}
+                {% if currentPage == page %}
+                    <li class="active"><a href="{{ path('forum_core_subcategory_subcategory', { 'subcategorySlug': subcategory.slug, 'page': page }) }}">{{ page }} <span class="sr-only">(current)</span></a></li>
+                {% else %}
+                    <li><a href="{{ path('forum_core_subcategory_subcategory', { 'subcategorySlug': subcategory.slug, 'page': page }) }}">{{ page }}</a></li>
+                {% endif %}
+            {% endfor %}
+            {% if currentPage == totalPages %}
+                <li class="disabled"><span aria-label="Next" aria-hidden="true">»</span></li>
+            {% else %}
+                <li><a href="{{ path('forum_core_subcategory_subcategory', { 'subcategorySlug': subcategory.slug, 'page': totalPages }) }}" aria-label="Next"><span aria-hidden="true">»</span></a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
     <table id="subcategoryPageTable">
         <caption>
             <div>
@@ -48,8 +70,28 @@
             </tr>
         {% endfor %}
     </table>
-    <br/>
-    <br/>
+
+    <nav class="pagePagination noSelect">
+        <ul class="pagination">
+            {% if currentPage == 1 %}
+                <li class="disabled"><span aria-label="Previous" aria-hidden="true">«</span></li>
+            {% else %}
+                <li><a href="{{ path('forum_core_subcategory_subcategory', { 'subcategorySlug': subcategory.slug, 'page': 1 }) }}" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
+            {% endif %}
+            {% for page in 1..totalPages %}
+                {% if currentPage == page %}
+                    <li class="active"><a href="{{ path('forum_core_subcategory_subcategory', { 'subcategorySlug': subcategory.slug, 'page': page }) }}">{{ page }} <span class="sr-only">(current)</span></a></li>
+                {% else %}
+                    <li><a href="{{ path('forum_core_subcategory_subcategory', { 'subcategorySlug': subcategory.slug, 'page': page }) }}">{{ page }}</a></li>
+                {% endif %}
+            {% endfor %}
+            {% if currentPage == totalPages %}
+                <li class="disabled"><span aria-label="Next" aria-hidden="true">»</span></li>
+            {% else %}
+                <li><a href="{{ path('forum_core_subcategory_subcategory', { 'subcategorySlug': subcategory.slug, 'page': totalPages }) }}" aria-label="Next"><span aria-hidden="true">»</span></a></li>
+            {% endif %}
+        </ul>
+    </nav>
 
     <div class="whereAmI">{{ whereAmI | raw }}</div>
 {% endblock %}

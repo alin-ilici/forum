@@ -13,4 +13,5 @@ parameters:
     locale: en
     secret: ##secret##
 
-    maxMessagesPerPage: 5
+    maxMessagesPerPage: 15
+    maxTopicsPerPage: 10

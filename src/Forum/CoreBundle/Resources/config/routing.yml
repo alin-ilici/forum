@@ -32,8 +32,8 @@ forum_core_category_category:
     defaults: { _controller: CoreBundle:Category:category, categorySlug: null }
 
 forum_core_subcategory_subcategory:
-    path: /subcategory/{subcategorySlug}
-    defaults: { _controller: CoreBundle:Subcategory:subcategory, subcategorySlug: null }
+    path: /subcategory/{subcategorySlug}/{page}
+    defaults: { _controller: CoreBundle:Subcategory:subcategory, subcategorySlug: null, page: null }
 
 forum_core_topic_topic:
     path: /topic/{topicSlug}/{page}

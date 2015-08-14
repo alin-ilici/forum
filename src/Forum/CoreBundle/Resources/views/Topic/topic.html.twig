@@ -113,7 +113,13 @@
                         <br/>
                         <br/>
                     {% endif %}
-                    Posts: {{ message.user.messages | length }}
+                    <div class="replierInfo">
+                        Posts: {{ message.user.messages | length }}
+                        <br/>
+                        Joined: {{ message.user.dateCreated | date('d.m.Y') }}
+                        <br/>
+                        Member ID: {{ message.user.id }}
+                    </div>
                 </td>
                 <td class="messageContent">
                     <script>
