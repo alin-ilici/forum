@@ -16,6 +16,7 @@
     <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
 
     <script src="{{ asset('bundles/core/js/main.js') }}"></script>
+    <script src="{{ asset('bundles/core/js/notification.js') }}"></script>
 {% endblock %}
 
 {% block body %}
@@ -30,10 +31,20 @@
                     {% endif %}
                     {% if app.user %}
                         <span class="makeSpace">
-                            <a href="{{ path('forum_core_profile_page_profile_page', {'username': app.user.username }) }}">
+                            <a href="{{ path('forum_core_profile_page_profile_page', {'username': app.user.username }) }}" id="userId" data-value="{{ app.user.id }}">
                                 {{ app.user.username }}
                             </a>
                         </span>
+                        <div class="dropdown displayInLine" id="notificationDropdown">
+                            <img src="{{ asset('bundles/core/images/ios7-bell.svg') }}" alt="No notifications" id="noNotificationIcon" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"/>
+                            <img src="{{ asset('bundles/core/images/icontexto-message-types-alert-red.png') }}" alt="New notifications" id="newNotificationIcon"/>
+                            <ul class="dropdown-menu" aria-labelledby="noNotificationIcon">
+                                <li>
+                                    <a href="#" id="noNewNotification">No new notification!</a>
+                                </li>
+                            </ul>
+                        </div>
+
                         <button id="logOutButton" type="button" class="btn btn-primary btn-sm makeSpace">
                             Log Out
                         </button>

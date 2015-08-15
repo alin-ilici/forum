@@ -19,6 +19,9 @@ class CoreBundle extends Bundle
 
             Type::addType('userRolesSetType', 'Forum\CoreBundle\DBAL\UserRolesSetType');
             $em->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('userRolesSetType','userRolesSetType');
+
+            Type::addType('notificationTypeEnumType', 'Forum\CoreBundle\DBAL\NotificationTypeEnumType');
+            $em->getConnection()->getDatabasePlatform()->registerDoctrineTypeMapping('notificationTypeEnumType','notificationTypeEnumType');
         }
     }
 }

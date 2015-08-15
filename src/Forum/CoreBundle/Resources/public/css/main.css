@@ -52,6 +52,29 @@ body {
     margin-left: 5px;
 }
 
+#noNotificationIcon {
+    widht: 32px;
+    height: 32px;
+}
+
+#noNotificationIcon:hover {
+    background-color: green;
+    cursor: pointer;
+}
+
+#newNotificationIcon {
+    display: none;
+    widht: 16px;
+    height: 16px;
+    position: relative;
+    left: -20px;
+    top: -7px;
+}
+
+.displayInLine {
+    display: inline-block;
+}
+
 .makeSpace {
     margin-left: 5px;
     margin-right: 5px;

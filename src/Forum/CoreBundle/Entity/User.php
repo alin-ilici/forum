@@ -100,6 +100,12 @@ class User extends Timestampable implements UserInterface, \Serializable
      */
     private $messages;
 
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Notification", mappedBy="forIdUser")
+     */
+    private $notifications;
 
     /**
      * Constructor
@@ -108,6 +114,7 @@ class User extends Timestampable implements UserInterface, \Serializable
     {
         $this->topics = new \Doctrine\Common\Collections\ArrayCollection();
         $this->messages = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->notifications = new \Doctrine\Common\Collections\ArrayCollection();
 
         $this->roles = self::ROLE_USER;
         $this->isActive = true;
@@ -350,6 +357,39 @@ class User extends Timestampable implements UserInterface, \Serializable
     public function getMessages()
     {
         return $this->messages;
+    }
+
+    /**
+     * Add notifications
+     *
+     * @param \Forum\CoreBundle\Entity\Notification $notifications
+     * @return User
+     */
+    public function addNotification(\Forum\CoreBundle\Entity\Notification $notifications)
+    {
+        $this->notifications[] = $notifications;
+
+        return $this;
+    }
+
+    /**
+     * Remove notifications
+     *
+     * @param \Forum\CoreBundle\Entity\Notification $notifications
+     */
+    public function removeNotification(\Forum\CoreBundle\Entity\Notification $notifications)
+    {
+        $this->notifications->removeElement($notifications);
+    }
+
+    /**
+     * Get notifications
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getNotifications()
+    {
+        return $this->notifications;
     }
 
     public function getSalt()

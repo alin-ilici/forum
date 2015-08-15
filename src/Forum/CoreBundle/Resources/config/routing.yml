@@ -90,3 +90,9 @@ forum_core_profile_page_change_or_remove_avatar:
 forum_core_profile_page_change_password:
     path: /changePassword/{username}
     defaults: { _controller: CoreBundle:ProfilePage:changePassword, username: null }
+
+forum_core_notification_check_for_new_notifications:
+    path: /checkForNewNotifications/{userId}
+    defaults: { _controller: CoreBundle:Notification:checkForNewNotifications, userId: null }
+    options:
+        expose: true
