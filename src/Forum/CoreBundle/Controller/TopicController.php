@@ -75,6 +75,8 @@ class TopicController extends Controller
         $totalPages = ((int)$countMessages[1] % $maxMessagesPerPage == 0) ?
             (int)((int)$countMessages[1] / $maxMessagesPerPage) : (int)((int)$countMessages[1] / $maxMessagesPerPage + 1);
 
+        $totalPages = ($countMessages[1] == 0) ? 1 : $totalPages;
+
         return $this->render('CoreBundle:Topic:topic.html.twig', array(
             'topic' => $topic,
             'messages' => $messages,

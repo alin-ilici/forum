@@ -30,6 +30,14 @@
     border-radius: 10px;
 }
 
+#sortBy a {
+    color: white;
+}
+
+#sortBy a:hover {
+    text-decoration: none;
+}
+
 .pageNameAndDescription {
     margin-bottom: 0px;
 }
