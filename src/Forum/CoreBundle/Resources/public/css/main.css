@@ -52,23 +52,14 @@ body {
     margin-left: 5px;
 }
 
-#noNotificationIcon {
+#notificationIcon {
     widht: 32px;
     height: 32px;
 }
 
-#noNotificationIcon:hover {
+#notificationIcon:hover {
     background-color: green;
     cursor: pointer;
-}
-
-#newNotificationIcon {
-    display: none;
-    widht: 16px;
-    height: 16px;
-    position: relative;
-    left: -20px;
-    top: -7px;
 }
 
 .displayInLine {

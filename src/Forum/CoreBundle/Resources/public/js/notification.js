@@ -1,7 +1,6 @@
 function addNotification(result) {
     $('#noNewNotification').hide();
-    $('#newNotificationIcon').show();
-    console.log($('#notificationDropdown .dropdown-menu').height());
+    $('#notificationIcon').attr('src', '/bundles/core/images/ios7-bell_best_new.png');
     if ($('#notificationDropdown .dropdown-menu').height() > 156) {
         $('#notificationDropdown .dropdown-menu').css('height', '191px');
         $('#notificationDropdown .dropdown-menu').css('overflow-y', 'scroll');
@@ -12,18 +11,20 @@ function addNotification(result) {
 }
 
 function poll() {
-    $.ajax({
-        type: "post",
-        url: Routing.generate('forum_core_notification_check_for_new_notifications', { 'userId': $('#userId').attr('data-value') }),
-//        url: "/bundles/core/php/checkForNewNotifications.php",
-        async: true,
-        data: { 'userId': $('#userId').attr('data-value') },
-        dataType: "json",
-        success: function(result) {
-            addNotification(result);
-            setTimeout(poll, 5000);
-        }
-    });
+    if ($('#userId').length > 0) {
+        $.ajax({
+            type: "post",
+            url: Routing.generate('forum_core_notification_check_for_new_notifications', { 'userId': $('#userId').attr('data-value') }),
+//            url: "/bundles/core/php/checkForNewNotifications.php",
+            async: true,
+            data: { 'userId': $('#userId').attr('data-value') },
+            dataType: "json",
+            success: function(result) {
+                addNotification(result);
+                setTimeout(poll, 5000);
+            }
+        });
+    }
 };
 
 $(document).ready(function(){
