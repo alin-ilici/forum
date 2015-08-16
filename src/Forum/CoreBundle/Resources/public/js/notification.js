@@ -30,3 +30,11 @@ function poll() {
 $(document).ready(function(){
 //    poll();
 });
+
+//var socket = io();
+//
+//socket.emit('chech_message', "aaa");
+//
+//socket.on('check_message', function(msg) {
+//    addNotification();
+//});
