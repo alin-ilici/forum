@@ -38,7 +38,7 @@ class Message extends Timestampable
     private $slug;
 
     /**
-     * @var Subcategory
+     * @var Topic
      *
      * @ORM\ManyToOne(targetEntity="Topic", inversedBy="messages")
      * @ORM\JoinColumn(name="id_topic", referencedColumnName="id", nullable=false)

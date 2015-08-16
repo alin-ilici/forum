@@ -9,7 +9,7 @@ class SubcategoryController extends Controller
     /**
      * By default, the topics are filtered by "Recently updated"
      */
-    public function subcategoryAction($subcategorySlug, $page)
+    public function subcategoryAction($subcategorySlug, $sortBy, $page)
     {
         $maxTopicsPerPage = $this->container->getParameter('maxTopicsPerPage');
         if ($page == null) {
@@ -38,14 +38,34 @@ class SubcategoryController extends Controller
             array('dateUpdated' => 'DESC')
         );*/
 
-        $topics = $topicRepository->createQueryBuilder('t')
+        $sql = $topicRepository->createQueryBuilder('t')
             ->where('t.subcategory = :id_subcategory')
             ->setParameter('id_subcategory', $subcategory->getId())
-            ->orderBy('t.dateUpdated', 'DESC')
             ->setFirstResult(($page - 1) * $maxTopicsPerPage)
-            ->setMaxResults($maxTopicsPerPage)
-            ->getQuery()
-            ->getResult();
+            ->setMaxResults($maxTopicsPerPage);
+
+        if ($sortBy == 'dateUpdated') {
+            $sql = $sql->orderBy('t.dateUpdated', 'DESC');
+        } elseif ($sortBy == 'dateCreated') {
+            $sql = $sql->orderBy('t.dateCreated', 'DESC');
+        } elseif ($sortBy == 'mostReplies') {
+            $sql = $sql->select('t', 'COUNT(m.id) AS numberOfMessages')
+                ->join('t.messages', 'm')
+                ->groupBy('t.id')
+                ->orderBy('numberOfMessages', 'DESC');
+        }
+
+        $topics = $sql->getQuery()->getResult();
+
+        if ($sortBy == 'mostReplies') {
+            $i = 0;
+            $data = array();
+            foreach ($topics as $topic) {
+                $data[$i] = $topic[0];
+                $i++;
+            }
+            $topics = $data;
+        }
 
         $lastMessage = null;
         foreach ($topics as $topic) {
@@ -69,6 +89,8 @@ class SubcategoryController extends Controller
         $totalPages = ((int)$countTopics[1] % $maxTopicsPerPage == 0) ?
             (int)((int)$countTopics[1] / $maxTopicsPerPage) : (int)((int)$countTopics[1] / $maxTopicsPerPage + 1);
 
+        $totalPages = ($countTopics[1] == 0) ? 1 : $totalPages;
+
         return $this->render('CoreBundle:Subcategory:subcategory.html.twig', array(
             'subcategory' => $subcategory,
             'topics' => $topics,
@@ -76,6 +98,7 @@ class SubcategoryController extends Controller
             'lastMessage' => $lastMessage,
             'totalPages' => $totalPages,
             'currentPage' => (int)$page,
+            'sortBy' => $sortBy
         ));
     }
 }

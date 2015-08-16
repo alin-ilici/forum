@@ -39,8 +39,36 @@
 
     <table id="subcategoryPageTable">
         <caption>
-            <div>
-                <span class="circleTopicFilter">Recently updated</span>
+            <div id="sortBy" class="noSelect">
+                {% if sortBy == 'dateUpdated' %}
+                    <span class="circleTopicFilter makeMoreSpaceRight">
+                        <a href="{{ path('forum_core_subcategory_subcategory', { 'subcategorySlug': subcategory.slug, 'sortBy': 'dateUpdated' }) }}">Recently updated</a>
+                    </span>
+                {% else %}
+                    <span class="makeMoreSpaceRight">
+                        <a href="{{ path('forum_core_subcategory_subcategory', { 'subcategorySlug': subcategory.slug, 'sortBy': 'dateUpdated' }) }}">Recently updated</a>
+                    </span>
+                {% endif %}
+
+                {% if sortBy == 'dateCreated' %}
+                    <span class="circleTopicFilter makeMoreSpaceRight">
+                        <a href="{{ path('forum_core_subcategory_subcategory', { 'subcategorySlug': subcategory.slug, 'sortBy': 'dateCreated' }) }}">Start date</a>
+                    </span>
+                {% else %}
+                    <span class="makeMoreSpaceRight">
+                        <a href="{{ path('forum_core_subcategory_subcategory', { 'subcategorySlug': subcategory.slug, 'sortBy': 'dateCreated' }) }}">Start date</a>
+                    </span>
+                {% endif %}
+
+                {% if sortBy == 'mostReplies' %}
+                    <span class="circleTopicFilter makeMoreSpaceRight">
+                        <a href="{{ path('forum_core_subcategory_subcategory', { 'subcategorySlug': subcategory.slug, 'sortBy': 'mostReplies' }) }}">Most replies</a>
+                    </span>
+                {% else %}
+                    <span class="makeMoreSpaceRight">
+                        <a href="{{ path('forum_core_subcategory_subcategory', { 'subcategorySlug': subcategory.slug, 'sortBy': 'mostReplies' }) }}">Most replies</a>
+                    </span>
+                {% endif %}
             </div>
         </caption>
 
