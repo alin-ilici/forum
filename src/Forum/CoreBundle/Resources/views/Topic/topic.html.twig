@@ -10,6 +10,8 @@
     <script src="{{ asset('bundles/core/js/ba-emotify.js') }}"></script>
     <script src="{{ asset('bundles/core/js/topic.js') }}"></script>
     <script src="{{ asset('bundles/core/js/emoticons.js') }}"></script>
+    <script src="{{ asset('bundles/core/js/replyOptions.js') }}"></script>
+
 {% endblock %}
 
 {% block mainBody %}
@@ -67,7 +69,13 @@
         {% for message in messages %}
             <tr>
                 <td colspan="2">
-                    <div id="{{ message.id }}" class="messageMarginTop"></div>
+                    <div id="{{ message.id }}" class="messageMarginTop">
+                        <div class="noDisplay">
+                            <span class="messageFromDb">{{ message.name }}</span>
+                            <span class="messageUsernameFromDb">{{ message.user.username }}</span>
+                            <span class="messageDateCreatedFromDb">{{ message.dateCreated | date('Y-m-d H:i:s') }}</span>
+                        </div>
+                    </div>
                 </td>
             </tr>
 
@@ -128,6 +136,7 @@
                         }
 
                         var text = $('<div/>').html("{{ message.name }}").text();
+                        text = parseMessage(text, 0);
                         document.write(emotify(text));
                     </script>
                 </td>

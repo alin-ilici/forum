@@ -110,15 +110,12 @@ $(document).ready(function($) {
 
     // edit
     $('.editMessage').on('click', function () {
-        var prevTr = $(this).parent().parent().parent().prev();
-        var message = prevTr.find('.messageContent').find('script');
-        var messageText = message.text().slice(0, message.text().indexOf('.text();')) + '.text();';
-        eval(messageText);
+        var prevPrevPrevTr = $(this).parent().parent().parent().prev().prev().prev();
+        var message = prevPrevPrevTr.find('.messageFromDb').text();
 
         $('#message_name').val('');
 
-        //variable text used below comes from eval(messageText)
-        $('#message_name').val(text);
+        $('#message_name').val(message);
 
         $('[name="message"]').attr('action', firstFormActionUrl);
         var form = $('[name="message"]');
@@ -292,19 +289,14 @@ $(document).ready(function($) {
 
     //quote
     $('.quoteMessage').on('click', function () {
-        var prevTr = $(this).parent().parent().parent().prev();
-        var message = prevTr.find('.messageContent').find('script');
-        var messageText = message.text().slice(0, message.text().indexOf('.text();')) + '.text();';
-        eval(messageText);
-
-        var prevPrevTr = $(this).parent().parent().parent().prev().prev();
         var prevPrevPrevTr = $(this).parent().parent().parent().prev().prev().prev();
-        var prevPrevTrText = $(this).parent().parent().parent().prev().prev().text();
-        var messageId = prevPrevPrevTr.find('td').find('div').attr('id');
-        var user = prevPrevTr.find('#dropdownMenu' + messageId).text().trim();
-        var datePosted = prevPrevTrText.slice(prevPrevTrText.indexOf('Posted on') + 10, prevPrevTrText.indexOf('#')).trim();
+        var message = prevPrevPrevTr.find('.messageFromDb').text();
+        var user = prevPrevPrevTr.find('.messageUsernameFromDb').text();
+        var datePosted = prevPrevPrevTr.find('.messageDateCreatedFromDb').text();
 
         //variable text used below comes from eval(messageText)
-        $('#message_name').val($('#message_name').val() + '[quote name=\'' + user + '\' timestamp=\'' + datePosted + '\']' + text + '[/quote]');
+        $('#message_name').val($('#message_name').val() + '[quote name=\'' + user + '\' timestamp=\'' + datePosted + '\']' + message + '[/quote]');
+
+        var text = parseMessage($('#message_name').val());
     });
 });

@@ -51,6 +51,25 @@
     padding: 7px;
 }
 
+.quote {
+    margin: 0px 5px;
+    border: 1px solid green;
+    border-style: dotted;
+    border-left: 4px solid green;
+    border-left-style: solid;
+}
+
+.quoteHeader {
+    padding: 5px 5px;
+    background-color: #79C760;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.quoteMessage {
+    padding: 5px 5px;
+}
+
 #topicPageTable tr.messageReplierAndPostDate td {
     padding: 5px 10px;
     border: none;
@@ -63,9 +82,12 @@
 }
 
 .messageOptions {
-    background-color: green;
     padding: 5px;
 }
+
+/*td.messageOptions {*/
+    /*background-color: green;*/
+/*}*/
 
 .leftPosition {
     float: left;
