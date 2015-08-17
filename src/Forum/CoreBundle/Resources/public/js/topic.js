@@ -93,6 +93,7 @@ $(document).ready(function($) {
 //    });
 
     // page buttons functionality
+    // delete
     $('.deleteMessage').on('click', function () {
         $.ajax({
             type: 'post',
@@ -107,16 +108,18 @@ $(document).ready(function($) {
         });
     });
 
+    // edit
     $('.editMessage').on('click', function () {
         var prevTr = $(this).parent().parent().parent().prev();
         var message = prevTr.find('.messageContent').find('script');
         var messageText = message.text().slice(0, message.text().indexOf('.text();')) + '.text();';
         eval(messageText);
 
-        //variable text used below comes from eval(messageText)
         $('#message_name').val('');
 
+        //variable text used below comes from eval(messageText)
         $('#message_name').val(text);
+
         $('[name="message"]').attr('action', firstFormActionUrl);
         var form = $('[name="message"]');
         var formActionUrl = form.attr('action');
@@ -138,6 +141,7 @@ $(document).ready(function($) {
         $(this).hide();
     });
 
+    // move
     $('.moveMessage').on('click', function() {
         messageId = $(this).val();
 
@@ -284,5 +288,23 @@ $(document).ready(function($) {
                 alert("An error occured when trying to move the message!");
             }
         });
+    });
+
+    //quote
+    $('.quoteMessage').on('click', function () {
+        var prevTr = $(this).parent().parent().parent().prev();
+        var message = prevTr.find('.messageContent').find('script');
+        var messageText = message.text().slice(0, message.text().indexOf('.text();')) + '.text();';
+        eval(messageText);
+
+        var prevPrevTr = $(this).parent().parent().parent().prev().prev();
+        var prevPrevPrevTr = $(this).parent().parent().parent().prev().prev().prev();
+        var prevPrevTrText = $(this).parent().parent().parent().prev().prev().text();
+        var messageId = prevPrevPrevTr.find('td').find('div').attr('id');
+        var user = prevPrevTr.find('#dropdownMenu' + messageId).text().trim();
+        var datePosted = prevPrevTrText.slice(prevPrevTrText.indexOf('Posted on') + 10, prevPrevTrText.indexOf('#')).trim();
+
+        //variable text used below comes from eval(messageText)
+        $('#message_name').val($('#message_name').val() + '[quote name=\'' + user + '\' timestamp=\'' + datePosted + '\']' + text + '[/quote]');
     });
 });

@@ -40,17 +40,17 @@ forum_core_topic_topic:
     defaults: { _controller: CoreBundle:Topic:topic, topicSlug: null, page: null }
 
 forum_core_topic_post_message:
-    path: /topic/{topicSlug}/postMessage/{messageId}
+    path: /topic/{topicSlug}/postMessage/postMessage/{messageId}
     defaults: { _controller: CoreBundle:Topic:postMessage, topicSlug: null, messageId: null }
 
 forum_core_topic_delete_message:
-    path: /topic/delete/{messageId}
+    path: /topic/delete/delete/{messageId}
     defaults: { _controller: CoreBundle:Topic:deleteMessage }
     options:
         expose: true
 
 forum_core_topic_move_message:
-    path: /topic/move/{messageId}
+    path: /topic/move/move/{messageId}
     defaults: { _controller: CoreBundle:Topic:moveMessage }
     options:
         expose: true
