@@ -51,7 +51,7 @@
     padding: 7px;
 }
 
-.quote {
+.myQuote {
     margin: 0px 5px;
     border: 1px solid green;
     border-style: dotted;
@@ -59,14 +59,14 @@
     border-left-style: solid;
 }
 
-.quoteHeader {
+.myQuoteHeader {
     padding: 5px 5px;
     background-color: #79C760;
     font-weight: bold;
     font-size: 12px;
 }
 
-.quoteMessage {
+.myQuoteMessage {
     padding: 5px 5px;
 }
 

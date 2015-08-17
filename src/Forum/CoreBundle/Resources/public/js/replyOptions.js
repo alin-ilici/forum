@@ -1,9 +1,7 @@
 function parseMessage(message, level) {
     var matchQuoteStart = message.match(/\[quote name=\'.*?\' timestamp=\'.*?\'\]/);
 
-    if (matchQuoteStart == null) {
-        return message;
-    } else if (matchQuoteStart != null) {
+    if (matchQuoteStart != null) {
         matchQuoteStart = matchQuoteStart[0];
 
         var name = (matchQuoteStart.match(/name=\'.*?\'/))[0];
@@ -17,17 +15,16 @@ function parseMessage(message, level) {
 
         var pureMessage = message.substring(quoteStartPosition + matchQuoteStart.length, quoteEndPosition);
 
-        var newMessage = '<div class="quote"><div class="quoteHeader">' + name + ', on ' + date + ' said:</div><div class="quoteMessage">' + pureMessage + '</div></div>';
+        var newMessage = '<div class="myQuote"><div class="myQuoteHeader">' + name + ', on ' + date + ' said:</div><div class="myQuoteMessage">' + pureMessage + '</div></div>';
 
         if (level == 0) {
-            message = newMessage;
+            message = newMessage + '<br/>' + message.substring(quoteEndPosition + 8, message.length);
         } else {
-            ;
-//            message = message.replace(pureMessage, newMessage);
+            message = message.replace(matchQuoteStart + pureMessage + '[/quote]', '<br/><br/>' + newMessage);
         }
 
-        console.log(message);
-
-        parseMessage(message, level + 1);
+        message = parseMessage(message, level + 1);
     }
+
+    return message;
 }

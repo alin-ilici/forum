@@ -288,15 +288,12 @@ $(document).ready(function($) {
     });
 
     //quote
-    $('.quoteMessage').on('click', function () {
+    $('.quoteMessage').on('click', function() {
         var prevPrevPrevTr = $(this).parent().parent().parent().prev().prev().prev();
         var message = prevPrevPrevTr.find('.messageFromDb').text();
         var user = prevPrevPrevTr.find('.messageUsernameFromDb').text();
         var datePosted = prevPrevPrevTr.find('.messageDateCreatedFromDb').text();
 
-        //variable text used below comes from eval(messageText)
         $('#message_name').val($('#message_name').val() + '[quote name=\'' + user + '\' timestamp=\'' + datePosted + '\']' + message + '[/quote]');
-
-        var text = parseMessage($('#message_name').val());
     });
 });
