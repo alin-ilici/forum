@@ -10,6 +10,7 @@
     <script src="{{ asset('bundles/core/js/ba-emotify.js') }}"></script>
     <script src="{{ asset('bundles/core/js/profilePage.js') }}"></script>
     <script src="{{ asset('bundles/core/js/emoticons.js') }}"></script>
+    <script src="{{ asset('bundles/core/js/replyOptions.js') }}"></script>
 {% endblock %}
 
 {% block mainBody %}
@@ -112,6 +113,7 @@
                                     }
 
                                     var text = $('<div/>').html("{{ message['message'].name }}").text();
+                                    text = parseMessage(text, 0);
                                     document.write(emotify(text));
                                 </script>
                             </div>

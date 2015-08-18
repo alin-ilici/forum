@@ -294,6 +294,12 @@ $(document).ready(function($) {
         var user = prevPrevPrevTr.find('.messageUsernameFromDb').text();
         var datePosted = prevPrevPrevTr.find('.messageDateCreatedFromDb').text();
 
-        $('#message_name').val($('#message_name').val() + '[quote name=\'' + user + '\' timestamp=\'' + datePosted + '\']' + message + '[/quote]');
+        var random = getRandomInt(10000, 99999);
+
+        $('#message_name').val($('#message_name').val() + '[quote' + random + ' name=\'' + user + '\' timestamp=\'' + datePosted + '\']' + message + '[/quote' + random + ']');
     });
 });
+
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}

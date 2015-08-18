@@ -51,25 +51,6 @@
     padding: 7px;
 }
 
-.myQuote {
-    margin: 0px 5px;
-    border: 1px solid green;
-    border-style: dotted;
-    border-left: 4px solid green;
-    border-left-style: solid;
-}
-
-.myQuoteHeader {
-    padding: 5px 5px;
-    background-color: #79C760;
-    font-weight: bold;
-    font-size: 12px;
-}
-
-.myQuoteMessage {
-    padding: 5px 5px;
-}
-
 #topicPageTable tr.messageReplierAndPostDate td {
     padding: 5px 10px;
     border: none;
