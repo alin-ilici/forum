@@ -1,3 +1,108 @@
+$(document).ready(function() {
+    $('#addHyperlinkModal').on('hidden.bs.modal', function(event) {
+        $('#hyperlink').val('');
+        $('#confirmAddHyperlinkButton').addClass('disabled');
+    });
+
+    $('#boldText').on('click', function() {
+        updateMessage('message_name', '<b>', '</b>');
+    });
+
+    $('#italicText').on('click', function() {
+        updateMessage('message_name', '<i>', '</i>');
+    });
+
+    $('#underlinedText').on('click', function() {
+        updateMessage('message_name', '<u>', '</u>');
+    });
+
+    $('#hyperlinkText').on('click', function() {
+        var selection = getSelection(document.getElementById('message_name'));
+
+        if (selection.startPos != selection.endPos) {
+            $('#addHyperlinkModal').modal('show');
+        }
+    });
+
+    $('#hyperlink').on('keyup', function() {
+        if ($(this).val() == '') {
+            $('#confirmAddHyperlinkButton').addClass('disabled');
+        } else {
+            $('#confirmAddHyperlinkButton').removeClass('disabled');
+        }
+    });
+
+    $('#confirmAddHyperlinkButton').on('click', function(e) {
+        var hyperlink = $('#hyperlink').val();
+
+        updateMessage('message_name', '<a href="' + hyperlink + '">', '</a>');
+    });
+
+    $('#insertFile').on('click', function() {
+        $('#message_file').click();
+    });
+
+    $('#message_file').on('change', function() {
+        var fileName = $(this).val().split('\\');
+        $('#uploadedFileName').text(fileName[fileName.length - 1]);
+        $('#uploadedFileNameDiv').show();
+    });
+
+    $('#deleteUploadedFile').on('click', function() {
+        $('#message_file').val('');
+        $('#uploadedFileNameDiv').hide();
+    });
+});
+
+function updateMessage(fieldToUpdateId, selectorStartTag, selectorEndTag)
+{
+    var selection = getSelection(document.getElementById(fieldToUpdateId));
+
+    var text = $('#' + fieldToUpdateId).val();
+
+    var beforeSelection = text.substring(selection.startPos - selectorStartTag.length, selection.startPos);
+    var afterSelection = text.substring(selection.endPos, selection.endPos + selectorEndTag.length);
+
+    if (beforeSelection != selectorStartTag && afterSelection != selectorEndTag) {
+        $('#' + fieldToUpdateId).val([text.slice(0, selection.endPos), selectorEndTag, text.slice(selection.endPos)].join(''));
+        text = $('#' + fieldToUpdateId).val();
+        $('#' + fieldToUpdateId).val([text.slice(0, selection.startPos), selectorStartTag, text.slice(selection.startPos)].join(''));
+    } else if (beforeSelection == selectorStartTag && afterSelection == selectorEndTag) {
+        $('#' + fieldToUpdateId).val(text.replace(text.substring(selection.endPos, selection.endPos + selectorEndTag.length), ''));
+        text = $('#' + fieldToUpdateId).val();
+        $('#' + fieldToUpdateId).val(text.replace(text.substring(selection.startPos - selectorStartTag.length, selection.startPos), ''));
+    }
+}
+
+function getSelection(textComponent)
+{
+    var selectedText;
+    var startPos = -1;
+    var endPos = -1;
+
+    // IE version
+    if (document.selection != undefined)
+    {
+        textComponent.focus();
+        var sel = document.selection.createRange();
+        selectedText = sel.text;
+    }
+
+    // Mozilla version
+    else if (textComponent.selectionStart != undefined)
+    {
+        startPos = textComponent.selectionStart;
+        endPos = textComponent.selectionEnd;
+        selectedText = textComponent.value.substring(startPos, endPos)
+    }
+
+    return {
+        selectedText: selectedText,
+        startPos: startPos,
+        endPos: endPos
+    }
+}
+
 function parseMessage(message, level) {
     var matchQuoteStart = message.match(/\[quote.*? name=\'.*?\' timestamp=\'.*?\'\]/);
 

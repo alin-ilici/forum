@@ -155,6 +155,10 @@
     margin-bottom: 0px;
 }
 
+#hyperlink {
+    width: 400px;
+}
+
 /*#message_name {*/
     /*display: none;*/
 /*}*/

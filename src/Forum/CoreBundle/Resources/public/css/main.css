@@ -184,3 +184,11 @@ body {
 .myQuoteMessage {
     padding: 5px 5px;
 }
+
+#uploadedFileNameDiv {
+    width: 50%;
+}
+
+.messageOriginalFileName {
+    width: 50%;
+}

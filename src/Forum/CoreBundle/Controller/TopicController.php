@@ -13,9 +13,7 @@ class TopicController extends Controller
     public function topicAction($topicSlug, $page)
     {
         $maxMessagesPerPage = $this->container->getParameter('maxMessagesPerPage');
-        if ($page == null) {
-            $page = 1;
-        }
+
 
         /** @var \Forum\CoreBundle\Repository\TopicRepository $topicRepository */
         $topicRepository = $this->getDoctrine()->getRepository("CoreBundle:Topic");
@@ -37,6 +35,19 @@ class TopicController extends Controller
             ->setParameter('id_topic', $topic->getId())
             ->getQuery()
             ->getSingleResult();
+
+        $totalPages = ((int)$countMessages[1] % $maxMessagesPerPage == 0) ?
+            (int)((int)$countMessages[1] / $maxMessagesPerPage) : (int)((int)$countMessages[1] / $maxMessagesPerPage + 1);
+
+        $totalPages = ($countMessages[1] == 0) ? 1 : $totalPages;
+
+        if ($page == null) {
+            $page = 1;
+        }
+
+        if ($page == -1) {
+            $page = $totalPages;
+        }
 
         /** @var \Forum\CoreBundle\Entity\Message[] $messages */
         $messages = null;
@@ -71,11 +82,6 @@ class TopicController extends Controller
         $whereAmI .= ' > ' . '<a href="' . $this->generateUrl('forum_core_default_homepage', array('forumSlug' => $topic->getSubcategory()->getCategory()->getForum()->getSlug())) . '">' . $topic->getSubcategory()->getCategory()->getForum()->getName() . '</a>';
         $whereAmI .= ' > ' . '<a href="' . $this->generateUrl('forum_core_category_category', array('categorySlug' => $topic->getSubcategory()->getCategory()->getSlug())) . '">' . $topic->getSubcategory()->getCategory()->getName() . '</a>';
         $whereAmI .= ' > ' . '<a href="' . $this->generateUrl('forum_core_subcategory_subcategory', array('subcategorySlug' => $topic->getSubcategory()->getSlug())) . '">' . $topic->getSubcategory()->getName() . '</a>';
-
-        $totalPages = ((int)$countMessages[1] % $maxMessagesPerPage == 0) ?
-            (int)((int)$countMessages[1] / $maxMessagesPerPage) : (int)((int)$countMessages[1] / $maxMessagesPerPage + 1);
-
-        $totalPages = ($countMessages[1] == 0) ? 1 : $totalPages;
 
         return $this->render('CoreBundle:Topic:topic.html.twig', array(
             'topic' => $topic,
@@ -115,6 +121,7 @@ class TopicController extends Controller
 
         if ($form->isValid()) {
             $formParams = $request->request->get('message');
+            $file = $request->files->get('message')['file'];
 
             $message = null;
             if ($messageId !== null) {
@@ -130,6 +137,11 @@ class TopicController extends Controller
                 $message->setName(preg_replace( "/\r|\n/", " ", $formParams['name']));
                 $message->setTopic($topic);
                 $message->setUser($this->getUser());
+
+                if ($file != null) {
+                    $message->setFile($file);
+                    $message->uploadFile();
+                }
             } else {
                 $message->setName(preg_replace( "/\r|\n/", " ", $formParams['name']));
             }
@@ -146,7 +158,7 @@ class TopicController extends Controller
             $this->get('session')->getFlashBag()->add('fail', 'There was a problem submitting/updating your comment!');
         }
 
-        return $this->redirect($this->generateUrl('forum_core_topic_topic', array('topicSlug' => $topicSlug)));
+        return $this->redirect($this->generateUrl('forum_core_topic_topic', array('topicSlug' => $topicSlug, 'page' => -1)));
     }
 
     public function deleteMessageAction($messageId)

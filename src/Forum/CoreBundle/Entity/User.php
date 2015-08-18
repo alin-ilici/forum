@@ -406,7 +406,7 @@ class User extends Timestampable implements UserInterface, \Serializable
         }
 
         $now = new \DateTime();
-        $newAvatarName = mt_rand(10000, 99999) . '-' . $now->format('d-m-y-h-i-s') . '.' . $this->getAvatar()->getClientOriginalExtension();;
+        $newAvatarName = mt_rand(10000, 99999) . '-' . $now->format('d-m-y-h-i-s') . '.' . $this->getAvatar()->getClientOriginalExtension();
 
         // move takes the target directory and then the
         // target filename to move to
