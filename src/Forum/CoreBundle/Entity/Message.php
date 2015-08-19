@@ -38,6 +38,20 @@ class Message extends Timestampable
     private $slug;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="file", type="string", length=255, nullable=true)
+     */
+    private $file;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="original_file_name", type="string", length=255, nullable=true)
+     */
+    private $originalFileName;
+
+    /**
      * @var Topic
      *
      * @ORM\ManyToOne(targetEntity="Topic", inversedBy="messages")
@@ -113,6 +127,52 @@ class Message extends Timestampable
     }
 
     /**
+     * Set file
+     *
+     * @param string $file
+     * @return Message
+     */
+    public function setFile($file)
+    {
+        $this->file = $file;
+
+        return $this;
+    }
+
+    /**
+     * Get file
+     *
+     * @return string
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    /**
+     * Set originalFileName
+     *
+     * @param string $originalFileName
+     * @return Message
+     */
+    public function setOriginaFileName($originalFileName)
+    {
+        $this->originalFileName = $originalFileName;
+
+        return $this;
+    }
+
+    /**
+     * Get originalFileName
+     *
+     * @return string
+     */
+    public function getOriginalFileName()
+    {
+        return $this->originalFileName;
+    }
+
+    /**
      * Set topic
      *
      * @param \Forum\CoreBundle\Entity\Topic $topic
@@ -156,5 +216,33 @@ class Message extends Timestampable
     public function getUser()
     {
         return $this->user;
+    }
+
+    public function getUploadRootDir() {
+        return 'bundles/core/messages_uploads';
+    }
+
+    public function uploadFile()
+    {
+        // the file property can be empty if the field is not required
+        if (null === $this->getFile()) {
+            return;
+        }
+
+        $now = new \DateTime();
+        $newFileName = mt_rand(10000, 99999) . '-' . $now->format('d-m-y-h-i-s') . '.' . $this->getFile()->getClientOriginalExtension();
+
+        // set the original file name
+        $this->originalFileName = $this->getFile()->getClientOriginalName();
+
+        // move takes the target directory and then the target filename to move to
+        // second param is the new photo name uploaded to server
+        $this->getFile()->move(
+            $this->getUploadRootDir(),
+            $newFileName
+        );
+
+        // set the path property to the filename where you've saved the file
+        $this->file = $newFileName;
     }
 }

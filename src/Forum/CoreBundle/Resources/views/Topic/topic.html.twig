@@ -10,6 +10,7 @@
     <script src="{{ asset('bundles/core/js/ba-emotify.js') }}"></script>
     <script src="{{ asset('bundles/core/js/topic.js') }}"></script>
     <script src="{{ asset('bundles/core/js/emoticons.js') }}"></script>
+    <script src="{{ asset('bundles/core/js/replyOptions.js') }}"></script>
 {% endblock %}
 
 {% block mainBody %}
@@ -67,7 +68,13 @@
         {% for message in messages %}
             <tr>
                 <td colspan="2">
-                    <div id="{{ message.id }}" class="messageMarginTop"></div>
+                    <div id="{{ message.id }}" class="messageMarginTop">
+                        <div class="noDisplay">
+                            <span class="messageFromDb">{{ message.name }}</span>
+                            <span class="messageUsernameFromDb">{{ message.user.username }}</span>
+                            <span class="messageDateCreatedFromDb">{{ message.dateCreated | date('Y-m-d H:i:s') }}</span>
+                        </div>
+                    </div>
                 </td>
             </tr>
 
@@ -75,11 +82,11 @@
                 <td>
                     {% if app.user %}
                         <div class="dropdown">
-                            <button class="btn btn-default btn-sm dropdown-toggle" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <button class="btn btn-default btn-sm dropdown-toggle" type="button" id="dropdownMenu{{ message.id }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                 {{ message.user.username }}
                                 <span class="caret"></span>
                             </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu">
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu{{ message.id }}">
                                 <li>
                                     <a href="{{ path('forum_core_profile_page_profile_page', { 'username': message.user.username }) }}" class="viewProfile" data-value="{{ message.id }}">
                                         View profile
@@ -128,8 +135,18 @@
                         }
 
                         var text = $('<div/>').html("{{ message.name }}").text();
+                        text = parseMessage(text, 0);
                         document.write(emotify(text));
                     </script>
+
+                    {% if message.file != null %}
+                        <br/>
+                        <br/>
+                        <br/>
+                        <div class="alert alert-info messageOriginalFileName" role="alert">
+                            <a href="/bundles/core/messages_uploads/{{ message.file }}" target="_blank">{{ message.originalFileName }}</a>
+                        </div>
+                    {% endif %}
                 </td>
             </tr>
 
@@ -188,22 +205,22 @@
             </div>
             <div class="replyMessage-right">
                 <div id="replyMessageOptions" class="noSelect">
-                    <div class="hoverReplyMessageOption">
+                    <div id="boldText" class="hoverReplyMessageOption">
                         <span class="glyphicon glyphicon-bold makeSpace" aria-hidden="true"></span>
                     </div>
-                    <div class="hoverReplyMessageOption">
+                    <div id="italicText" class="hoverReplyMessageOption">
                         <span class="glyphicon glyphicon-italic makeSpace" aria-hidden="true"></span>
                     </div>
-                    <div class="hoverReplyMessageOption">
+                    <div id="underlinedText" class="hoverReplyMessageOption">
                         <span class="glyphicon glyphicon-text-width makeSpace" aria-hidden="true"></span>
                     </div>
-                    <div class="hoverReplyMessageOption" id="showSmiles">
+                    <div id="showSmiles" class="hoverReplyMessageOption">
                         <span class="glyphicon glyphicon-tree-conifer makeSpace" aria-hidden="true"></span>
                     </div>
-                    <div class="hoverReplyMessageOption">
+                    <div id="hyperlinkText" class="hoverReplyMessageOption">
                         <span class="glyphicon glyphicon-link makeSpace" aria-hidden="true"></span>
                     </div>
-                    <div class="hoverReplyMessageOption">
+                    <div id="insertFile" class="hoverReplyMessageOption">
                         <span class="glyphicon glyphicon-paperclip makeSpace" aria-hidden="true"></span>
                     </div>
 
@@ -212,9 +229,16 @@
                 {{ form_start(form) }}
                 {#<div id="messageNameEditableDiv" class="form-control makeSpaceBottom" required="required" contenteditable="true"></div>#}
                 {{ form_widget(form.name) }}
+                <span class="noDisplay">{{ form_widget(form.file) }}</span>
+                <div id="uploadedFileNameDiv" class="alert alert-info alert-dismissible noDisplay" role="alert">
+                    <button id="deleteUploadedFile" type="button" class="close" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <span id="uploadedFileName"></span>
+                </div>
                 {{ form_row(form.save) }}
                 <button type="button" id="cancelEditMessage" class="btn btn-primary btn-sm rightPosition makeSpaceBottom makeSpace noDisplay">
-                Cancel editing
+                    Cancel editing
                 </button>
                 {{ form_end(form) }}
             </div>
@@ -276,6 +300,26 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary disabled" id="finishMovingMessage">Move message</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add hyperlink modal -->
+    <div class="modal fade" id="addHyperlinkModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Add hyperlink</h4>
+                </div>
+                <div class="modal-body">
+                    <label for="hyperlink">Hyperlink: </label>
+                    <input type="text" id="hyperlink" required="required">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="confirmAddHyperlinkButton" class="btn btn-default disabled" data-dismiss="modal">Ok</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
         </div>

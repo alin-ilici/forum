@@ -10,6 +10,7 @@
     <script src="{{ asset('bundles/core/js/ba-emotify.js') }}"></script>
     <script src="{{ asset('bundles/core/js/profilePage.js') }}"></script>
     <script src="{{ asset('bundles/core/js/emoticons.js') }}"></script>
+    <script src="{{ asset('bundles/core/js/replyOptions.js') }}"></script>
 {% endblock %}
 
 {% block mainBody %}
@@ -112,8 +113,18 @@
                                     }
 
                                     var text = $('<div/>').html("{{ message['message'].name }}").text();
+                                    text = parseMessage(text, 0);
                                     document.write(emotify(text));
                                 </script>
+
+                                {% if message['message'].file != null %}
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <div class="alert alert-info messageOriginalFileName" role="alert">
+                                        <a href="/bundles/core/messages_uploads/{{ message['message'].file }}" target="_blank">{{ message['message'].originalFileName }}</a>
+                                    </div>
+                                {% endif %}
                             </div>
                         {% endfor %}
                     </div>
