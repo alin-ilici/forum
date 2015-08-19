@@ -38,6 +38,7 @@
 .aboutReplier {
     width: 15%;
     padding: 7px;
+    vertical-align: top;
     /*text-align: center;*/
 }
 
@@ -76,14 +77,6 @@
 
 .rightPosition {
     float: right;
-}
-
-.makeSpaceBottom {
-    margin-bottom: 15px;
-}
-
-.makeSpaceTop {
-    margin-top: 15px;
 }
 
 #replyMessageBox {
@@ -129,34 +122,8 @@
     text-decoration: none;
 }
 
-#replyMessageOptions {
-    padding: 5px;
-}
-
-.hoverReplyMessageOption {
-    display: inline-block;
-    padding: 5px;
-}
-
-.hoverReplyMessageOption:hover {
-    cursor: pointer;
-    background-color: grey;
-}
-
-#emoticonsZone {
-    display: none;
-}
-
-#emoticonsZone img {
-    margin: 5px;
-}
-
 .pageNameAndDescription {
     margin-bottom: 0px;
-}
-
-#hyperlink {
-    width: 400px;
 }
 
 /*#message_name {*/

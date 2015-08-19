@@ -287,7 +287,7 @@ $(document).ready(function($) {
         });
     });
 
-    //quote
+    // quote
     $('.quoteMessage').on('click', function() {
         var prevPrevPrevTr = $(this).parent().parent().parent().prev().prev().prev();
         var message = prevPrevPrevTr.find('.messageFromDb').text();
@@ -297,6 +297,13 @@ $(document).ready(function($) {
         var random = getRandomInt(10000, 99999);
 
         $('#message_name').val($('#message_name').val() + '[quote' + random + ' name=\'' + user + '\' timestamp=\'' + datePosted + '\']' + message + '[/quote' + random + ']');
+    });
+
+    // private message
+    $('.sendMeAMessage').on('click', function() {
+        $('#newConversationModal').modal('show');
+        $('#toUser').val($(this).attr('data-value'));
+        $('#toUser').attr('readonly', 'true');
     });
 });
 

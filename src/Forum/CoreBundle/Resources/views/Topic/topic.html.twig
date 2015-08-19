@@ -92,7 +92,9 @@
                                         View profile
                                     </a>
                                 </li>
-                                <li><a href="#" class="sendMeAMessage" data-value="{{ message.id }}">Send me a message</a></li>
+                                {% if app.user.username != message.user.username %}
+                                    <li><a class="sendMeAMessage" data-value="{{ message.user.username }}">Send me a private message</a></li>
+                                {% endif %}
                             </ul>
                         </div>
                     {% else %}
@@ -204,7 +206,7 @@
                 {% endif %}
             </div>
             <div class="replyMessage-right">
-                <div id="replyMessageOptions" class="noSelect">
+                <div class="replyMessageOptions noSelect">
                     <div id="boldText" class="hoverReplyMessageOption">
                         <span class="glyphicon glyphicon-bold makeSpace" aria-hidden="true"></span>
                     </div>
@@ -315,7 +317,7 @@
                 </div>
                 <div class="modal-body">
                     <label for="hyperlink">Hyperlink: </label>
-                    <input type="text" id="hyperlink" required="required">
+                    <input type="text" id="hyperlink" class="form-control" required="required">
                 </div>
                 <div class="modal-footer">
                     <button type="button" id="confirmAddHyperlinkButton" class="btn btn-default disabled" data-dismiss="modal">Ok</button>
@@ -324,4 +326,7 @@
             </div>
         </div>
     </div>
+
+    <!-- Add new conversation modal -->
+    {{ include('CoreBundle:Conversation:_newConversation.html.twig') }}
 {% endblock %}

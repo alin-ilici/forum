@@ -1,56 +1,80 @@
 $(document).ready(function() {
-    $('#addHyperlinkModal').on('hidden.bs.modal', function(event) {
-        $('#hyperlink').val('');
-        $('#confirmAddHyperlinkButton').addClass('disabled');
+    var elementToWriteIn = 'message_name', prefix = '', insertFileElementToBeTriggered = 'message_file';
+
+    $(document).on('shown.bs.modal', '#newConversationModal', function() {
+        elementToWriteIn = 'privateMessageText';
+        prefix = 'PM';
+        insertFileElementToBeTriggered = 'uploadedFilePM';
     });
 
-    $('#boldText').on('click', function() {
-        updateMessage('message_name', '<b>', '</b>');
+    $(document).on('hidden.bs.modal', '#newConversationModal', function() {
+        elementToWriteIn = 'message_name';
+        prefix = '';
+        insertFileElementToBeTriggered = 'message_file';
+
+        $('#toUser').val('');
+        $('#conversationName').val('');
+        $('#privateMessageText').val('');
+        $('#emoticonsZonePM').hide();
     });
 
-    $('#italicText').on('click', function() {
-        updateMessage('message_name', '<i>', '</i>');
+    $(document).on('hidden.bs.modal', '#addHyperlinkModal, #addHyperlinkModalPM', function(event) {
+        $('#hyperlink' + prefix).val('');
+        $('#confirmAddHyperlinkButton' + prefix).addClass('disabled');
     });
 
-    $('#underlinedText').on('click', function() {
-        updateMessage('message_name', '<u>', '</u>');
+    $(document).on('click', '#boldText, #boldTextPM', function() {
+        updateMessage(elementToWriteIn, '<b>', '</b>');
     });
 
-    $('#hyperlinkText').on('click', function() {
-        var selection = getSelection(document.getElementById('message_name'));
+    $(document).on('click', '#italicText, #italicTextPM', function() {
+        updateMessage(elementToWriteIn, '<i>', '</i>');
+    });
+
+    $(document).on('click', '#underlinedText, #underlinedTextPM', function() {
+        updateMessage(elementToWriteIn, '<u>', '</u>');
+    });
+
+    $(document).on('click', '#hyperlinkText, #hyperlinkTextPM', function() {
+        console.log("aaa");
+        var selection = getSelection(document.getElementById(elementToWriteIn));
 
         if (selection.startPos != selection.endPos) {
-            $('#addHyperlinkModal').modal('show');
+            $('#addHyperlinkModal' + prefix).modal('show');
         }
     });
 
-    $('#hyperlink').on('keyup', function() {
+    $(document).on('keyup', '#hyperlink, #hyperlinkPM', function() {
         if ($(this).val() == '') {
-            $('#confirmAddHyperlinkButton').addClass('disabled');
+            $('#confirmAddHyperlinkButton' + prefix).addClass('disabled');
         } else {
-            $('#confirmAddHyperlinkButton').removeClass('disabled');
+            $('#confirmAddHyperlinkButton' + prefix).removeClass('disabled');
         }
     });
 
-    $('#confirmAddHyperlinkButton').on('click', function(e) {
-        var hyperlink = $('#hyperlink').val();
+    $(document).on('click', '#confirmAddHyperlinkButton, #confirmAddHyperlinkButtonPM', function(e) {
+        var hyperlink = $('#hyperlink' + prefix).val();
 
-        updateMessage('message_name', '<a href="' + hyperlink + '">', '</a>');
+        updateMessage(elementToWriteIn, '<a href="' + hyperlink + '">', '</a>');
     });
 
-    $('#insertFile').on('click', function() {
-        $('#message_file').click();
+    $(document).on('click', '#insertFile, #insertFilePM', function() {
+        $('#' + insertFileElementToBeTriggered).click();
     });
 
-    $('#message_file').on('change', function() {
+    $(document).on('change', '#message_file, #uploadedFilePM', function() {
         var fileName = $(this).val().split('\\');
-        $('#uploadedFileName').text(fileName[fileName.length - 1]);
-        $('#uploadedFileNameDiv').show();
+        if (fileName.length != 1) {
+            $('#uploadedFileName' + prefix).text(fileName[fileName.length - 1]);
+            $('#uploadedFileNameDiv' + prefix).show();
+        } else {
+            $('#uploadedFileNameDiv' + prefix).hide();
+        }
     });
 
-    $('#deleteUploadedFile').on('click', function() {
-        $('#message_file').val('');
-        $('#uploadedFileNameDiv').hide();
+    $(document).on('click', '#deleteUploadedFile, #deleteUploadedFilePM', function() {
+        $('#' + insertFileElementToBeTriggered).val('');
+        $('#uploadedFileNameDiv' + prefix).hide();
     });
 });
 

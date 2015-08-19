@@ -1,0 +1,84 @@
+<form name="newConversationForm">
+    <div class="modal fade" id="newConversationModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">New conversation</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="textAlignLeft">
+                        <div class="requiredInfo">
+                            * Required information
+                        </div>
+
+                        <label for="toUser" class="required">To</label>
+                        <input type="text" id="toUser" class="form-control" name="toUser" required="required">
+
+                        <br/>
+                        <label for="conversationName" class="required">Conversation name</label>
+                        <input type="text" id="conversationName" class="form-control" name="conversationName" required="required">
+
+                        <br/>
+                        <label for="privateMessageText" class="required">Private message</label>
+                        <div class="replyMessageOptions noSelect">
+                            <div id="boldTextPM" class="hoverReplyMessageOption">
+                                <span class="glyphicon glyphicon-bold makeSpace" aria-hidden="true"></span>
+                            </div>
+                            <div id="italicTextPM" class="hoverReplyMessageOption">
+                                <span class="glyphicon glyphicon-italic makeSpace" aria-hidden="true"></span>
+                            </div>
+                            <div id="underlinedTextPM" class="hoverReplyMessageOption">
+                                <span class="glyphicon glyphicon-text-width makeSpace" aria-hidden="true"></span>
+                            </div>
+                            <div id="showSmilesPM" class="hoverReplyMessageOption">
+                                <span class="glyphicon glyphicon-tree-conifer makeSpace" aria-hidden="true"></span>
+                            </div>
+                            <div id="hyperlinkTextPM" class="hoverReplyMessageOption">
+                                <span class="glyphicon glyphicon-link makeSpace" aria-hidden="true"></span>
+                            </div>
+                            <div id="insertFilePM" class="hoverReplyMessageOption">
+                                <span class="glyphicon glyphicon-paperclip makeSpace" aria-hidden="true"></span>
+                            </div>
+
+                            <div id="emoticonsZonePM"></div>
+                        </div>
+
+                        <textarea id="privateMessageText" class="form-control makeSpaceBottom" name="privateMessageText" required="required" rows="5"></textarea>
+
+                        <span class="noDisplay"><input type="file" id="uploadedFilePM"></span>
+                        <div id="uploadedFileNameDivPM" class="alert alert-info alert-dismissible noDisplay" role="alert">
+                            <button id="deleteUploadedFilePM" type="button" class="close" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <span id="uploadedFileNamePM"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-default">Send</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="modal fade" id="addHyperlinkModalPM">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Add hyperlink</h4>
+            </div>
+            <div class="modal-body">
+                <label for="hyperlinkPM">Hyperlink: </label>
+                <input type="text" id="hyperlinkPM" class="form-control" required="required">
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="confirmAddHyperlinkButtonPM" class="btn btn-default disabled" data-dismiss="modal">Ok</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -176,6 +176,13 @@ $(document).ready(function()
             $('#submitChangePassword').addClass('disabled');
         }
     });
+
+    // private message
+    $('#sendMeAPrivateMessage').on('click', function() {
+        $('#newConversationModal').modal('show');
+        $('#toUser').val($(this).val());
+        $('#toUser').attr('readonly', 'true');
+    });
 });
 
 function readImage(file) {
