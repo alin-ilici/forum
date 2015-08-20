@@ -97,8 +97,14 @@ forum_core_notification_check_for_new_notifications:
     options:
         expose: true
 
+forum_core_conversation_show_conversations:
+    path: /privateMessaging/show/{conversationSlug}
+    defaults: { _controller: CoreBundle:Conversation:showConversations, conversationSlug: null }
+    options:
+        expose: true
+
 forum_core_conversation_send_new_private_message:
-    path: /sendNewPrivateMessage
+    path: /privateMessaging/sendNewPrivateMessage
     defaults: { _controller: CoreBundle:Conversation:sendNewPrivateMessage }
     options:
         expose: true

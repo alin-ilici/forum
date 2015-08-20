@@ -36,7 +36,9 @@
                             </a>
                         </span>
                         <div class="displayInLine makeSpace">
-                            <img src="{{ asset('bundles/core/images/privateMessage.png') }}" alt="Private messages" id="privateMessageIcon"
+                            <a href="{{ path('forum_core_conversation_show_conversations') }}">
+                                <img src="{{ asset('bundles/core/images/privateMessage.png') }}" alt="Private messages" id="privateMessageIcon">
+                            </a>
                         </div>
                         <div class="dropdown displayInLine makeSpace" id="notificationDropdown">
                             <img src="{{ asset('bundles/core/images/ios7-bell.png') }}" alt="No notifications" id="notificationIcon" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"/>
