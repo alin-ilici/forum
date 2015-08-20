@@ -198,7 +198,7 @@
     </form>
 
     <!-- Change password modal -->
-    <form action="{{ path('forum_core_profile_page_change_password', { 'username': user.username }) }}" method="post" enctype="multipart/form-data" id="changePasswordFormToSubmit">
+    <form action="{{ path('forum_core_profile_page_change_password', { 'username': user.username }) }}" method="post" id="changePasswordFormToSubmit">
         <div class="modal fade" id="changePasswordModal">
             <div class="modal-dialog">
                 <div class="modal-content">

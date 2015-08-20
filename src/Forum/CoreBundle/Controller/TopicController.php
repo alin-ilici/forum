@@ -14,7 +14,6 @@ class TopicController extends Controller
     {
         $maxMessagesPerPage = $this->container->getParameter('maxMessagesPerPage');
 
-
         /** @var \Forum\CoreBundle\Repository\TopicRepository $topicRepository */
         $topicRepository = $this->getDoctrine()->getRepository("CoreBundle:Topic");
 

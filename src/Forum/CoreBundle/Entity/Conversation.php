@@ -42,7 +42,7 @@ class Conversation extends Timestampable
     /**
      * @var User
      *
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="$conversationsFromUser")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="conversationsFromUser")
      * @ORM\JoinColumn(name="id_from_user", referencedColumnName="id", nullable=false)
      * @Assert\NotBlank
      */
@@ -51,7 +51,7 @@ class Conversation extends Timestampable
     /**
      * @var User
      *
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="$conversationsToUser")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="conversationsToUser")
      * @ORM\JoinColumn(name="id_to_user", referencedColumnName="id", nullable=false)
      * @Assert\NotBlank
      */

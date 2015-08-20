@@ -1,4 +1,4 @@
-<form name="newConversationForm">
+<form name="newConversationForm" action="{{ path('forum_core_conversation_send_new_private_message') }}" method="post" enctype="multipart/form-data">
     <div class="modal fade" id="newConversationModal">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -46,7 +46,7 @@
 
                         <textarea id="privateMessageText" class="form-control makeSpaceBottom" name="privateMessageText" required="required" rows="5"></textarea>
 
-                        <span class="noDisplay"><input type="file" id="uploadedFilePM"></span>
+                        <span class="noDisplay"><input type="file" id="uploadedFilePM" name="uploadedFilePM"></span>
                         <div id="uploadedFileNameDivPM" class="alert alert-info alert-dismissible noDisplay" role="alert">
                             <button id="deleteUploadedFilePM" type="button" class="close" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>

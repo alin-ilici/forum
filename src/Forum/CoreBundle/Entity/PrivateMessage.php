@@ -216,4 +216,32 @@ class PrivateMessage extends Timestampable
     {
         return $this->user;
     }
+
+    public function getUploadRootDir() {
+        return 'bundles/core/private_messages_uploads';
+    }
+
+    public function uploadFile()
+    {
+        // the file property can be empty if the field is not required
+        if (null === $this->getFile()) {
+            return;
+        }
+
+        $now = new \DateTime();
+        $newFileName = mt_rand(10000, 99999) . '-' . $now->format('d-m-y-h-i-s') . '.' . $this->getFile()->getClientOriginalExtension();
+
+        // set the original file name
+        $this->originalFileName = $this->getFile()->getClientOriginalName();
+
+        // move takes the target directory and then the target filename to move to
+        // second param is the new photo name uploaded to server
+        $this->getFile()->move(
+            $this->getUploadRootDir(),
+            $newFileName
+        );
+
+        // set the path property to the filename where you've saved the file
+        $this->file = $newFileName;
+    }
 }

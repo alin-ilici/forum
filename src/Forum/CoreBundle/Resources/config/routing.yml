@@ -96,3 +96,9 @@ forum_core_notification_check_for_new_notifications:
     defaults: { _controller: CoreBundle:Notification:checkForNewNotifications, userId: null }
     options:
         expose: true
+
+forum_core_conversation_send_new_private_message:
+    path: /sendNewPrivateMessage
+    defaults: { _controller: CoreBundle:Conversation:sendNewPrivateMessage }
+    options:
+        expose: true
