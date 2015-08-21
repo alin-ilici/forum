@@ -108,6 +108,27 @@ class User extends Timestampable implements UserInterface, \Serializable
     private $notifications;
 
     /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Conversation", mappedBy="fromUser")
+     */
+    private $conversationsFromUser;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Conversation", mappedBy="toUser")
+     */
+    private $conversationsToUser;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="PrivateMessage", mappedBy="user")
+     */
+    private $privateMessages;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -115,6 +136,9 @@ class User extends Timestampable implements UserInterface, \Serializable
         $this->topics = new \Doctrine\Common\Collections\ArrayCollection();
         $this->messages = new \Doctrine\Common\Collections\ArrayCollection();
         $this->notifications = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->$conversationsFromUser = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->$conversationsToUser = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->$privateMessages = new \Doctrine\Common\Collections\ArrayCollection();
 
         $this->roles = self::ROLE_USER;
         $this->isActive = true;
@@ -271,9 +295,9 @@ class User extends Timestampable implements UserInterface, \Serializable
     }
 
     /**
-     * Set role
+     * Set roles
      *
-     * @param string $role
+     * @param string $roles
      * @return User
      */
     public function setRoles($roles)
@@ -284,7 +308,7 @@ class User extends Timestampable implements UserInterface, \Serializable
     }
 
     /**
-     * Get role
+     * Get roles
      *
      * @return string 
      */
@@ -392,6 +416,105 @@ class User extends Timestampable implements UserInterface, \Serializable
         return $this->notifications;
     }
 
+    /**
+     * Add conversationsFromUser
+     *
+     * @param \Forum\CoreBundle\Entity\Conversation $conversationsFromUser
+     * @return User
+     */
+    public function addConversationsFromUser(\Forum\CoreBundle\Entity\Conversation $conversationsFromUser)
+    {
+        $this->conversationsFromUser[] = $conversationsFromUser;
+
+        return $this;
+    }
+
+    /**
+     * Remove conversationsFromUser
+     *
+     * @param \Forum\CoreBundle\Entity\Conversation $conversationsFromUser
+     */
+    public function removeConversationsFromUser(\Forum\CoreBundle\Entity\Conversation $conversationsFromUser)
+    {
+        $this->conversationsFromUser->removeElement($conversationsFromUser);
+    }
+
+    /**
+     * Get conversationsFromUser
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getConversationsFromUser()
+    {
+        return $this->conversationsFromUser;
+    }
+
+    /**
+     * Add conversationsToUser
+     *
+     * @param \Forum\CoreBundle\Entity\Conversation $conversationsToUser
+     * @return User
+     */
+    public function addConversationsToUser(\Forum\CoreBundle\Entity\Conversation $conversationsToUser)
+    {
+        $this->conversationsToUser[] = $conversationsToUser;
+
+        return $this;
+    }
+
+    /**
+     * Remove conversationsToUser
+     *
+     * @param \Forum\CoreBundle\Entity\Conversation $conversationsToUser
+     */
+    public function removeConversationsToUser(\Forum\CoreBundle\Entity\Conversation $conversationsToUser)
+    {
+        $this->conversationsToUser->removeElement($conversationsToUser);
+    }
+
+    /**
+     * Get conversationsToUser
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getConversationsToUser()
+    {
+        return $this->conversationsToUser;
+    }
+
+    /**
+     * Add privateMessages
+     *
+     * @param \Forum\CoreBundle\Entity\PrivateMessage $privateMessages
+     * @return User
+     */
+    public function addPrivateMessage(\Forum\CoreBundle\Entity\PrivateMessage $privateMessages)
+    {
+        $this->privateMessages[] = $privateMessages;
+
+        return $this;
+    }
+
+    /**
+     * Remove privateMessages
+     *
+     * @param \Forum\CoreBundle\Entity\PrivateMessage $privateMessages
+     */
+    public function removePrivateMessage(\Forum\CoreBundle\Entity\PrivateMessage $privateMessages)
+    {
+        $this->privateMessages->removeElement($privateMessages);
+    }
+
+    /**
+     * Get privateMessages
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPrivateMessages()
+    {
+        return $this->privateMessages;
+    }
+
     public function getSalt()
     {
         // you *may* need a real salt depending on your encoder
@@ -446,7 +569,7 @@ class User extends Timestampable implements UserInterface, \Serializable
         }
 
         $now = new \DateTime();
-        $newAvatarName = mt_rand(10000, 99999) . '-' . $now->format('d-m-y-h-i-s') . '.' . $this->getAvatar()->getClientOriginalExtension();;
+        $newAvatarName = mt_rand(10000, 99999) . '-' . $now->format('d-m-y-h-i-s') . '.' . $this->getAvatar()->getClientOriginalExtension();
 
         // move takes the target directory and then the
         // target filename to move to

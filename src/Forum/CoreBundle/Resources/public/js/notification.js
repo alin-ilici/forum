@@ -22,6 +22,8 @@ function poll() {
             success: function(result) {
                 addNotification(result);
                 setTimeout(poll, 5000);
+            },
+            error: function(result) {
             }
         });
     }

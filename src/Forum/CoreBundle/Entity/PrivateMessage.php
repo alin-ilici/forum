@@ -7,12 +7,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * Message
+ * PrivateMessage
  *
- * @ORM\Table(name="message")
- * @ORM\Entity(repositoryClass="Forum\CoreBundle\Repository\MessageRepository")
+ * @ORM\Table(name="private_message")
+ * @ORM\Entity(repositoryClass="Forum\CoreBundle\Repository\PrivateMessageRepository")
  */
-class Message extends Timestampable
+class PrivateMessage extends Timestampable
 {
     /**
      * @var integer
@@ -52,23 +52,22 @@ class Message extends Timestampable
     private $originalFileName;
 
     /**
-     * @var Topic
+     * @var Conversation
      *
-     * @ORM\ManyToOne(targetEntity="Topic", inversedBy="messages")
-     * @ORM\JoinColumn(name="id_topic", referencedColumnName="id", nullable=false)
+     * @ORM\ManyToOne(targetEntity="Conversation", inversedBy="privateMessages")
+     * @ORM\JoinColumn(name="id_conversation", referencedColumnName="id", nullable=false)
      * @Assert\NotBlank
      */
-    private $topic;
+    private $conversation;
 
     /**
      * @var User
      *
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="messages")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="privateMessages")
      * @ORM\JoinColumn(name="id_user", referencedColumnName="id", nullable=false)
      * @Assert\NotBlank
      */
     private $user;
-
 
     /**
      * Get id
@@ -84,7 +83,7 @@ class Message extends Timestampable
      * Set name
      *
      * @param string $name
-     * @return Message
+     * @return PrivateMessage
      */
     public function setName($name)
     {
@@ -107,7 +106,7 @@ class Message extends Timestampable
      * Set slug
      *
      * @param string $slug
-     * @return Message
+     * @return PrivateMessage
      */
     public function setSlug($slug)
     {
@@ -130,7 +129,7 @@ class Message extends Timestampable
      * Set file
      *
      * @param string $file
-     * @return Message
+     * @return PrivateMessage
      */
     public function setFile($file)
     {
@@ -142,7 +141,7 @@ class Message extends Timestampable
     /**
      * Get file
      *
-     * @return string
+     * @return string 
      */
     public function getFile()
     {
@@ -153,9 +152,9 @@ class Message extends Timestampable
      * Set originalFileName
      *
      * @param string $originalFileName
-     * @return Message
+     * @return PrivateMessage
      */
-    public function setOriginaFileName($originalFileName)
+    public function setOriginalFileName($originalFileName)
     {
         $this->originalFileName = $originalFileName;
 
@@ -165,7 +164,7 @@ class Message extends Timestampable
     /**
      * Get originalFileName
      *
-     * @return string
+     * @return string 
      */
     public function getOriginalFileName()
     {
@@ -173,33 +172,33 @@ class Message extends Timestampable
     }
 
     /**
-     * Set topic
+     * Set conversation
      *
-     * @param \Forum\CoreBundle\Entity\Topic $topic
-     * @return Message
+     * @param \Forum\CoreBundle\Entity\Conversation $conversation
+     * @return PrivateMessage
      */
-    public function setTopic(\Forum\CoreBundle\Entity\Topic $topic)
+    public function setConversation(\Forum\CoreBundle\Entity\Conversation $conversation)
     {
-        $this->topic = $topic;
+        $this->conversation = $conversation;
 
         return $this;
     }
 
     /**
-     * Get topic
+     * Get conversation
      *
-     * @return \Forum\CoreBundle\Entity\Topic 
+     * @return \Forum\CoreBundle\Entity\Conversation 
      */
-    public function getTopic()
+    public function getConversation()
     {
-        return $this->topic;
+        return $this->conversation;
     }
 
     /**
      * Set user
      *
      * @param \Forum\CoreBundle\Entity\User $user
-     * @return Message
+     * @return PrivateMessage
      */
     public function setUser(\Forum\CoreBundle\Entity\User $user)
     {
@@ -219,7 +218,7 @@ class Message extends Timestampable
     }
 
     public function getUploadRootDir() {
-        return 'bundles/core/messages_uploads';
+        return 'bundles/core/private_messages_uploads';
     }
 
     public function uploadFile()

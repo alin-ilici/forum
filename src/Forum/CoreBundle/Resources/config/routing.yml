@@ -40,17 +40,17 @@ forum_core_topic_topic:
     defaults: { _controller: CoreBundle:Topic:topic, topicSlug: null, page: null }
 
 forum_core_topic_post_message:
-    path: /topic/{topicSlug}/postMessage/{messageId}
+    path: /topic/{topicSlug}/postMessage/postMessage/{messageId}
     defaults: { _controller: CoreBundle:Topic:postMessage, topicSlug: null, messageId: null }
 
 forum_core_topic_delete_message:
-    path: /topic/delete/{messageId}
+    path: /topic/delete/delete/{messageId}
     defaults: { _controller: CoreBundle:Topic:deleteMessage }
     options:
         expose: true
 
 forum_core_topic_move_message:
-    path: /topic/move/{messageId}
+    path: /topic/move/move/{messageId}
     defaults: { _controller: CoreBundle:Topic:moveMessage }
     options:
         expose: true
@@ -94,5 +94,23 @@ forum_core_profile_page_change_password:
 forum_core_notification_check_for_new_notifications:
     path: /checkForNewNotifications/{userId}
     defaults: { _controller: CoreBundle:Notification:checkForNewNotifications, userId: null }
+    options:
+        expose: true
+
+forum_core_conversation_show_conversations:
+    path: /privateMessaging/show/{conversationSlug}
+    defaults: { _controller: CoreBundle:Conversation:showConversations, conversationSlug: null }
+    options:
+        expose: true
+
+forum_core_conversation_send_new_private_message:
+    path: /privateMessaging/sendNewPrivateMessage
+    defaults: { _controller: CoreBundle:Conversation:sendNewPrivateMessage }
+    options:
+        expose: true
+
+forum_core_conversation_reply_to_conversation:
+    path: /privateMessaging/replyToConversation/{conversationSlug}
+    defaults: { _controller: CoreBundle:Conversation:replyToConversation, conversationSlug: null }
     options:
         expose: true

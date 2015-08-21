@@ -62,6 +62,16 @@ body {
     cursor: pointer;
 }
 
+#privateMessageIcon {
+    widht: 32px;
+    height: 32px;
+}
+
+#privateMessageIcon:hover {
+    background-color: green;
+    cursor: pointer;
+}
+
 .displayInLine {
     display: inline-block;
 }
@@ -71,9 +81,21 @@ body {
     margin-right: 5px;
 }
 
+.makeSpaceTop {
+    margin-top: 15px;
+}
+
+.makeSpaceBottom {
+    margin-bottom: 15px;
+}
+
 .makeMoreSpaceRight {
     margin-left: 5px;
     margin-right: 20px;
+}
+
+.textAlignLeft {
+    text-align: left;
 }
 
 .noSelect {
@@ -178,4 +200,58 @@ body {
 .markAsReadPicture {
     position: relative;
     bottom: 2px;
+}
+
+.myQuote {
+    margin: 5px 5px 10px;
+    border: 1px solid green;
+    border-style: dotted;
+    border-left: 4px solid green;
+    border-left-style: solid;
+}
+
+.myQuoteHeader {
+    padding: 5px 5px;
+    background-color: #79C760;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.myQuoteMessage {
+    padding: 5px 5px;
+}
+
+#uploadedFileNameDiv {
+    width: 50%;
+}
+
+.messageOriginalFileName {
+    width: 50%;
+}
+
+.replyMessageOptions {
+    padding: 5px;
+}
+
+.hoverReplyMessageOption {
+    display: inline-block;
+    padding: 5px;
+}
+
+.hoverReplyMessageOption:hover {
+    cursor: pointer;
+    background-color: grey;
+}
+
+#emoticonsZone, #emoticonsZonePM {
+    display: none;
+}
+
+#emoticonsZone img, #emoticonsZonePM img {
+    margin: 5px;
+}
+
+#hyperlink, #hyperlinkPM {
+    width: 400px;
+    display: inline-block;
 }

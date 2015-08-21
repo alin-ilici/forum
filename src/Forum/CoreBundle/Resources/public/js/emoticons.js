@@ -105,7 +105,22 @@ $(document).ready(function($) {
         emotify.emoticons('/bundles/core/emoticons/', smilies);
     }
 
-    var html = '';
+    var html = '', elementToWriteIn = 'message_name', prefix = '';
+
+    if ($('#whatPageIsLoaded').text() == 'conversation') {
+        elementToWriteIn = 'privateMessageText';
+        prefix = 'PM';
+    }
+
+    $('#newConversationModal').on('shown.bs.modal', function() {
+        elementToWriteIn = 'privateMessageText';
+        prefix = 'PM';
+    });
+
+    $('#newConversationModal').on('hidden.bs.modal', function() {
+        elementToWriteIn = 'message_name';
+        prefix = '';
+    });
 
     // Generate "emoticons key" table for this example.
     $.each(emotify.emoticons(), function(k, v) {
@@ -114,21 +129,22 @@ $(document).ready(function($) {
 
     $('#emoticonsZone').html(html);
 
-    $('.smiley').on('click', function() {
-        var imageTitle,
-            textareaContent;
+    $('#emoticonsZonePM').html(html);
+
+    $(document).on('click', '.smiley', function() {
+        var imageTitle, textareaContent;
         imageTitle = $(this).attr('title');
         imageTitle = imageTitle.split(", ");
 
-        textareaContent = $('#message_name').val();
-        $('#message_name').val(textareaContent + imageTitle[1]);
+        textareaContent = $('#' + elementToWriteIn).val();
+        $('#' + elementToWriteIn).val(textareaContent + imageTitle[1]);
     });
 
-    $("#showSmiles").on('click', function() {
-        if ($("#emoticonsZone").is(':visible')) {
-            $("#emoticonsZone").hide();
+    $(document).on('click', "#showSmiles, #showSmilesPM", function() {
+        if ($("#emoticonsZone" + prefix).is(':visible')) {
+            $("#emoticonsZone" + prefix).hide();
         } else {
-            $("#emoticonsZone").show();
+            $("#emoticonsZone" + prefix).show();
         }
     });
 });

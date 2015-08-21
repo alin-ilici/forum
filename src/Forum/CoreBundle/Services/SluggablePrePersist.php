@@ -4,6 +4,7 @@ namespace Forum\CoreBundle\Services;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Forum\CoreBundle\Entity\Message;
+use Forum\CoreBundle\Entity\PrivateMessage;
 
 /**
  * Class SluggablePrePersist
@@ -24,7 +25,8 @@ class SluggablePrePersist
         $entity = $args->getEntity();
         $em = $args->getEntityManager();
 
-        if ($entity instanceof Message) {
+        if ($entity instanceof Message
+        || $entity instanceof PrivateMessage) {
             $entity->setSlug($this->generateRandomNumber());
         }
     }

@@ -1,0 +1,95 @@
+#myConversationsCaption {
+    background-color: #33CC33;
+    padding: 10px;
+    border-radius: 5px;
+    border: 2px solid #fff;
+    margin-bottom: 1px;
+    font-weight: bold;
+    color: white;
+    font-size: 12px;
+}
+
+.conversationsPageTable {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid black;
+}
+
+.conversationsPageTable tr td {
+    border: 1px solid white;
+    background-color: #C2FFA3;
+    border-radius: 3px;
+}
+
+#sendMeAPrivateMessage {
+    float: right;
+    margin-right: 1%;
+}
+
+.nav-tabs {
+    border-bottom: none;
+}
+
+.tabs {
+    width: 98%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.fromUserAvatar {
+    max-width: 48px;
+    max-height: 48px;
+}
+
+.twelvePxFontSize {
+    font-size: 12px;
+}
+
+#conversationParticipants {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 15px;
+    background-color: #33CC33;
+    border: 2px solid black;
+    border-radius: 5px;
+    color: white;
+    text-align: center;
+}
+
+#conversationParticipants table {
+    width: 100%;
+}
+
+#conversationParticipantsParticipants {
+    border-bottom: 2px solid white;
+    padding: 5px;
+    font-weight: bold;
+    font-size: 20px;
+    /*background-color: #265a88;*/
+    background-image: linear-gradient(to bottom, #337ab7 0%, #265a88 100%);
+}
+
+.participantAvatar {
+    max-width: 64px;
+    max-height: 64px;
+    margin-bottom: 5px;
+}
+
+.participant {
+    width: 45%;
+    padding: 5px;
+}
+
+.betweenParticipants {
+    width: 10%;
+    font-weight: bold;
+    font-size: 20px;
+    /*background-color: #265a88;*/
+    background-image: linear-gradient(to bottom, #337ab7 0%, #265a88 100%);
+    border-left: 2px solid white;
+    border-right: 2px solid white;
+}

@@ -24,6 +24,16 @@ class MessageType extends AbstractType
                 )
             )
             ->add(
+                'file',
+                'file',
+                array(
+                    'label' => 'Upload file',
+                    'required' => false,
+                    'attr' => array(
+                    )
+                )
+            )
+            ->add(
                 'save',
                 'submit',
                 array(

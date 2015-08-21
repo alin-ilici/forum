@@ -1,0 +1,156 @@
+{% extends "CoreBundle::layout.html.twig" %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/core/css/conversation.css') }}" />
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/core/js/ba-emotify.js') }}"></script>
+    <script src="{{ asset('bundles/core/js/emoticons.js') }}"></script>
+    <script src="{{ asset('bundles/core/js/replyOptions.js') }}"></script>
+    <script src="{{ asset('bundles/core/js/conversation.js') }}"></script>
+{% endblock %}
+
+{% block mainBody %}
+
+    <div class="whereAmI">{{ whereAmI | raw }}</div>
+
+    {% for type, messages in app.session.flashbag.all() %}
+        {% if type == 'success' %}
+            {% set flashbagClass = 'alert alert-success alert-dismissible flashbag' %}
+        {% else %}
+            {% set flashbagClass = 'alert alert-danger alert-dismissible flashbag' %}
+        {% endif %}
+        {% for message in messages %}
+            <div class="{{ flashbagClass }}" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+    <button type="button" id="sendMeAPrivateMessage" class="btn btn-info btn-sm">New private message</button>
+
+    <div class="tabs">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active">
+                <a href="#received" aria-controls="general" role="tab" data-toggle="tab">Received</a>
+            </li>
+            <li role="presentation">
+                <a href="#sent" aria-controls="topics" role="tab" data-toggle="tab">Sent</a>
+            </li>
+        </ul>
+
+        <div id="myConversationsCaption">
+            My Conversations
+        </div>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="received">
+                <table class="conversationsPageTable">
+                    {% for conversation in conversationsReceived %}
+                        <tr>
+                            <td class="categoryAndSubcategoryPictureColumn">
+                                {% if conversation['conversation'].fromUser.avatar != null %}
+                                    <img src="{{ asset('/bundles/core/users_avatars/' ~ conversation['conversation'].fromUser.avatar) }}" alt="User avatar" class="fromUserAvatar"/>
+                                {% else %}
+                                    <img src="{{ asset('/bundles/core/images/no-profile-img.gif') }}" alt="User avatar" class="fromUserAvatar"/>
+                                {% endif %}
+                            </td>
+
+                            <td class="categoryAndSubcategoryColumn">
+                                <a href="{{ path('forum_core_conversation_show_conversations', { 'conversationSlug': conversation['conversation'].slug }) }}">{{ conversation['conversation'].name }}</a>
+                                <br/>
+                        <span class="twelvePxFontSize">
+                            Started by <a href="{{ path('forum_core_profile_page_profile_page', { 'username': conversation['conversation'].fromUser.username }) }}">{{ conversation['conversation'].fromUser.username }}</a>, sent to <a href="{{ path('forum_core_profile_page_profile_page', { 'username': conversation['conversation'].toUser.username }) }}">{{ conversation['conversation'].toUser.username }}</a>
+                        </span>
+                            </td>
+
+                            <td class="topicsAndMessagesColumn">
+                                {% if conversation['conversation'].privateMessages | length == 1 %}
+                                    <span class="twelvePxFontSize">{{ conversation['conversation'].privateMessages | length }} reply</span>
+                                {% else %}
+                                    <span class="twelvePxFontSize">{{ conversation['conversation'].privateMessages | length }} replies</span>
+                                {% endif %}
+                            </td>
+
+                            <td class="categoryAndSubcategoryPictureColumn">
+                                {% if conversation['lastPerson'].user.avatar != null %}
+                                    <img src="{{ asset('/bundles/core/users_avatars/' ~ conversation['lastPerson'].user.avatar) }}" alt="User avatar" class="fromUserAvatar"/>
+                                {% else %}
+                                    <img src="{{ asset('/bundles/core/images/no-profile-img.gif') }}" alt="User avatar" class="fromUserAvatar"/>
+                                {% endif %}
+                            </td>
+
+                            <td class="lastTopicColumn">
+                                By <a href="{{ path('forum_core_profile_page_profile_page', { 'username': conversation['lastPerson'].user.username }) }}">{{ conversation['lastPerson'].user.username }}</a>
+                                <br/>
+                                {{ conversation['lastPerson'].dateUpdated | date('d-M-Y H:i:s') }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+
+            <div role="tabpanel" class="tab-pane" id="sent">
+                <table class="conversationsPageTable">
+                    {% for conversation in conversationsSent %}
+                        <tr>
+                            <td class="categoryAndSubcategoryPictureColumn">
+                                {% if conversation['conversation'].fromUser.avatar != null %}
+                                    <img src="{{ asset('/bundles/core/users_avatars/' ~ conversation['conversation'].fromUser.avatar) }}" alt="User avatar" class="fromUserAvatar"/>
+                                {% else %}
+                                    <img src="{{ asset('/bundles/core/images/no-profile-img.gif') }}" alt="User avatar" class="fromUserAvatar"/>
+                                {% endif %}
+                            </td>
+
+                            <td class="categoryAndSubcategoryColumn">
+                                <a href="{{ path('forum_core_conversation_show_conversations', { 'conversationSlug': conversation['conversation'].slug }) }}">{{ conversation['conversation'].name }}</a>
+                                <br/>
+                        <span class="twelvePxFontSize">
+                            Started by <a href="{{ path('forum_core_profile_page_profile_page', { 'username': conversation['conversation'].fromUser.username }) }}">{{ conversation['conversation'].fromUser.username }}</a>, sent to <a href="{{ path('forum_core_profile_page_profile_page', { 'username': conversation['conversation'].toUser.username }) }}">{{ conversation['conversation'].toUser.username }}</a>
+                        </span>
+                            </td>
+
+                            <td class="topicsAndMessagesColumn">
+                                {% if conversation['conversation'].privateMessages | length == 1 %}
+                                    <span class="twelvePxFontSize">{{ conversation['conversation'].privateMessages | length }} reply</span>
+                                {% else %}
+                                    <span class="twelvePxFontSize">{{ conversation['conversation'].privateMessages | length }} replies</span>
+                                {% endif %}
+                            </td>
+
+                            <td class="categoryAndSubcategoryPictureColumn">
+                                {% if conversation['lastPerson'].user.avatar != null %}
+                                    <img src="{{ asset('/bundles/core/users_avatars/' ~ conversation['lastPerson'].user.avatar) }}" alt="User avatar" class="fromUserAvatar"/>
+                                {% else %}
+                                    <img src="{{ asset('/bundles/core/images/no-profile-img.gif') }}" alt="User avatar" class="fromUserAvatar"/>
+                                {% endif %}
+                            </td>
+
+                            <td class="lastTopicColumn">
+                                By <a href="{{ path('forum_core_profile_page_profile_page', { 'username': conversation['lastPerson'].user.username }) }}">{{ conversation['lastPerson'].user.username }}</a>
+                                <br/>
+                                {{ conversation['lastPerson'].dateUpdated | date('d-M-Y H:i:s') }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <br/>
+    <br/>
+    <div class="whereAmI">{{ whereAmI | raw }}</div>
+
+    <!-- Add new conversation modal -->
+    {{ include('CoreBundle:Conversation:_newConversation.html.twig') }}
+
+{% endblock %}
