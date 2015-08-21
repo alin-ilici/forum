@@ -108,3 +108,9 @@ forum_core_conversation_send_new_private_message:
     defaults: { _controller: CoreBundle:Conversation:sendNewPrivateMessage }
     options:
         expose: true
+
+forum_core_conversation_reply_to_conversation:
+    path: /privateMessaging/replyToConversation/{conversationSlug}
+    defaults: { _controller: CoreBundle:Conversation:replyToConversation, conversationSlug: null }
+    options:
+        expose: true

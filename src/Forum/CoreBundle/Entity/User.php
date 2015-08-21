@@ -295,9 +295,9 @@ class User extends Timestampable implements UserInterface, \Serializable
     }
 
     /**
-     * Set role
+     * Set roles
      *
-     * @param string $role
+     * @param string $roles
      * @return User
      */
     public function setRoles($roles)
@@ -308,7 +308,7 @@ class User extends Timestampable implements UserInterface, \Serializable
     }
 
     /**
-     * Get role
+     * Get roles
      *
      * @return string 
      */

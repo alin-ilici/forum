@@ -1,0 +1,243 @@
+{% extends "CoreBundle::layout.html.twig" %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/core/css/topic.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/core/css/conversation.css') }}" />
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/core/js/backToTop.js') }}"></script>
+    <script src="{{ asset('bundles/core/js/ba-emotify.js') }}"></script>
+    <script src="{{ asset('bundles/core/js/emoticons.js') }}"></script>
+    <script src="{{ asset('bundles/core/js/replyOptions.js') }}"></script>
+    <script src="{{ asset('bundles/core/js/conversation.js') }}"></script>
+{% endblock %}
+
+{% block mainBody %}
+
+    <div class="noDisplay">
+        <span id="whatPageIsLoaded">conversation</span>
+    </div>
+
+    <div class="whereAmI">{{ whereAmI | raw }}</div>
+
+    {% for type, messages in app.session.flashbag.all() %}
+        {% if type == 'success' %}
+            {% set flashbagClass = 'alert alert-success alert-dismissible flashbag' %}
+        {% else %}
+            {% set flashbagClass = 'alert alert-danger alert-dismissible flashbag' %}
+        {% endif %}
+        {% for message in messages %}
+            <div class="{{ flashbagClass }}" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+    <div id="conversationParticipants">
+        <div id="conversationParticipantsParticipants">
+            PARTICIPANTS
+        </div>
+        <table>
+            <tr>
+                <td class="participant">
+                    {% if conversation.toUser.avatar is not null %}
+                        <img src="{{ asset('bundles/core/users_avatars/' ~ conversation.toUser.avatar) }}" class="participantAvatar" alt="Participant avatar image"/>
+                    {% else %}
+                        <img src="{{ asset('bundles/core/images/no-profile-img.gif') }}" class="participantAvatar" alt="Participant avatar image"/>
+                    {% endif %}
+                    <br/>
+                    <a href="{{ path('forum_core_profile_page_profile_page', { 'username': conversation.toUser.username }) }}">
+                        {{ conversation.toUser.username }}
+                    </a>
+                </td>
+
+                <td class="betweenParticipants">
+                    AND
+                </td>
+
+                <td class="participant">
+                    {% if conversation.fromUser.avatar is not null %}
+                        <img src="{{ asset('bundles/core/users_avatars/' ~ conversation.fromUser.avatar) }}" class="participantAvatar" alt="Participant avatar image"/>
+                    {% else %}
+                        <img src="{{ asset('bundles/core/images/no-profile-img.gif') }}" class="participantAvatar" alt="Participant avatar image"/>
+                    {% endif %}
+                    <br/>
+                    <a href="{{ path('forum_core_profile_page_profile_page', { 'username': conversation.fromUser.username }) }}">
+                        {{ conversation.fromUser.username }}
+                    </a>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <table id="topicPageTable">
+        <caption>
+            {{ conversation.name }}
+        </caption>
+
+        {% for privateMessage in privateMessages %}
+            <tr>
+                <td colspan="2">
+                    <div id="{{ privateMessage.id }}" class="messageMarginTop"></div>
+                </td>
+            </tr>
+
+            <tr class="messageReplierAndPostDate">
+                <td>
+                    <div class="dropdown">
+                        <button class="btn btn-default btn-sm dropdown-toggle" type="button" id="dropdownMenu{{ privateMessage.id }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            {{ privateMessage.user.username }}
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu{{ privateMessage.id }}">
+                            <li>
+                                <a href="{{ path('forum_core_profile_page_profile_page', { 'username': privateMessage.user.username }) }}" class="viewProfile" data-value="{{ privateMessage.id }}">
+                                    View profile
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </td>
+                <td>
+                    <div class="leftPosition">
+                        Sent {{ privateMessage.dateCreated | date('Y-m-d H:i:s') }}
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="aboutReplier">
+                    {% if privateMessage.user.avatar is not null %}
+                        <img src="{{ asset('bundles/core/users_avatars/' ~ privateMessage.user.avatar) }}" class="userAvatarImage" alt="User avatar image"/>
+                    {% else %}
+                        <img src="{{ asset('bundles/core/images/no-profile-img.gif') }}" class="userAvatarImage" alt="User avatar image"/>
+                    {% endif %}
+                    <br/>
+                    <br/>
+                    <div class="replierInfo">
+                        Posts: {{ privateMessage.user.messages | length }}
+                        <br/>
+                        Joined: {{ privateMessage.user.dateCreated | date('d.m.Y') }}
+                        <br/>
+                        Member ID: {{ privateMessage.user.id }}
+                    </div>
+                </td>
+                <td class="messageContent">
+                    <script>
+                        if (Object.getOwnPropertyNames(emotify.emoticons()).length === 0) {
+                            emotify.emoticons('/bundles/core/emoticons/', smilies);
+                        }
+
+                        var text = $('<div/>').html("{{ privateMessage.name }}").text();
+                        document.write(emotify(text));
+                    </script>
+
+                    {% if privateMessage.file != null %}
+                        <br/>
+                        <br/>
+                        <br/>
+                        <div class="alert alert-info messageOriginalFileName" role="alert">
+                            <a href="/bundles/core/private_messages_uploads/{{ privateMessage.file }}" target="_blank">{{ privateMessage.originalFileName }}</a>
+                        </div>
+                    {% endif %}
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="2" class="messageOptions">
+                    <div class="leftPosition">
+                        <button type="button" class="btn btn-primary btn-sm backToTop">
+                            <span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
+                            <a href="#" class="cd-top">&nbsp;Back to top</a>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    <br/>
+
+    <div id="replyToThisTopic">
+        Reply to this conversation
+    </div>
+    <div id="replyMessageBox">
+        <div class="replyMessage-left">
+            {% if app.user.avatar is not null %}
+                <img src="{{ asset('bundles/core/users_avatars/' ~ app.user.avatar) }}" class="userAvatarImage" alt="User avatar image"/>
+            {% else %}
+                <img src="{{ asset('bundles/core/images/no-profile-img.gif') }}" class="userAvatarImage" alt="User avatar image"/>
+            {% endif %}
+        </div>
+        <div class="replyMessage-right">
+            <div class="replyMessageOptions noSelect">
+                <div id="boldTextPM" class="hoverReplyMessageOption">
+                    <span class="glyphicon glyphicon-bold makeSpace" aria-hidden="true"></span>
+                </div>
+                <div id="italicTextPM" class="hoverReplyMessageOption">
+                    <span class="glyphicon glyphicon-italic makeSpace" aria-hidden="true"></span>
+                </div>
+                <div id="underlinedTextPM" class="hoverReplyMessageOption">
+                    <span class="glyphicon glyphicon-text-width makeSpace" aria-hidden="true"></span>
+                </div>
+                <div id="showSmilesPM" class="hoverReplyMessageOption">
+                    <span class="glyphicon glyphicon-tree-conifer makeSpace" aria-hidden="true"></span>
+                </div>
+                <div id="hyperlinkTextPM" class="hoverReplyMessageOption">
+                    <span class="glyphicon glyphicon-link makeSpace" aria-hidden="true"></span>
+                </div>
+                <div id="insertFilePM" class="hoverReplyMessageOption">
+                    <span class="glyphicon glyphicon-paperclip makeSpace" aria-hidden="true"></span>
+                </div>
+
+                <div id="emoticonsZonePM"></div>
+            </div>
+            <form name="newConversationForm" action="{{ path('forum_core_conversation_reply_to_conversation', { 'conversationSlug': conversation.slug }) }}" method="post" enctype="multipart/form-data">
+                <textarea id="privateMessageText" class="form-control makeSpaceBottom" name="privateMessageText" required="required" rows="5"></textarea>
+
+                <span class="noDisplay"><input type="file" id="uploadedFilePM" name="uploadedFilePM"></span>
+
+                <div id="uploadedFileNameDivPM" class="alert alert-info alert-dismissible noDisplay" role="alert">
+                    <button id="deleteUploadedFilePM" type="button" class="close" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <span id="uploadedFileNamePM"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-sm submitMessageButton rightPosition makeSpaceBottom">Send</button>
+            </form>
+        </div>
+    </div>
+
+    <br/>
+    <br/>
+    <div class="whereAmI">{{ whereAmI | raw }}</div>
+
+    <div class="modal fade" id="addHyperlinkModalPM">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Add hyperlink</h4>
+                </div>
+                <div class="modal-body">
+                    <label for="hyperlinkPM">Hyperlink: </label>
+                    <input type="text" id="hyperlinkPM" class="form-control" required="required">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="confirmAddHyperlinkButtonPM" class="btn btn-default disabled" data-dismiss="modal">Ok</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {#<!-- Add new conversation modal -->#}
+    {#{{ include('CoreBundle:Conversation:_newConversation.html.twig') }}#}
+
+{% endblock %}

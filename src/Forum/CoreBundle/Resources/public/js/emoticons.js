@@ -107,6 +107,11 @@ $(document).ready(function($) {
 
     var html = '', elementToWriteIn = 'message_name', prefix = '';
 
+    if ($('#whatPageIsLoaded').text() == 'conversation') {
+        elementToWriteIn = 'privateMessageText';
+        prefix = 'PM';
+    }
+
     $('#newConversationModal').on('shown.bs.modal', function() {
         elementToWriteIn = 'privateMessageText';
         prefix = 'PM';

@@ -54,6 +54,7 @@ class TopicController extends Controller
         $messages = $messageRepository->createQueryBuilder('m')
             ->where('m.topic = :id_topic')
             ->setParameter('id_topic', $topic->getId())
+            ->orderBy('m.dateCreated', 'ASC')
             ->setFirstResult(($page - 1) * $maxMessagesPerPage)
             ->setMaxResults($maxMessagesPerPage)
             ->getQuery()
@@ -135,6 +136,7 @@ class TopicController extends Controller
                 $message = new Message();
                 $message->setName(preg_replace( "/\r|\n/", " ", $formParams['name']));
                 $message->setTopic($topic);
+                // this is Symfony2 new way to get the logged in user
                 $message->setUser($this->getUser());
 
                 if ($file != null) {

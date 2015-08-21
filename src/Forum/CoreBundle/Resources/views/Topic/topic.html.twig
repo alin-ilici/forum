@@ -8,6 +8,7 @@
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ asset('bundles/core/js/ba-emotify.js') }}"></script>
+    <script src="{{ asset('bundles/core/js/backToTop.js') }}"></script>
     <script src="{{ asset('bundles/core/js/topic.js') }}"></script>
     <script src="{{ asset('bundles/core/js/emoticons.js') }}"></script>
     <script src="{{ asset('bundles/core/js/replyOptions.js') }}"></script>
@@ -271,6 +272,7 @@
 
     <div class="whereAmI">{{ whereAmI | raw }}</div>
 
+    <!-- Add move message modal -->
     <div class="modal fade" id="moveMessageModalWindow">
         <div class="modal-dialog">
             <div class="modal-content">

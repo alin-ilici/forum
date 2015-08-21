@@ -14,6 +14,14 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class Notification extends Timestampable
 {
+    const NEW_PRIVATE_MESSAGE = "newPrivateMessage";
+    const PRIVATE_MESSAGE_RESPONSE = "privateMessageResponse";
+    const LIKE = "like";
+    const FRIEND_REQUEST = "friendRequest";
+
+    const SEEN = 1;
+    const NOT_SEEN = 0;
+
     /**
      * @var integer
      *
@@ -35,7 +43,7 @@ class Notification extends Timestampable
     /**
      * @var integer
      *
-     * @ORM\Column(name="seen", type="integer", nullable=false)
+     * @ORM\Column(name="seen", type="integer", nullable=false, options={"default" = 0})
      */
     private $seen;
 
@@ -86,10 +94,10 @@ class Notification extends Timestampable
     /**
      * Set type
      *
-     * @param \notificationTypeEnumType $type
+     * @param string $type
      * @return Notification
      */
-    public function setType(\notificationTypeEnumType $type)
+    public function setType($type)
     {
         $this->type = $type;
 
@@ -99,7 +107,7 @@ class Notification extends Timestampable
     /**
      * Get type
      *
-     * @return \notificationTypeEnumType 
+     * @return string
      */
     public function getType()
     {

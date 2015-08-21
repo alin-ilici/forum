@@ -1,6 +1,12 @@
 $(document).ready(function() {
     var elementToWriteIn = 'message_name', prefix = '', insertFileElementToBeTriggered = 'message_file';
 
+    if ($('#whatPageIsLoaded').text() == 'conversation') {
+        elementToWriteIn = 'privateMessageText';
+        prefix = 'PM';
+        insertFileElementToBeTriggered = 'uploadedFilePM';
+    }
+
     $(document).on('shown.bs.modal', '#newConversationModal', function() {
         elementToWriteIn = 'privateMessageText';
         prefix = 'PM';
@@ -36,7 +42,6 @@ $(document).ready(function() {
     });
 
     $(document).on('click', '#hyperlinkText, #hyperlinkTextPM', function() {
-        console.log("aaa");
         var selection = getSelection(document.getElementById(elementToWriteIn));
 
         if (selection.startPos != selection.endPos) {
