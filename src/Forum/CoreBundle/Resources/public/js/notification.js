@@ -35,7 +35,7 @@ $(document).ready(function(){
 
 //var socket = io();
 //
-//socket.emit('chech_message', "aaa");
+//socket.emit('check_message', "aaa");
 //
 //socket.on('check_message', function(msg) {
 //    addNotification();
