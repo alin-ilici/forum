@@ -16,3 +16,4 @@ parameters:
     maxMessagesPerPage: 15
     maxTopicsPerPage: 10
     maxResultsPerPage: 15
+    maxMembersPerPage: 15

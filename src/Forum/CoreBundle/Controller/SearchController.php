@@ -22,9 +22,6 @@ class SearchController extends Controller
         /** @var \Forum\CoreBundle\Repository\MessageRepository $messageRepository */
         $messageRepository = $this->getDoctrine()->getRepository("CoreBundle:Message");
 
-        /** @var \Forum\CoreBundle\Repository\UserRepository $userRepository */
-        $userRepository = $this->getDoctrine()->getRepository("CoreBundle:User");
-
         $whereAmI = '<a href="' . $this->generateUrl('forum_core_default_homepage') . '">Forum</a> > Search results';
 
         if ($searchIn === 'inTopics') {
@@ -77,7 +74,7 @@ class SearchController extends Controller
                 'whereAmI' => $whereAmI
             ));
         } elseif ($searchIn === 'inMembers') {
-            ;
+            return $this->redirect($this->generateUrl('forum_core_user_show', array('like' => $searchFor)));
         }
     }
 }

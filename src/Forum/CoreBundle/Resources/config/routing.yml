@@ -120,3 +120,9 @@ forum_core_search_search_results:
     defaults: { _controller: CoreBundle:Search:searchResults }
     options:
         expose: true
+
+forum_core_user_show:
+    path: /user/show/{page}/{like}
+    defaults: { _controller: CoreBundle:User:show, page: 1, like: null }
+    options:
+        expose: true

@@ -1,0 +1,114 @@
+{% extends "CoreBundle::layout.html.twig" %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/core/css/subcategory.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/core/css/conversation.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/core/css/searchResults.css') }}" />
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/core/js/ba-emotify.js') }}"></script>
+    <script src="{{ asset('bundles/core/js/emoticons.js') }}"></script>
+    <script src="{{ asset('bundles/core/js/replyOptions.js') }}"></script>
+    <script src="{{ asset('bundles/core/js/searchResults.js') }}"></script>
+{% endblock %}
+
+{% block mainBody %}
+    <div class="whereAmI">{{ whereAmI | raw }}</div>
+
+    <div class="pageNameAndDescription">
+        <div class="pageName">Members List</div>
+    </div>
+    <br/>
+
+    <nav class="pagePagination noSelect">
+        <ul class="pagination">
+            {% if currentPage == 1 %}
+                <li class="disabled"><span aria-label="Previous" aria-hidden="true">«</span></li>
+            {% else %}
+                <li><a href="{{ path('forum_core_user_show', { 'like': like, 'page': 1 }) }}" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
+            {% endif %}
+            {% for page in 1..totalPages %}
+                {% if currentPage == page %}
+                    <li class="active"><a href="{{ path('forum_core_user_show', { 'like': like, 'page': page }) }}">{{ page }} <span class="sr-only">(current)</span></a></li>
+                {% else %}
+                    <li><a href="{{ path('forum_core_user_show', { 'like': like, 'page': page }) }}">{{ page }}</a></li>
+                {% endif %}
+            {% endfor %}
+            {% if currentPage == totalPages %}
+                <li class="disabled"><span aria-label="Next" aria-hidden="true">»</span></li>
+            {% else %}
+                <li><a href="{{ path('forum_core_user_show', { 'like': like, 'page': totalPages }) }}" aria-label="Next"><span aria-hidden="true">»</span></a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <table id="subcategoryPageTable">
+        <caption>
+            Members
+        </caption>
+
+        {% for member in members %}
+            <tr>
+                <td class="memberAvatarColumn">
+                    {% if member.avatar != null %}
+                        <img src="{{ asset('/bundles/core/users_avatars/' ~ member.avatar) }}" alt="User avatar" class="fromUserAvatar"/>
+                    {% else %}
+                        <img src="{{ asset('/bundles/core/images/no-profile-img.gif') }}" alt="User avatar" class="fromUserAvatar"/>
+                    {% endif %}
+                </td>
+
+                <td class="memberUsername">
+                    {% if app.user %}
+                        <a href="{{ path('forum_core_profile_page_profile_page', { 'username': member.username }) }}">{{ member.username }}</a>
+                    {% else %}
+                        {{ member.username }}
+                    {% endif %}
+                </td>
+
+                <td class="memberDateCreated">
+                    Joied {{ member.dateCreated | date('d-m-Y') }}
+                </td>
+
+                <td class="memberMessages">
+                    {{ member.messages | length }} messages
+                </td>
+
+                {% if app.user %}
+                    <td class="memberActions">
+                        <button type="button" class="btn btn-success btn-sm sendMeAMessage" data-value="{{ member.username }}">Send me a private message</button>
+                    </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </table>
+
+    <nav class="pagePagination noSelect">
+        <ul class="pagination">
+            {% if currentPage == 1 %}
+                <li class="disabled"><span aria-label="Previous" aria-hidden="true">«</span></li>
+            {% else %}
+                <li><a href="{{ path('forum_core_user_show', { 'like': like, 'page': 1 }) }}" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
+            {% endif %}
+            {% for page in 1..totalPages %}
+                {% if currentPage == page %}
+                    <li class="active"><a href="{{ path('forum_core_user_show', { 'like': like, 'page': page }) }}">{{ page }} <span class="sr-only">(current)</span></a></li>
+                {% else %}
+                    <li><a href="{{ path('forum_core_user_show', { 'like': like, 'page': page }) }}">{{ page }}</a></li>
+                {% endif %}
+            {% endfor %}
+            {% if currentPage == totalPages %}
+                <li class="disabled"><span aria-label="Next" aria-hidden="true">»</span></li>
+            {% else %}
+                <li><a href="{{ path('forum_core_user_show', { 'like': like, 'page': totalPages }) }}" aria-label="Next"><span aria-hidden="true">»</span></a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <div class="whereAmI">{{ whereAmI | raw }}</div>
+
+    <!-- Add new conversation modal -->
+    {{ include('CoreBundle:Conversation:_newConversation.html.twig') }}
+{% endblock %}

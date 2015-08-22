@@ -20,26 +20,8 @@
 
     <div class="whereAmI">{{ whereAmI | raw }}</div>
 
-    {#{% for type, messages in app.session.flashbag.all() %}#}
-        {#{% if type == 'success' %}#}
-            {#{% set flashbagClass = 'alert alert-success alert-dismissible flashbag' %}#}
-        {#{% else %}#}
-            {#{% set flashbagClass = 'alert alert-danger alert-dismissible flashbag' %}#}
-        {#{% endif %}#}
-        {#{% for message in messages %}#}
-            {#<div class="{{ flashbagClass }}" role="alert">#}
-                {#<button type="button" class="close" data-dismiss="alert" aria-label="Close">#}
-                    {#<span aria-hidden="true">&times;</span>#}
-                {#</button>#}
-                {#{{ message }}#}
-            {#</div>#}
-        {#{% endfor %}#}
-    {#{% endfor %}#}
-
-    {#<button type="button" id="sendMeAPrivateMessage" class="btn btn-info btn-sm">New private message</button>#}
-
     {% if results is empty %}
-        No results!
+        <div class="alert alert-info noResults" role="alert">No results!</div>
     {% else %}
         {% if whatToRender == 'topics' %}
             <table id="subcategoryPageTable">
