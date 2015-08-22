@@ -71,14 +71,6 @@
     /*background-color: green;*/
 /*}*/
 
-.leftPosition {
-    float: left;
-}
-
-.rightPosition {
-    float: right;
-}
-
 #replyMessageBox {
     width: 98%;
     margin-left: auto;

@@ -114,3 +114,9 @@ forum_core_conversation_reply_to_conversation:
     defaults: { _controller: CoreBundle:Conversation:replyToConversation, conversationSlug: null }
     options:
         expose: true
+
+forum_core_default_search_results:
+    path: /searchResults
+    defaults: { _controller: CoreBundle:Default:searchResults }
+    options:
+        expose: true

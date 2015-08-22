@@ -52,6 +52,44 @@
                         <button id="logOutButton" type="button" class="btn btn-primary btn-sm makeSpace">
                             Log Out
                         </button>
+
+                        {#<div id="searchInBlock" class="&#123;&#35;dropdown&#35;&#125; btn-group rightPosition">#}
+                            {#&#123;&#35;<button class="btn btn-default dropdown-toggle" type="button" id="dropdownSelectWhatToSearchFor" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">&#35;&#125;#}
+                                {#&#123;&#35;Search in&#35;&#125;#}
+                                {#&#123;&#35;<span class="caret"></span>&#35;&#125;#}
+                            {#&#123;&#35;</button>&#35;&#125;#}
+                            {#<button type="button" class="btn btn-primary">Search in</button>#}
+                            {#<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">#}
+                                {#<span class="caret"></span>#}
+                                {#<span class="sr-only">Toggle Dropdown</span>#}
+                            {#</button>#}
+                            {#<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownSelectWhatToSearchFor">#}
+                                {#<li><a href="">Topics</a></li>#}
+                                {#<li><a href="">Messages</a></li>#}
+                                {#<li><a href="">Members</a></li>#}
+                            {#</ul>#}
+                        {#</div>#}
+
+                        <div id="searchFormDiv" class="displayInLine rightPosition">
+                            <form action="{{ path('forum_core_default_search_results') }}" method="post">
+                                <select id="searchInBlock" class="form-control rightPosition" name="searchInBlock">
+                                    <option value="inTopics">Topics</option>
+                                    <option value="inMessages">Messages</option>
+                                    <option value="inMembers">Members</option>
+                                </select>
+
+                                <div id="searchBlock" class="col-lg-6 rightPosition">
+                                    <div class="input-group">
+                                        <input type="text" id="searchInput" class="form-control" name="searchInput" placeholder="Search for...">
+                                        <span class="input-group-btn">
+                                            <button id="searchButton" class="btn btn-default" type="submit">
+                                                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     {% else %}
                         <!-- Button trigger modal -->
                         <button id="logInButton" type="button" class="btn btn-primary btn-sm makeSpace">

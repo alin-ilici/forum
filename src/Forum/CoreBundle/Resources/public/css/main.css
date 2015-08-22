@@ -38,6 +38,31 @@ body {
     text-align: center;
 }
 
+#searchFormDiv {
+    width: 50%;
+    margin-right: 1%;
+}
+
+#searchInBlock {
+    width: 20%;
+    position: relative;
+    top: 5px;
+}
+
+#searchBlock {
+    width: 60%;
+}
+
+#searchInput {
+    float: none;
+    line-height: 1.52857143;
+}
+
+#searchButton {
+    position: relative;
+    top: 1px;
+}
+
 #logInLogOutToolbar {
     background-color: #33CC33;
     padding-left: 15px;
@@ -92,6 +117,14 @@ body {
 .makeMoreSpaceRight {
     margin-left: 5px;
     margin-right: 20px;
+}
+
+.leftPosition {
+    float: left;
+}
+
+.rightPosition {
+    float: right;
 }
 
 .textAlignLeft {
