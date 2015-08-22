@@ -115,8 +115,8 @@ forum_core_conversation_reply_to_conversation:
     options:
         expose: true
 
-forum_core_default_search_results:
+forum_core_search_search_results:
     path: /searchResults
-    defaults: { _controller: CoreBundle:Default:searchResults }
+    defaults: { _controller: CoreBundle:Search:searchResults }
     options:
         expose: true

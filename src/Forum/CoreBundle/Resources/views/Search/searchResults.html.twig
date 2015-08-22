@@ -1,0 +1,185 @@
+{% extends "CoreBundle::layout.html.twig" %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/core/css/subcategory.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/core/css/topic.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/core/css/searchResults.css') }}" />
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/core/js/ba-emotify.js') }}"></script>
+    <script src="{{ asset('bundles/core/js/emoticons.js') }}"></script>
+    <script src="{{ asset('bundles/core/js/replyOptions.js') }}"></script>
+    <script src="{{ asset('bundles/core/js/backToTop.js') }}"></script>
+    <script src="{{ asset('bundles/core/js/searchResults.js') }}"></script>
+{% endblock %}
+
+{% block mainBody %}
+
+    <div class="whereAmI">{{ whereAmI | raw }}</div>
+
+    {#{% for type, messages in app.session.flashbag.all() %}#}
+        {#{% if type == 'success' %}#}
+            {#{% set flashbagClass = 'alert alert-success alert-dismissible flashbag' %}#}
+        {#{% else %}#}
+            {#{% set flashbagClass = 'alert alert-danger alert-dismissible flashbag' %}#}
+        {#{% endif %}#}
+        {#{% for message in messages %}#}
+            {#<div class="{{ flashbagClass }}" role="alert">#}
+                {#<button type="button" class="close" data-dismiss="alert" aria-label="Close">#}
+                    {#<span aria-hidden="true">&times;</span>#}
+                {#</button>#}
+                {#{{ message }}#}
+            {#</div>#}
+        {#{% endfor %}#}
+    {#{% endfor %}#}
+
+    {#<button type="button" id="sendMeAPrivateMessage" class="btn btn-info btn-sm">New private message</button>#}
+
+    {% if results is empty %}
+        No results!
+    {% else %}
+        {% if whatToRender == 'topics' %}
+            <table id="subcategoryPageTable">
+                <caption>
+                    Search results
+                </caption>
+                {% for result in results %}
+                    <tr>
+                        <td class="categoryAndSubcategoryPictureColumn">
+                            <img src="{{ asset('bundles/core/images/forumLoggedIn.png') }}" alt="Category and subcategory picture" class="categoryAndSubcategoryPicture"/>
+                        </td>
+
+                        <td class="categoryAndSubcategoryColumn">
+                            <a href="{{ path('forum_core_topic_topic', {topicSlug: result.slug}) }}">{{ result.name }}</a>
+                        </td>
+
+                        <td class="topicsAndMessagesColumn">
+                            {% if result.messages | length == 1 %}
+                                {{ result.messages | length }} reply
+                            {% else %}
+                                {{ result.messages | length }} replies
+                            {% endif %}
+                        </td>
+
+                        <td class="lastTopicColumn">
+                            {{ result.user.username }}
+                            <br/>
+                            {{ result.dateCreated | date('d-m-Y H:i:s') }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+            <br/>
+            <br/>
+        {% elseif whatToRender == 'messages' %}
+            <table id="topicPageTable">
+                <caption>
+                    Search results
+                </caption>
+                {% for message in results %}
+                    <tr>
+                        <td colspan="2">
+                            <div id="{{ message['message'].id }}" class="topicNameByUser">
+                                In topic:
+                                <a href="{{ path('forum_core_topic_topic', { 'topicSlug': message['message'].topic.slug, 'page': message['page'] }) }}#{{ message['message'].id }}">
+                                    {{ message['message'].topic.name }}
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr class="messageReplierAndPostDate">
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-default btn-sm dropdown-toggle" type="button" id="dropdownMenu{{ message['message'].id }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    {{ message['message'].user.username }}
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu{{ message['message'].id }}">
+                                    <li>
+                                        <a href="{{ path('forum_core_profile_page_profile_page', { 'username': message['message'].user.username }) }}" class="viewProfile" data-value="{{ message['message'].id }}">
+                                            View profile
+                                        </a>
+                                    </li>
+                                    {% if app.user.username != message['message'].user.username %}
+                                        <li>
+                                            <a class="sendMeAMessage" data-value="{{ message['message'].user.username }}">
+                                                Send me a private message
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="leftPosition">
+                                Posted on {{ message['message'].dateCreated | date('Y-m-d H:i:s') }}
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="aboutReplier">
+                            {% if message['message'].user.avatar is not null %}
+                                <img src="{{ asset('bundles/core/users_avatars/' ~ message['message'].user.avatar) }}" class="userAvatarImage" alt="User avatar image"/>
+                            {% else %}
+                                <img src="{{ asset('bundles/core/images/no-profile-img.gif') }}" class="userAvatarImage" alt="User avatar image"/>
+                            {% endif %}
+                            <br/>
+                            <br/>
+                            <div class="replierInfo">
+                                Posts: {{ message['message'].user.messages | length }}
+                                <br/>
+                                Joined: {{ message['message'].user.dateCreated | date('d.m.Y') }}
+                                <br/>
+                                Member ID: {{ message['message'].user.id }}
+                            </div>
+                        </td>
+                        <td class="messageContent">
+                            <script>
+                                if (Object.getOwnPropertyNames(emotify.emoticons()).length === 0) {
+                                    emotify.emoticons('/bundles/core/emoticons/', smilies);
+                                }
+
+                                var text = $('<div/>').html("{{ message['message'].name }}").text();
+                                text = parseMessage(text, 0);
+                                document.write(emotify(text));
+                            </script>
+
+                            {% if message['message'].file != null %}
+                                <br/>
+                                <br/>
+                                <br/>
+                                <div class="alert alert-info messageOriginalFileName" role="alert">
+                                    <a href="/bundles/core/messages_uploads/{{ message['message'].file }}" target="_blank">{{ message['message'].originalFileName }}</a>
+                                </div>
+                            {% endif %}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="2" class="messageOptions">
+                            <div class="leftPosition">
+                                <button type="button" class="btn btn-primary btn-sm backToTop">
+                                    <span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
+                                    <a href="#" class="cd-top">&nbsp;Back to top</a>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr class="transparency100"><td colspan="2"></td></tr>
+                {% endfor %}
+            </table>
+        {% endif %}
+    {% endif %}
+
+    <div class="whereAmI">{{ whereAmI | raw }}</div>
+
+    <!-- Add new conversation modal -->
+    {{ include('CoreBundle:Conversation:_newConversation.html.twig') }}
+
+{% endblock %}

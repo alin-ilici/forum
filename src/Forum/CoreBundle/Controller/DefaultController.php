@@ -3,7 +3,6 @@
 namespace Forum\CoreBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller
@@ -67,11 +66,6 @@ class DefaultController extends Controller
             'lastTopic' => $lastTopic,
             'lastMessagePersonForLastTopic' => $lastMessagePersonForLastTopic
         ));
-    }
-
-    public function searchResultsAction(Request $request) {
-        var_dump($request->request);
-        die;
     }
 
     public function adminAction() {

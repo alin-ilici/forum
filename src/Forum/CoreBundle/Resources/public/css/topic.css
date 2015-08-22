@@ -118,6 +118,19 @@
     margin-bottom: 0px;
 }
 
+/* used on search page */
+.topicNameByUser {
+    background-color: #4DB84D;
+    padding: 10px;
+    font-weight: bold;
+    border-bottom: 2px solid white;
+}
+
+.topicNameByUser a {
+    color: black;
+}
+/* end above use */
+
 /*#message_name {*/
     /*display: none;*/
 /*}*/

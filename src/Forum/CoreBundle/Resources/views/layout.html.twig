@@ -71,7 +71,7 @@
                         {#</div>#}
 
                         <div id="searchFormDiv" class="displayInLine rightPosition">
-                            <form action="{{ path('forum_core_default_search_results') }}" method="post">
+                            <form action="{{ path('forum_core_search_search_results') }}" method="post">
                                 <select id="searchInBlock" class="form-control rightPosition" name="searchInBlock">
                                     <option value="inTopics">Topics</option>
                                     <option value="inMessages">Messages</option>
@@ -107,6 +107,11 @@
                     <a href="{{ path('forum_core_default_homepage') }}">
                         <img src="{{ asset('bundles/core/images/forumLogo.png') }}" alt="Home" id="forumLogo"/>
                     </a>
+
+                    <div id="forumsAndMembersButtons" class="displayInLine rightPosition">
+                        <a href="#" class="btn btn-primary makeSpace">FORUMS</a>
+                        <a href="#" class="btn btn-primary">MEMBERS</a>
+                    </div>
                 </div>
             </header>
             <br/>
