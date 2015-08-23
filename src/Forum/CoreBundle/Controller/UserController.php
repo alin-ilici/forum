@@ -44,7 +44,7 @@ class UserController extends Controller
         $totalPages = ((int)$countMembers[1] % $maxMembersPerPage == 0) ?
             (int)((int)$countMembers[1] / $maxMembersPerPage) : (int)((int)$countMembers[1] / $maxMembersPerPage + 1);
 
-        $totalPages = ($countMembers[1] == 0) ? 1 : $totalPages;
+        $totalPages = ($countMembers[1] == 0) ? 0 : $totalPages;
 
         return $this->render('CoreBundle:User:members.html.twig', array(
             'members' => $members,

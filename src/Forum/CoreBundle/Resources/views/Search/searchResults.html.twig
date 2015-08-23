@@ -20,6 +20,41 @@
 
     <div class="whereAmI">{{ whereAmI | raw }}</div>
 
+    <div class="pageNameAndDescription">
+        <div class="pageName">
+            Results for "{{ searchFor }}" in
+            {% if searchIn == 'inTopics' %}
+                "topics"
+            {% elseif searchIn == 'inMessages' %}
+                "messages"
+            {% endif %}
+        </div>
+    </div>
+
+    {% if totalPages != 0 %}
+        <nav class="pagePagination noSelect">
+            <ul class="pagination">
+                {% if currentPage == 1 %}
+                    <li class="disabled"><span aria-label="Previous" aria-hidden="true">«</span></li>
+                {% else %}
+                    <li><a href="{{ path('forum_core_search_search_results', { 'page': 1, 'searchFor': searchFor, 'searchIn': searchIn }) }}" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
+                {% endif %}
+                {% for page in 1..totalPages %}
+                    {% if currentPage == page %}
+                        <li class="active"><a href="{{ path('forum_core_search_search_results', { 'page': page, 'searchFor': searchFor, 'searchIn': searchIn }) }}">{{ page }} <span class="sr-only">(current)</span></a></li>
+                    {% else %}
+                        <li><a href="{{ path('forum_core_search_search_results', { 'page': page, 'searchFor': searchFor, 'searchIn': searchIn }) }}">{{ page }}</a></li>
+                    {% endif %}
+                {% endfor %}
+                {% if currentPage == totalPages %}
+                    <li class="disabled"><span aria-label="Next" aria-hidden="true">»</span></li>
+                {% else %}
+                    <li><a href="{{ path('forum_core_search_search_results', { 'page': totalPages, 'searchFor': searchFor, 'searchIn': searchIn }) }}" aria-label="Next"><span aria-hidden="true">»</span></a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    {% endif %}
+
     {% if results is empty %}
         <div class="alert alert-info noResults" role="alert">No results!</div>
     {% else %}
@@ -54,13 +89,12 @@
                     </tr>
                 {% endfor %}
             </table>
-            <br/>
-            <br/>
         {% elseif whatToRender == 'messages' %}
             <table id="topicPageTable">
                 <caption>
                     Search results
                 </caption>
+                {% set count = 1 %}
                 {% for message in results %}
                     <tr>
                         <td colspan="2">
@@ -153,10 +187,38 @@
                         </td>
                     </tr>
 
-                    <tr class="transparency100"><td colspan="2"></td></tr>
+                    {% if count < results | length %}
+                        <tr class="transparency100"><td colspan="2"></td></tr>
+                    {% endif %}
+
+                    {% set count = count + 1 %}
                 {% endfor %}
             </table>
         {% endif %}
+    {% endif %}
+
+    {% if totalPages != 0 %}
+        <nav class="pagePagination noSelect">
+            <ul class="pagination">
+                {% if currentPage == 1 %}
+                    <li class="disabled"><span aria-label="Previous" aria-hidden="true">«</span></li>
+                {% else %}
+                    <li><a href="{{ path('forum_core_search_search_results', { 'page': 1, 'searchFor': searchFor, 'searchIn': searchIn }) }}" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
+                {% endif %}
+                {% for page in 1..totalPages %}
+                    {% if currentPage == page %}
+                        <li class="active"><a href="{{ path('forum_core_search_search_results', { 'page': page, 'searchFor': searchFor, 'searchIn': searchIn }) }}">{{ page }} <span class="sr-only">(current)</span></a></li>
+                    {% else %}
+                        <li><a href="{{ path('forum_core_search_search_results', { 'page': page, 'searchFor': searchFor, 'searchIn': searchIn }) }}">{{ page }}</a></li>
+                    {% endif %}
+                {% endfor %}
+                {% if currentPage == totalPages %}
+                    <li class="disabled"><span aria-label="Next" aria-hidden="true">»</span></li>
+                {% else %}
+                    <li><a href="{{ path('forum_core_search_search_results', { 'page': totalPages, 'searchFor': searchFor, 'searchIn': searchIn }) }}" aria-label="Next"><span aria-hidden="true">»</span></a></li>
+                {% endif %}
+            </ul>
+        </nav>
     {% endif %}
 
     <div class="whereAmI">{{ whereAmI | raw }}</div>
