@@ -101,6 +101,12 @@ forum_core_notification_check_for_new_notifications:
     options:
         expose: true
 
+forum_core_notification_update_notifications:
+    path: /updateNotifications/{forUserId}
+    defaults: { _controller: CoreBundle:Notification:updateNotifications, forUserId: null }
+    options:
+        expose: true
+
 forum_core_conversation_show_conversations:
     path: /privateMessaging/show/{conversationSlug}
     defaults: { _controller: CoreBundle:Conversation:showConversations, conversationSlug: null }

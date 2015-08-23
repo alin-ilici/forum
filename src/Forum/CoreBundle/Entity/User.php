@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
 /**
  * User
@@ -14,7 +14,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Table(name="app_users")
  * @ORM\Entity(repositoryClass="Forum\CoreBundle\Repository\UserRepository")
  */
-class User extends Timestampable implements UserInterface, \Serializable
+class User extends Timestampable implements AdvancedUserInterface, \Serializable
 {
     const ROLE_USER = "ROLE_USER";
     const ROLE_MODERATOR = "ROLE_MODERATOR";
@@ -526,6 +526,26 @@ class User extends Timestampable implements UserInterface, \Serializable
     {
     }
 
+    public function isAccountNonExpired()
+    {
+        return true;
+    }
+
+    public function isAccountNonLocked()
+    {
+        return true;
+    }
+
+    public function isCredentialsNonExpired()
+    {
+        return true;
+    }
+
+    public function isEnabled()
+    {
+        return $this->isActive;
+    }
+
     /** @see \Serializable::serialize() */
     public function serialize()
     {
@@ -533,6 +553,7 @@ class User extends Timestampable implements UserInterface, \Serializable
             $this->id,
             $this->username,
             $this->password,
+            $this->isActive
             // see section on salt below
             // $this->salt,
         ));
@@ -545,6 +566,7 @@ class User extends Timestampable implements UserInterface, \Serializable
             $this->id,
             $this->username,
             $this->password,
+            $this->isActive
             // see section on salt below
             // $this->salt
             ) = unserialize($serialized);

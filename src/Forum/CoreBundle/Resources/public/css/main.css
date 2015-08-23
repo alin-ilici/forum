@@ -291,6 +291,10 @@ body {
     background-color: grey;
 }
 
+#seeAllNotifications {
+    color: red;
+}
+
 #emoticonsZone, #emoticonsZonePM, #emoticonsZoneT {
     display: none;
 }

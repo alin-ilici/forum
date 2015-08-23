@@ -131,19 +131,29 @@ class ConversationController extends Controller
 
         $em->persist($privateMessage);
 
-        /** @var \Forum\CoreBundle\Entity\Notification $notification */
-        $notification = new Notification();
-        $notification->setSeen(Notification::NOT_SEEN);
-        $notification->setType(Notification::NEW_PRIVATE_MESSAGE);
-        $notification->setForIdUser($toUserEntity);
-        $em->persist($notification);
-
         try {
             $em->flush();
             $this->get('session')->getFlashBag()->add('success', 'Your private message was successfully sent!');
         } catch (\Exception $e) {
             $this->get('session')->getFlashBag()->add('fail', 'There was a problem sending your private message!');
         }
+
+        /** @var \Forum\CoreBundle\Entity\Notification $notification */
+        $notification = new Notification();
+        $notification->setSeen(Notification::NOT_SEEN);
+        $notification->setType(Notification::NEW_PRIVATE_MESSAGE);
+        $notification->setForIdUser($toUserEntity);
+
+        $data = array();
+        $data['fromUsername'] = $fromUser->getUsername();
+        $data['conversationName'] = $conversation->getName();
+        $data['conversationSlug'] = $conversation->getSlug();
+        $data['privateMessageId'] = $privateMessage->getId();
+
+        $notification->setExtraInfo($data);
+
+        $em->persist($notification);
+        $em->flush();
 
         return $this->redirect($this->generateUrl('forum_core_conversation_show_conversations'));
     }
@@ -181,6 +191,13 @@ class ConversationController extends Controller
 
         $em->persist($privateMessage);
 
+        try {
+            $em->flush();
+            $this->get('session')->getFlashBag()->add('success', 'Your private message was successfully sent!');
+        } catch (\Exception $e) {
+            $this->get('session')->getFlashBag()->add('fail', 'There was a problem sending your private message!');
+        }
+
         /** @var \Forum\CoreBundle\Entity\Notification $notification */
         $notification = new Notification();
         $notification->setSeen(Notification::NOT_SEEN);
@@ -195,14 +212,16 @@ class ConversationController extends Controller
             $notification->setForIdUser($fromUser);
         }
 
-        $em->persist($notification);
+        $data = array();
+        $data['fromUsername'] = $loggedInUser->getUsername();
+        $data['conversationName'] = $conversation->getName();
+        $data['conversationSlug'] = $conversation->getSlug();
+        $data['privateMessageId'] = $privateMessage->getId();
 
-        try {
-            $em->flush();
-            $this->get('session')->getFlashBag()->add('success', 'Your private message was successfully sent!');
-        } catch (\Exception $e) {
-            $this->get('session')->getFlashBag()->add('fail', 'There was a problem sending your private message!');
-        }
+        $notification->setExtraInfo($data);
+
+        $em->persist($notification);
+        $em->flush();
 
         return $this->redirect($this->generateUrl(
             'forum_core_conversation_show_conversations',

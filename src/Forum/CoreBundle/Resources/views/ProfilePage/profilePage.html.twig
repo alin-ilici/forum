@@ -47,6 +47,9 @@
                 <li role="presentation">
                     <a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Messages</a>
                 </li>
+                <li role="presentation">
+                    <a href="#notifications" aria-controls="notifications" role="tab" data-toggle="tab">Notifications</a>
+                </li>
                 {% if user.username == app.user.username %}
                     <li role="presentation">
                         <a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a>
@@ -129,6 +132,8 @@
                         {% endfor %}
                     </div>
                 </div>
+
+                <div role="tabpanel" class="tab-pane" id="notifications"></div>
 
                 <div role="tabpanel" class="tab-pane" id="settings">
                     <button type="button" id="removeAvatar" class="btn btn-danger btn-sm" value="{{ user.username }}">Remove avatar</button>

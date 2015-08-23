@@ -2,6 +2,7 @@
 
 namespace Forum\CoreBundle\Controller;
 
+use Forum\CoreBundle\Entity\Notification;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -11,18 +12,49 @@ class NotificationController extends Controller
         /** @var \Forum\CoreBundle\Repository\NotificationRepository $notificationRepository */
         $notificationRepository = $this->getDoctrine()->getRepository("CoreBundle:Notification");
 
-        while (true) {
-            /** @var \Forum\CoreBundle\Entity\Notification[] $notifications */
-            $notifications = $notificationRepository->findBy(array(
-                'forIdUser' => $userId,
-                'seen' => 0
-            ));
+        /** @var \Forum\CoreBundle\Entity\Notification[] $notifications */
+        $notifications = $notificationRepository->findBy(array(
+            'forIdUser' => $userId,
+            'seen' => Notification::NOT_SEEN
+        ));
 
-            if ($notifications != null) {
-                return new JsonResponse($notifications);
-            } else {
-                sleep(5);
-            }
+        $results = array();
+        foreach ($notifications as $notification) {
+            $data = array();
+            $data['type'] = $notification->getType();
+            $data['extraInfo'] = $notification->getExtraInfo();
+
+            $results[] = $data;
+        }
+
+        return new JsonResponse($results);
+    }
+
+    public function updateNotificationsAction($forUserId) {
+        if ($forUserId == null) {
+            return;
+        }
+
+        $em = $this->getDoctrine()->getManager();
+
+        /** @var \Forum\CoreBundle\Repository\NotificationRepository $notificationRepository */
+        $notificationRepository = $this->getDoctrine()->getRepository("CoreBundle:Notification");
+
+        /** @var \Forum\CoreBundle\Entity\Notification[] $notifications */
+        $notifications = $notificationRepository->findBy(array(
+            'forIdUser' => $forUserId
+        ));
+
+        foreach ($notifications as $notification) {
+            $notification->setSeen(Notification::SEEN);
+            $em->persist($notification);
+        }
+
+        try {
+            $em->flush();
+            return new JsonResponse('success');
+        } catch (\Exception $e) {
+            return new JsonResponse('error');
         }
     }
 }
