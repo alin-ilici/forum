@@ -1,12 +1,15 @@
 $(document).ready(function() {
     var elementToWriteIn = 'message_name', prefix = '', insertFileElementToBeTriggered = 'message_file';
 
+    // PM means private message, T means topic
+    // used from conversation.html.twig (the (reply) message from the bottom of the page)
     if ($('#whatPageIsLoaded').text() == 'conversation') {
         elementToWriteIn = 'privateMessageText';
         prefix = 'PM';
         insertFileElementToBeTriggered = 'uploadedFilePM';
     }
 
+    // private message modal logic
     $(document).on('shown.bs.modal', '#newConversationModal', function() {
         elementToWriteIn = 'privateMessageText';
         prefix = 'PM';
@@ -18,30 +21,50 @@ $(document).ready(function() {
         prefix = '';
         insertFileElementToBeTriggered = 'message_file';
 
+        var parent = $('#toUser').parent();
+        parent.removeClass();
+        parent.addClass("form-group");
+        parent.find('span').remove();
+        $('#inputUsernameVerMessage').remove();
+        $('#sendConversationButton').addClass('disabled');
+
         $('#toUser').val('');
         $('#conversationName').val('');
         $('#privateMessageText').val('');
         $('#emoticonsZonePM').hide();
     });
 
-    $(document).on('hidden.bs.modal', '#addHyperlinkModal, #addHyperlinkModalPM', function(event) {
+    // topic modal logic
+    $(document).on('shown.bs.modal', '#newTopicModal', function() {
+        elementToWriteIn = 'messageText';
+        prefix = 'T';
+        insertFileElementToBeTriggered = 'uploadedFileT';
+    });
+
+    $(document).on('hidden.bs.modal', '#newTopicModal', function() {
+        $('#topicName').val('');
+        $('#messageText').val('');
+        $('#emoticonsZoneT').hide();
+    });
+
+    $(document).on('hidden.bs.modal', '#addHyperlinkModal, #addHyperlinkModalPM, #addHyperlinkModalT', function(event) {
         $('#hyperlink' + prefix).val('');
         $('#confirmAddHyperlinkButton' + prefix).addClass('disabled');
     });
 
-    $(document).on('click', '#boldText, #boldTextPM', function() {
+    $(document).on('click', '#boldText, #boldTextPM, #boldTextT', function() {
         updateMessage(elementToWriteIn, '<b>', '</b>');
     });
 
-    $(document).on('click', '#italicText, #italicTextPM', function() {
+    $(document).on('click', '#italicText, #italicTextPM, #italicTextT', function() {
         updateMessage(elementToWriteIn, '<i>', '</i>');
     });
 
-    $(document).on('click', '#underlinedText, #underlinedTextPM', function() {
+    $(document).on('click', '#underlinedText, #underlinedTextPM, #underlinedTextT', function() {
         updateMessage(elementToWriteIn, '<u>', '</u>');
     });
 
-    $(document).on('click', '#hyperlinkText, #hyperlinkTextPM', function() {
+    $(document).on('click', '#hyperlinkText, #hyperlinkTextPM, #hyperlinkTextT', function() {
         var selection = getSelection(document.getElementById(elementToWriteIn));
 
         if (selection.startPos != selection.endPos) {
@@ -49,7 +72,7 @@ $(document).ready(function() {
         }
     });
 
-    $(document).on('keyup', '#hyperlink, #hyperlinkPM', function() {
+    $(document).on('keyup', '#hyperlink, #hyperlinkPM, #hyperlinkT', function() {
         if ($(this).val() == '') {
             $('#confirmAddHyperlinkButton' + prefix).addClass('disabled');
         } else {
@@ -57,17 +80,17 @@ $(document).ready(function() {
         }
     });
 
-    $(document).on('click', '#confirmAddHyperlinkButton, #confirmAddHyperlinkButtonPM', function(e) {
+    $(document).on('click', '#confirmAddHyperlinkButton, #confirmAddHyperlinkButtonPM, #confirmAddHyperlinkButtonT', function(e) {
         var hyperlink = $('#hyperlink' + prefix).val();
 
         updateMessage(elementToWriteIn, '<a href="' + hyperlink + '">', '</a>');
     });
 
-    $(document).on('click', '#insertFile, #insertFilePM', function() {
+    $(document).on('click', '#insertFile, #insertFilePM, #insertFileT', function() {
         $('#' + insertFileElementToBeTriggered).click();
     });
 
-    $(document).on('change', '#message_file, #uploadedFilePM', function() {
+    $(document).on('change', '#message_file, #uploadedFilePM, #uploadedFileT', function() {
         var fileName = $(this).val().split('\\');
         if (fileName.length != 1) {
             $('#uploadedFileName' + prefix).text(fileName[fileName.length - 1]);
@@ -77,11 +100,12 @@ $(document).ready(function() {
         }
     });
 
-    $(document).on('click', '#deleteUploadedFile, #deleteUploadedFilePM', function() {
+    $(document).on('click', '#deleteUploadedFile, #deleteUploadedFilePM, #deleteUploadedFileT', function() {
         $('#' + insertFileElementToBeTriggered).val('');
         $('#uploadedFileNameDiv' + prefix).hide();
     });
 
+    // this is used only for the new private message case from every's user private messages homepage
     $(document).on('blur', '#toUser', function() {
         var parent = $('#toUser').parent();
 

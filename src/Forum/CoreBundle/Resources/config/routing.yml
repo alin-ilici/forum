@@ -35,6 +35,10 @@ forum_core_subcategory_subcategory:
     path: /subcategory/{subcategorySlug}/{sortBy}/{page}
     defaults: { _controller: CoreBundle:Subcategory:subcategory, subcategorySlug: null, sortBy: dateUpdated, page: null }
 
+forum_core_subcategory_create_or_edit_topic:
+    path: /createOrEditTopic/{subcategorySlug}/{topicSlug}
+    defaults: { _controller: CoreBundle:Subcategory:createOrEditTopic, subcategorySlug: null, topicSlug: null }
+
 forum_core_topic_topic:
     path: /topic/{topicSlug}/{page}
     defaults: { _controller: CoreBundle:Topic:topic, topicSlug: null, page: null }

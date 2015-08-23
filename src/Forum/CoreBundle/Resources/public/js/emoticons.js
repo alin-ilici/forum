@@ -107,19 +107,28 @@ $(document).ready(function($) {
 
     var html = '', elementToWriteIn = 'message_name', prefix = '';
 
+    // PM means private message, T means topic
+    // used from conversation.html.twig (the (reply) message from the bottom of the page)
     if ($('#whatPageIsLoaded').text() == 'conversation') {
         elementToWriteIn = 'privateMessageText';
         prefix = 'PM';
     }
 
-    $('#newConversationModal').on('shown.bs.modal', function() {
+    // private message modal logic
+    $(document).on('shown.bs.modal', '#newConversationModal', function() {
         elementToWriteIn = 'privateMessageText';
         prefix = 'PM';
     });
 
-    $('#newConversationModal').on('hidden.bs.modal', function() {
+    $(document).on('hidden.bs.modal', '#newConversationModal', function() {
         elementToWriteIn = 'message_name';
         prefix = '';
+    });
+
+    // topic modal logic
+    $(document).on('shown.bs.modal', '#newTopicModal', function() {
+        elementToWriteIn = 'messageText';
+        prefix = 'T';
     });
 
     // Generate "emoticons key" table for this example.
@@ -131,6 +140,8 @@ $(document).ready(function($) {
 
     $('#emoticonsZonePM').html(html);
 
+    $('#emoticonsZoneT').html(html);
+
     $(document).on('click', '.smiley', function() {
         var imageTitle, textareaContent;
         imageTitle = $(this).attr('title');
@@ -140,7 +151,7 @@ $(document).ready(function($) {
         $('#' + elementToWriteIn).val(textareaContent + imageTitle[1]);
     });
 
-    $(document).on('click', "#showSmiles, #showSmilesPM", function() {
+    $(document).on('click', "#showSmiles, #showSmilesPM, #showSmilesT", function() {
         if ($("#emoticonsZone" + prefix).is(':visible')) {
             $("#emoticonsZone" + prefix).hide();
         } else {

@@ -31,6 +31,13 @@ $(document).ready(function($) {
 //        console.log($(this).html());
 //    });
 
+    // rename topic
+    $(document).on('click', '#newOrEditTopicNameButton', function() {
+        $('#editTopicNameModal').modal('show');
+        $('#topicCurrentName').attr('readonly', 'readonly');
+        $('#topicNewName').val('');
+    });
+
     // page buttons functionality
     // delete
     $('.deleteMessage').on('click', function () {

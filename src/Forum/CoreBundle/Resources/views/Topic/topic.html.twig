@@ -44,6 +44,14 @@
         </ul>
     </nav>
 
+    {% if app.user %}
+        {% if (app.user.id == topic.user.id and topic.dateUpdated >= date("now") | date_modify("-1 hour"))
+            or 'ROLE_MODERATOR' in app.user.roles
+            or 'ROLE_ADMINISTRATOR' in app.user.roles %}
+            <button type="button" id="newOrEditTopicNameButton" class="btn btn-primary rightPosition">Edit topic name</button>
+        {% endif %}
+    {% endif %}
+
     {% for type, messages in app.session.flashbag.all() %}
         {% if type == 'success' %}
             {% set flashbagClass = 'alert alert-success alert-dismissible flashbag' %}
@@ -142,7 +150,7 @@
                         document.write(emotify(text));
                     </script>
 
-                    {% if message.file != null %}
+                    {% if app.user and message.file != null %}
                         <br/>
                         <br/>
                         <br/>
@@ -192,6 +200,7 @@
             {% set messageNumber = messageNumber + 1 %}
         {% endfor %}
     </table>
+    <br/>
     <br/>
 
     {% if app.user %}
@@ -328,6 +337,38 @@
             </div>
         </div>
     </div>
+
+    <!-- Edit topic name modal -->
+    <form name="editTopicNameForm" action="{{ path('forum_core_subcategory_create_or_edit_topic', { 'subcategorySlug': topic.subcategory.slug, 'topicSlug': topic.slug }) }}" method="post">
+        <div class="modal fade" id="editTopicNameModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Edit topic name</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="textAlignLeft">
+                            <div class="requiredInfo">
+                                * Required information
+                            </div>
+
+                            <label for="topicCurrentName" class="required">Topic current name</label>
+                            <input type="text" id="topicCurrentName" class="form-control" value="{{ topic.name }}" required="required">
+
+                            <br/>
+                            <label for="topicNewName" class="required">Topic new name</label>
+                            <input type="text" id="topicNewName" name="topicName" class="form-control" required="required">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-default">Edit name</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
 
     <!-- Add new conversation modal -->
     {{ include('CoreBundle:Conversation:_newConversation.html.twig') }}

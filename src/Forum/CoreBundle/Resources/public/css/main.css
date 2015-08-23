@@ -157,7 +157,14 @@ body {
 }
 
 .pagePagination {
-    margin-left: 15px;
+    /*margin-left: 15px;*/
+    margin-left: 1.2%;
+    margin-right: 1.2%;
+}
+
+#newOrEditTopicNameButton {
+    margin-right: 1.2%;
+    margin-top: -59px;
 }
 
 #forumLogo {
@@ -284,15 +291,15 @@ body {
     background-color: grey;
 }
 
-#emoticonsZone, #emoticonsZonePM {
+#emoticonsZone, #emoticonsZonePM, #emoticonsZoneT {
     display: none;
 }
 
-#emoticonsZone img, #emoticonsZonePM img {
+#emoticonsZone img, #emoticonsZonePM img, #emoticonsZoneT img {
     margin: 5px;
 }
 
-#hyperlink, #hyperlinkPM {
+#hyperlink, #hyperlinkPM, #hyperlinkT {
     width: 400px;
     display: inline-block;
 }

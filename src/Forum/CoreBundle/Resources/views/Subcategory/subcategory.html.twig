@@ -5,6 +5,14 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('bundles/core/css/subcategory.css') }}" />
 {% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/core/js/ba-emotify.js') }}"></script>
+    <script src="{{ asset('bundles/core/js/emoticons.js') }}"></script>
+    <script src="{{ asset('bundles/core/js/replyOptions.js') }}"></script>
+    <script src="{{ asset('bundles/core/js/subcategory.js') }}"></script>
+{% endblock %}
+
 {% block mainBody %}
     <div class="whereAmI">{{ whereAmI | raw }}</div>
 
@@ -36,6 +44,26 @@
             {% endif %}
         </ul>
     </nav>
+
+    {% if app.user %}
+        <button type="button" id="newOrEditTopicNameButton" class="btn btn-primary rightPosition">New topic</button>
+    {% endif %}
+
+    {% for type, messages in app.session.flashbag.all() %}
+        {% if type == 'success' %}
+            {% set flashbagClass = 'alert alert-success alert-dismissible flashbag' %}
+        {% else %}
+            {% set flashbagClass = 'alert alert-danger alert-dismissible flashbag' %}
+        {% endif %}
+        {% for message in messages %}
+            <div class="{{ flashbagClass }}" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
 
     <table id="subcategoryPageTable">
         <caption>
@@ -126,4 +154,87 @@
     </nav>
 
     <div class="whereAmI">{{ whereAmI | raw }}</div>
+
+    <!-- New topic -->
+    <form name="newTopicForm" action="{{ path('forum_core_subcategory_create_or_edit_topic', { 'subcategorySlug': subcategory.slug }) }}" method="post" enctype="multipart/form-data">
+        <div class="modal fade" id="newTopicModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">New topic</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="textAlignLeft">
+                            <div class="requiredInfo">
+                                * Required information
+                            </div>
+
+                            <label for="topicName" class="required">Topic name</label>
+                            <input type="text" id="topicName" class="form-control" name="topicName" required="required">
+
+                            <br/>
+                            <label for="messageText" class="required">Message</label>
+                            <div class="replyMessageOptions noSelect">
+                                <div id="boldTextT" class="hoverReplyMessageOption">
+                                    <span class="glyphicon glyphicon-bold makeSpace" aria-hidden="true"></span>
+                                </div>
+                                <div id="italicTextT" class="hoverReplyMessageOption">
+                                    <span class="glyphicon glyphicon-italic makeSpace" aria-hidden="true"></span>
+                                </div>
+                                <div id="underlinedTextT" class="hoverReplyMessageOption">
+                                    <span class="glyphicon glyphicon-text-width makeSpace" aria-hidden="true"></span>
+                                </div>
+                                <div id="showSmilesT" class="hoverReplyMessageOption">
+                                    <span class="glyphicon glyphicon-tree-conifer makeSpace" aria-hidden="true"></span>
+                                </div>
+                                <div id="hyperlinkTextT" class="hoverReplyMessageOption">
+                                    <span class="glyphicon glyphicon-link makeSpace" aria-hidden="true"></span>
+                                </div>
+                                <div id="insertFileT" class="hoverReplyMessageOption">
+                                    <span class="glyphicon glyphicon-paperclip makeSpace" aria-hidden="true"></span>
+                                </div>
+
+                                <div id="emoticonsZoneT"></div>
+                            </div>
+
+                            <textarea id="messageText" class="form-control makeSpaceBottom" name="messageText" required="required" rows="5"></textarea>
+
+                            <span class="noDisplay"><input type="file" id="uploadedFileT" name="uploadedFileT"></span>
+                            <div id="uploadedFileNameDivT" class="alert alert-info alert-dismissible noDisplay" role="alert">
+                                <button id="deleteUploadedFileT" type="button" class="close" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <span id="uploadedFileNameT"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-default">Create</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <!-- the hyperlink from new topic modal (above) -->
+    <div class="modal fade" id="addHyperlinkModalT">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Add hyperlink</h4>
+                </div>
+                <div class="modal-body">
+                    <label for="hyperlinkT">Hyperlink: </label>
+                    <input type="text" id="hyperlinkT" class="form-control" required="required">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="confirmAddHyperlinkButtonT" class="btn btn-default disabled" data-dismiss="modal">Ok</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
