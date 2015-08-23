@@ -81,7 +81,11 @@
 
                 {% if app.user %}
                     <td class="memberActions">
-                        <button type="button" class="btn btn-success btn-sm sendMeAMessage" data-value="{{ member.username }}">Send me a private message</button>
+                        {% if app.user.username != member.username %}
+                            <button type="button" class="btn btn-success btn-sm sendMeAMessage" data-value="{{ member.username }}">Send me a private message</button>
+                        {% else %}
+                            No action!
+                        {% endif %}
                     </td>
                 {% endif %}
             </tr>

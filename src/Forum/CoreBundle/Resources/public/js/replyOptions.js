@@ -81,6 +81,59 @@ $(document).ready(function() {
         $('#' + insertFileElementToBeTriggered).val('');
         $('#uploadedFileNameDiv' + prefix).hide();
     });
+
+    $(document).on('blur', '#toUser', function() {
+        var parent = $('#toUser').parent();
+
+        if ($(this).val() != '') {
+            $.ajax({
+                type: 'post',
+                url: Routing.generate('forum_core_register_check_for'),
+                data: {
+                    what: 'username',
+                    whatValue: $(this).val()
+                },
+                dataType: 'json',
+                success: function(result) {
+                    var parent = $('#toUser').parent();
+
+                    if (result == 'fail') {
+                        parent.removeClass();
+                        parent.addClass("form-group has-success has-feedback");
+                        parent.find('span').remove();
+                        parent.append(
+                            '<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>' +
+                            '<span id="inputUsernameVerStatus" class="sr-only">(success)</span>'
+                        );
+                        $('#inputUsernameVerMessage').remove();
+                        $('#sendConversationButton').removeClass('disabled');
+                    } else {
+                        parent.removeClass();
+                        parent.addClass("form-group has-error has-feedback");
+                        parent.find('span').remove();
+                        parent.append(
+                            '<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>' +
+                            '<span id="inputUsernameVerStatus" class="sr-only">(error)</span>'
+                        );
+                        $('#inputUsernameVerMessage').remove();
+                        parent.after('<div id="inputUsernameVerMessage" class="alert alert-danger" role="alert">This username does not exist!</div>');
+                        $('#sendConversationButton').addClass('disabled');
+                    }
+                }
+            });
+        } else {
+            parent.removeClass();
+            parent.addClass("form-group has-error has-feedback");
+            parent.find('span').remove();
+            parent.append(
+                '<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>' +
+                '<span id="inputUsernameVerStatus" class="sr-only">(error)</span>'
+            );
+            $('#inputUsernameVerMessage').remove();
+            parent.after('<div id="inputUsernameVerMessage" class="alert alert-danger" role="alert">The `To` field can not be empty!</div>');
+            $('#sendConversationButton').addClass('disabled');
+        }
+    });
 });
 
 function updateMessage(fieldToUpdateId, selectorStartTag, selectorEndTag)
