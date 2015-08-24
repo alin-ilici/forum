@@ -26,7 +26,7 @@
                 <div id="logInLogOutToolbar">
                     {% if app.user and app.user.avatar is not null %}
                         <img src="{{ asset('bundles/core/users_avatars/' ~ app.user.avatar) }}" alt="Profile picture" id="profilePicture"/>
-                    {% else %}
+                    {% elseif app.user %}
                         <img src="{{ asset('bundles/core/images/no-profile-img.gif') }}" alt="Profile picture" id="profilePicture"/>
                     {% endif %}
                     {% if app.user %}
@@ -48,7 +48,7 @@
                                 </li>
                                 <li role="separator" class="divider"></li>
                                 <li>
-                                    <a href="" id="seeAllNotifications">See all notifications</a>
+                                    <a href="{{ path('forum_core_profile_page_profile_page', { 'username': app.user.username, 'section': 'notifications' }) }}" id="seeAllNotifications">See all notifications</a>
                                 </li>
                             </ul>
                         </div>
@@ -117,6 +117,38 @@
                         <a href="{{ path('forum_core_user_show') }}" class="btn btn-primary">MEMBERS</a>
                     </div>
                 </div>
+
+                <!-- Forgot password modal -->
+                <form action="{{ path('forum_core_default_forgot_password') }}" method="post">
+                    <div class="modal fade" id="forgotPasswordModal">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title">Forgot password</h4>
+                                </div>
+                                <div class="modal-body">
+                                    Complete one of the following fields:
+                                    <br/>
+                                    <br/>
+                                    <label for="forgotPasswordUsername">Username: </label>
+                                    <input type="text" id="forgotPasswordUsername" name="forgotPasswordUsername" class="form-control input400px">
+                                    <br/>
+                                    <br/>
+                                    <b>OR</b>
+                                    <br/>
+                                    <br/>
+                                    <label for="forgotPasswordEmail">Email: </label>
+                                    <input type="text" id="forgotPasswordEmail" name="forgotPasswordEmail" class="form-control input400px">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" id="confirmForgotPasswordButton" class="btn btn-default disabled">Ok</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </header>
             <br/>
         </div>

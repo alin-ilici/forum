@@ -9,6 +9,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class NotificationController extends Controller
 {
     public function checkForNewNotificationsAction($userId) {
+        $em = $this->getDoctrine()->getManager();
+
         /** @var \Forum\CoreBundle\Repository\NotificationRepository $notificationRepository */
         $notificationRepository = $this->getDoctrine()->getRepository("CoreBundle:Notification");
 
@@ -26,6 +28,8 @@ class NotificationController extends Controller
 
             $results[] = $data;
         }
+
+        $em->getConnection()->close();
 
         return new JsonResponse($results);
     }
@@ -52,6 +56,8 @@ class NotificationController extends Controller
 
         try {
             $em->flush();
+            $em->getConnection()->close();
+
             return new JsonResponse('success');
         } catch (\Exception $e) {
             return new JsonResponse('error');

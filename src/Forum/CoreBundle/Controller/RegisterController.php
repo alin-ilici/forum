@@ -44,11 +44,24 @@ class RegisterController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
+            $plainPassword = $request->request->get('user')['password'];
+            $encoder = $this->container->get('security.password_encoder');
+            $encoded = $encoder->encodePassword($user, $plainPassword);
+
+            $user->setPassword($encoded);
             $user->uploadAvatar();
 
             $em->persist($user);
 
             try {
+                $data = array();
+                $data['username'] = $request->request->get('user')['username'];
+                $data['firstName'] = $request->request->get('user')['firstName'];
+                $data['lastName'] = $request->request->get('user')['lastName'];
+                $data['password'] = $plainPassword;
+                $data['email'] = $request->request->get('user')['email'];
+                $this->sendMail($data);
+
                 $em->flush();
             } catch (\Exception $e) {
                 $this->get('session')->getFlashBag()->add('fail', 'There was a problem registering your account!<br/>' . $e->getMessage());
@@ -85,7 +98,9 @@ class RegisterController extends Controller
                 throw new \Exception('User not found in database!');
             }
 
-            if ($user->getPassword() == $whatValue) {
+            $encoder = $this->container->get('security.password_encoder');
+
+            if ($encoder->isPasswordValid($user, $whatValue)) {
                 return new JsonResponse('success');
             } else {
                 return new JsonResponse('fail');
@@ -103,16 +118,19 @@ class RegisterController extends Controller
         }
     }
 
-    public function sendMailAction()
+    /**
+     * @param array $data
+     */
+    public function sendMail($data)
     {
         $message = \Swift_Message::newInstance()
-            ->setSubject('Hello Email')
-            ->setFrom('sendSymfony2Mail@example.com') //nu face nimic
-            ->setTo('alin_ilici@yahoo.com')
+            ->setSubject('Welcome to `Forum AlinIlici`!')
+            ->setFrom('forum.alinilici@gmail.com') //nu face nimic
+            ->setTo($data['email'])
             ->setBody(
                 $this->renderView(
                     'CoreBundle:Register:registrationMail.html.twig',
-                    array('name' => 'Alin Ilici')
+                    array('data' => $data)
                 ),
                 'text/html'
             )
@@ -128,7 +146,5 @@ class RegisterController extends Controller
             */
         ;
         $this->get('mailer')->send($message);
-
-        return $this->redirect($this->generateUrl('forum_core_default_index'));
     }
 }

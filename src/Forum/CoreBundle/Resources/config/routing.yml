@@ -23,6 +23,10 @@ forum_core_default_index:
     path: /
     defaults: { _controller: CoreBundle:Default:index }
 
+forum_core_default_forgot_password:
+    path: /forgotPassword
+    defaults: { _controller: CoreBundle:Default:forgotPassword }
+
 forum_core_default_homepage:
     path: /forum/{forumSlug}
     defaults: { _controller: CoreBundle:Default:homepage, forumSlug: null }
@@ -59,9 +63,9 @@ forum_core_topic_move_message:
     options:
         expose: true
 
-forum_core_register_send_mail:
-    path: /register/sendMail
-    defaults: { _controller: CoreBundle:Register:sendMail }
+#forum_core_register_send_mail:
+#    path: /register/sendMail
+#    defaults: { _controller: CoreBundle:Register:sendMail }
 
 forum_core_register_index:
     path: /register
@@ -80,8 +84,8 @@ forum_core_register_check_for:
         expose: true
 
 forum_core_profile_page_profile_page:
-    path: /profilePage/{username}
-    defaults: { _controller: CoreBundle:ProfilePage:profilePage, username: null }
+    path: /profilePage/{username}/{section}
+    defaults: { _controller: CoreBundle:ProfilePage:profilePage, username: null, section: general }
     options:
         expose: true
 

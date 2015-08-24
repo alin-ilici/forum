@@ -57,10 +57,35 @@ $(document).ready(function()
 
     $(document).on('keypress', function(e) {
         //if (($('#logInForm').data('bs.modal') || {}).isShown) {
-        if ($('#logInForm').hasClass('in')) {
+        if ($('#logInForm').hasClass('in') && !$('#forgotPasswordModal').hasClass('in')) {
             if (e.keyCode == 13) {
                 $('#submitLoginForm').click();
             }
+        }
+    });
+
+    // forget password logic under
+    $('body').on('click', '#forgot_password', function() {
+        $('#forgotPasswordModal').modal('show');
+    });
+
+    $('body').on('keyup', '#forgotPasswordUsername', function() {
+        if ($(this).val().length != 0) {
+            $('#confirmForgotPasswordButton').removeClass('disabled');
+            $('#forgotPasswordEmail').attr('readonly', 'readonly');
+        } else {
+            $('#confirmForgotPasswordButton').addClass('disabled');
+            $('#forgotPasswordEmail').removeAttr('readonly');
+        }
+    });
+
+    $('body').on('keyup', '#forgotPasswordEmail', function() {
+        if ($(this).val().length != 0) {
+            $('#confirmForgotPasswordButton').removeClass('disabled');
+            $('#forgotPasswordUsername').attr('readonly', 'readonly');
+        } else {
+            $('#confirmForgotPasswordButton').addClass('disabled');
+            $('#forgotPasswordUsername').removeAttr('readonly');
         }
     });
 });

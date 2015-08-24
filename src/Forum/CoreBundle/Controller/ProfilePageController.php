@@ -8,11 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ProfilePageController extends Controller
 {
-    protected $whereAmI;
-    protected $topicsWithFirstMessage;
-    protected $messages;
-
-    public function profilePageAction($username)
+    public function profilePageAction($username, $section)
     {
         $maxMessagesPerPage = $this->container->getParameter('maxMessagesPerPage');
 
@@ -41,7 +37,7 @@ class ProfilePageController extends Controller
         /** @var \Forum\CoreBundle\Entity\Message $message */
         $message = null;
 
-        $this->topicsWithFirstMessage = array();
+        $topicsWithFirstMessage = array();
 
         foreach ($topics as $topic) {
             $data = array();
@@ -53,7 +49,7 @@ class ProfilePageController extends Controller
             ));
 
             $data['message'] = $message;
-            $this->topicsWithFirstMessage[] = $data;
+            $topicsWithFirstMessage[] = $data;
         }
 
         /** @var \Forum\CoreBundle\Entity\Message[] $userMessages */
@@ -66,7 +62,7 @@ class ProfilePageController extends Controller
             ->getQuery()
             ->getResult();
 
-        $this->messages = array();
+        $messages = array();
 
         foreach ($userMessages as $userMessage) {
             $query = 'SELECT m.id, @Rank:= @Rank + 1 AS rank
@@ -87,18 +83,27 @@ class ProfilePageController extends Controller
             $page = ((int)$data[$userMessage->getId()] % $maxMessagesPerPage == 0) ?
                 (int)((int)$data[$userMessage->getId()] / $maxMessagesPerPage) : (int)((int)$data[$userMessage->getId()] / $maxMessagesPerPage + 1);
 
-            $this->messages[$userMessage->getId()]['message'] = $userMessage;
-            $this->messages[$userMessage->getId()]['page'] = $page;
+            $messages[$userMessage->getId()]['message'] = $userMessage;
+            $messages[$userMessage->getId()]['page'] = $page;
 
         }
 
-        $this->whereAmI = '<a href="' . $this->generateUrl('forum_core_default_homepage') . '">Forum</a> > Viewing Profile: ' . $user->getUsername();
+        $whereAmI = '<a href="' . $this->generateUrl('forum_core_default_homepage') . '">Forum</a> > Viewing Profile: ' . $user->getUsername();
+
+        $class = array();
+        $class['general'] = '';
+        $class['topics'] = '';
+        $class['messages'] = '';
+        $class['notifications'] = '';
+        $class['settings'] = '';
+        $class[$section] = 'active';
 
         return $this->render('CoreBundle:ProfilePage:profilePage.html.twig', array(
             'user' => $user,
-            'whereAmI' => $this->whereAmI,
-            'topicsWithFirstMessage' => $this->topicsWithFirstMessage,
-            'messages' => $this->messages
+            'whereAmI' => $whereAmI,
+            'topicsWithFirstMessage' => $topicsWithFirstMessage,
+            'messages' => $messages,
+            'class' => $class
         ));
     }
 
@@ -126,12 +131,9 @@ class ProfilePageController extends Controller
             return new JsonResponse('success');
         }
 
-        return $this->render('CoreBundle:ProfilePage:profilePage.html.twig', array(
-            'user' => $user,
-            'whereAmI' => $this->whereAmI,
-            'topicsWithFirstMessage' => $this->topicsWithFirstMessage,
-            'messages' => $this->messages
-        ));
+        return $this->redirect($this->generateUrl('forum_core_profile_page_profile_page', array(
+            'username' => $username
+        )));
     }
 
     public function changePasswordAction(Request $request, $username)
@@ -146,16 +148,17 @@ class ProfilePageController extends Controller
             'username' => $username
         ));
 
-        $user->setPassword($request->request->get('newPassword'));
+        $plainPassword = $request->request->get('newPassword');
+        $encoder = $this->container->get('security.password_encoder');
+        $encoded = $encoder->encodePassword($user, $plainPassword);
+
+        $user->setPassword($encoded);
 
         $em->persist($user);
         $em->flush();
 
-        return $this->render('CoreBundle:ProfilePage:profilePage.html.twig', array(
-            'user' => $user,
-            'whereAmI' => $this->whereAmI,
-            'topicsWithFirstMessage' => $this->topicsWithFirstMessage,
-            'messages' => $this->messages
-        ));
+        return $this->redirect($this->generateUrl('forum_core_profile_page_profile_page', array(
+            'username' => $username
+        )));
     }
 }

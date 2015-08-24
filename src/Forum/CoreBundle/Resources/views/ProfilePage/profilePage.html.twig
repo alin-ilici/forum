@@ -38,20 +38,20 @@
 
             <!-- Nav tabs -->
             <ul class="nav nav-pills nav-stacked" role="tablist">
-                <li role="presentation" class="active">
+                <li role="presentation" class="{{ class.general }}">
                     <a href="#general" aria-controls="general" role="tab" data-toggle="tab">General</a>
                 </li>
-                <li role="presentation">
+                <li role="presentation" class="{{ class.topics }}">
                     <a href="#topics" aria-controls="topics" role="tab" data-toggle="tab">Topics</a>
                 </li>
-                <li role="presentation">
+                <li role="presentation" class="{{ class.messages }}">
                     <a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Messages</a>
                 </li>
-                <li role="presentation">
+                <li role="presentation" class="{{ class.notifications }}">
                     <a href="#notifications" aria-controls="notifications" role="tab" data-toggle="tab">Notifications</a>
                 </li>
                 {% if user.username == app.user.username %}
-                    <li role="presentation">
+                    <li role="presentation" class="{{ class.settings }}">
                         <a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a>
                     </li>
                 {% endif %}
@@ -59,7 +59,7 @@
 
             <!-- Tab panes -->
             <div class="tab-content">
-                <div role="tabpanel" class="tab-pane active" id="general">
+                <div role="tabpanel" class="tab-pane {{ class.general }}" id="general">
                     Rank:
                     {% if user.roles[0] == 'ROLE_USER' %}
                         User
@@ -79,7 +79,7 @@
                     {% endif %}
                 </div>
 
-                <div role="tabpanel" class="tab-pane" id="topics">
+                <div role="tabpanel" class="tab-pane {{ class.topics }}" id="topics">
                     <div id="topicsByThisUser">
                         {% for data in topicsWithFirstMessage %}
                             <div class="topicNameByUser">
@@ -97,7 +97,7 @@
                     </div>
                 </div>
 
-                <div role="tabpanel" class="tab-pane" id="messages">
+                <div role="tabpanel" class="tab-pane {{ class.messages }}" id="messages">
                     <div id="messagesByThisUser">
                         {% for message in messages %}
                             <div class="topicNameByUser">
@@ -133,9 +133,9 @@
                     </div>
                 </div>
 
-                <div role="tabpanel" class="tab-pane" id="notifications"></div>
+                <div role="tabpanel" class="tab-pane {{ class.notifications }}" id="notifications"></div>
 
-                <div role="tabpanel" class="tab-pane" id="settings">
+                <div role="tabpanel" class="tab-pane {{ class.settings }}" id="settings">
                     <button type="button" id="removeAvatar" class="btn btn-danger btn-sm" value="{{ user.username }}">Remove avatar</button>
                     <br/>
                     <br/>

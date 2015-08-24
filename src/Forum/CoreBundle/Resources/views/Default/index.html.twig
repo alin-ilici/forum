@@ -8,6 +8,9 @@
 {% block mainBody %}
     <div class="whereAmI">{{ whereAmI | raw }}</div>
 
+    <!-- Add flashbag -->
+    {{ include('CoreBundle::flashbag.html.twig') }}
+
     {% for forum in forums %}
         <table id="forumPageTable">
             <caption class="forumName">

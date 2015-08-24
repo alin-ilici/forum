@@ -1,7 +1,7 @@
 $(document).ready(function(){
     poll();
 
-    $('#notificationDropdown').on('click', function() {
+    $('body').on('click', '#notificationDropdown', function() {
         if ($('#notificationIcon').attr('src') == '/bundles/core/images/ios7-bell_best_new.png') {
             $.ajax({
                 type: "post",

@@ -34,6 +34,10 @@ body {
     text-align: center;
 }
 
+#forgot_password:hover {
+    cursor: pointer;
+}
+
 .modal-body {
     text-align: center;
 }
@@ -303,7 +307,7 @@ body {
     margin: 5px;
 }
 
-#hyperlink, #hyperlinkPM, #hyperlinkT {
+#hyperlink, #hyperlinkPM, #hyperlinkT, .input400px {
     width: 400px;
     display: inline-block;
 }

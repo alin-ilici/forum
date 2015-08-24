@@ -40,7 +40,7 @@ class User extends Timestampable implements AdvancedUserInterface, \Serializable
     /**
      * @var string
      *
-     * @ORM\Column(name="password", type="string", length=64)
+     * @ORM\Column(name="password", type="string", length=255)
      * @Assert\NotBlank
      */
     private $password;
@@ -136,9 +136,9 @@ class User extends Timestampable implements AdvancedUserInterface, \Serializable
         $this->topics = new \Doctrine\Common\Collections\ArrayCollection();
         $this->messages = new \Doctrine\Common\Collections\ArrayCollection();
         $this->notifications = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->$conversationsFromUser = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->$conversationsToUser = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->$privateMessages = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->conversationsFromUser = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->conversationsToUser = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->privateMessages = new \Doctrine\Common\Collections\ArrayCollection();
 
         $this->roles = self::ROLE_USER;
         $this->isActive = true;
