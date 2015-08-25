@@ -43,27 +43,17 @@
                 <li><a href="{{ path('forum_core_subcategory_subcategory', { 'subcategorySlug': subcategory.slug, 'page': totalPages }) }}" aria-label="Next"><span aria-hidden="true">»</span></a></li>
             {% endif %}
         </ul>
+
+        {% if app.user %}
+            <button type="button" id="newOrEditTopicNameButton" class="btn btn-primary rightPosition">New topic</button>
+            {% if 'ROLE_ADMINISTRATOR' in app.user.roles %}
+                <button type="button" id="editSubcategoryButton" class="btn btn-primary rightPosition">Edit subcategory</button>
+            {% endif %}
+        {% endif %}
     </nav>
 
-    {% if app.user %}
-        <button type="button" id="newOrEditTopicNameButton" class="btn btn-primary rightPosition">New topic</button>
-    {% endif %}
-
-    {% for type, messages in app.session.flashbag.all() %}
-        {% if type == 'success' %}
-            {% set flashbagClass = 'alert alert-success alert-dismissible flashbag' %}
-        {% else %}
-            {% set flashbagClass = 'alert alert-danger alert-dismissible flashbag' %}
-        {% endif %}
-        {% for message in messages %}
-            <div class="{{ flashbagClass }}" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                {{ message }}
-            </div>
-        {% endfor %}
-    {% endfor %}
+    <!-- Add flashbag -->
+    {{ include('CoreBundle::flashbag.html.twig') }}
 
     <table id="subcategoryPageTable">
         <caption>
@@ -234,6 +224,29 @@
                     <button type="button" id="confirmAddHyperlinkButtonT" class="btn btn-default disabled" data-dismiss="modal">Ok</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add subcategory modal -->
+    <div class="modal fade" id="editSubcategoryModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Edit subcategory</h4>
+                </div>
+                {{ form_start(subcategoryForm) }}
+                <div class="modal-body">
+                    {{ form_row(subcategoryForm.name) }}
+                    <br/>
+                    {{ form_row(subcategoryForm.description) }}
+                </div>
+                <div class="modal-footer">
+                    {{ form_widget(subcategoryForm.save) }}
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </div>
+                {{ form_end(subcategoryForm) }}
             </div>
         </div>
     </div>

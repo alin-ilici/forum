@@ -23,17 +23,21 @@ forum_core_default_index:
     path: /
     defaults: { _controller: CoreBundle:Default:index }
 
-forum_core_default_forgot_password:
-    path: /forgotPassword
-    defaults: { _controller: CoreBundle:Default:forgotPassword }
-
 forum_core_default_homepage:
     path: /forum/{forumSlug}
     defaults: { _controller: CoreBundle:Default:homepage, forumSlug: null }
 
+forum_core_default_forgot_password:
+    path: /forgotPassword
+    defaults: { _controller: CoreBundle:Default:forgotPassword }
+
 forum_core_category_category:
     path: /category/{categorySlug}
     defaults: { _controller: CoreBundle:Category:category, categorySlug: null }
+
+forum_core_category_create_or_edit_subcategory:
+    path: /category/createOrEditSubcategory/{categorySlug}/{subcategorySlug}
+    defaults: { _controller: CoreBundle:Category:createOrEditSubcategory, categorySlug: null, subcategorySlug: null }
 
 forum_core_subcategory_subcategory:
     path: /subcategory/{subcategorySlug}/{sortBy}/{page}
@@ -138,5 +142,23 @@ forum_core_search_search_results:
 forum_core_user_show:
     path: /user/show/{page}/{like}
     defaults: { _controller: CoreBundle:User:show, page: 1, like: null }
+    options:
+        expose: true
+
+forum_core_user_ban_user:
+    path: /user/banUser/{userId}
+    defaults: { _controller: CoreBundle:User:banUser, userId: null }
+    options:
+        expose: true
+
+forum_core_message_delete_message_file:
+    path: /deleteMessageFile/{messageId}
+    defaults: { _controller: CoreBundle:Message:deleteMessageFile, messageId: null }
+    options:
+        expose: true
+
+forum_core_private_message_delete_private_message_file:
+    path: /deletePrivateMessageFile/{privateMessageId}
+    defaults: { _controller: CoreBundle:PrivateMessage:deletePrivateMessageFile, privateMessageId: null }
     options:
         expose: true

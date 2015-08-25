@@ -2,6 +2,7 @@
 
 namespace Forum\CoreBundle\Controller;
 
+use Forum\CoreBundle\Entity\Notification;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,6 +24,12 @@ class ProfilePageController extends Controller
 
         /** @var \Forum\CoreBundle\Repository\MessageRepository $messageRepository */
         $messageRepository = $this->getDoctrine()->getRepository("CoreBundle:Message");
+
+        /** @var \Forum\CoreBundle\Repository\PrivateMessageRepository $privateMessageRepository */
+        $privateMessageRepository = $this->getDoctrine()->getRepository("CoreBundle:PrivateMessage");
+
+        /** @var \Forum\CoreBundle\Repository\NotificationRepository $notificationRepository */
+        $notificationRepository = $this->getDoctrine()->getRepository("CoreBundle:Notification");
 
         /** @var \Forum\CoreBundle\Entity\User $user */
         $user = $userRepository->findOneBy(array(
@@ -88,12 +95,26 @@ class ProfilePageController extends Controller
 
         }
 
+        /** @var \Forum\CoreBundle\Entity\Notification[] $notifications */
+        $notifications = $notificationRepository->findBy(array(
+            'forIdUser' => $user->getId()
+        ));
+
+        /** @var \Forum\CoreBundle\Entity\PrivateMessage[] $privateMessages */
+        $privateMessages = $privateMessageRepository->createQueryBuilder('pm')
+            ->where('pm.user = :id_user')
+            ->andWhere('pm.file IS NOT NULL')
+            ->setParameter('id_user', $user->getId())
+            ->getQuery()
+            ->getResult();
+
         $whereAmI = '<a href="' . $this->generateUrl('forum_core_default_homepage') . '">Forum</a> > Viewing Profile: ' . $user->getUsername();
 
         $class = array();
         $class['general'] = '';
         $class['topics'] = '';
         $class['messages'] = '';
+        $class['files'] = '';
         $class['notifications'] = '';
         $class['settings'] = '';
         $class[$section] = 'active';
@@ -103,6 +124,8 @@ class ProfilePageController extends Controller
             'whereAmI' => $whereAmI,
             'topicsWithFirstMessage' => $topicsWithFirstMessage,
             'messages' => $messages,
+            'privateMessages' => $privateMessages,
+            'notifications' => $notifications,
             'class' => $class
         ));
     }

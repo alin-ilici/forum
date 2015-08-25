@@ -23,21 +23,8 @@
 
     <div class="whereAmI">{{ whereAmI | raw }}</div>
 
-    {% for type, messages in app.session.flashbag.all() %}
-        {% if type == 'success' %}
-            {% set flashbagClass = 'alert alert-success alert-dismissible flashbag' %}
-        {% else %}
-            {% set flashbagClass = 'alert alert-danger alert-dismissible flashbag' %}
-        {% endif %}
-        {% for message in messages %}
-            <div class="{{ flashbagClass }}" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                {{ message }}
-            </div>
-        {% endfor %}
-    {% endfor %}
+    <!-- Add flashbag -->
+    {{ include('CoreBundle::flashbag.html.twig') }}
 
     <div id="conversationParticipants">
         <div id="conversationParticipantsParticipants">

@@ -244,4 +244,15 @@ class PrivateMessage extends Timestampable
         // set the path property to the filename where you've saved the file
         $this->file = $newFileName;
     }
+
+    public function removeFile() {
+        if (null === $this->getFile()) {
+            return;
+        }
+
+        unlink($this->getUploadRootDir() . '/' . $this->file);
+
+        $this->file = null;
+        $this->originalFileName = null;
+    }
 }

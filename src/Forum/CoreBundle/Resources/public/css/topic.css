@@ -131,6 +131,11 @@
 }
 /* end above use */
 
+#newOrEditTopicNameButton {
+    margin-right: 1.2%;
+    margin-top: -59px;
+}
+
 /*#message_name {*/
     /*display: none;*/
 /*}*/

@@ -4,6 +4,7 @@ namespace Forum\CoreBundle\Controller;
 
 use Forum\CoreBundle\Entity\Message;
 use Forum\CoreBundle\Entity\Topic;
+use Forum\CoreBundle\Form\SubcategoryType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -82,6 +83,14 @@ class SubcategoryController extends Controller
             ->getQuery()
             ->getSingleResult();
 
+        $subcategoryForm = $this->createForm(
+            new SubcategoryType(),
+            $subcategory,
+            array(
+                'action' => $this->generateUrl('forum_core_category_create_or_edit_subcategory', array('categorySlug' => $subcategory->getCategory()->getSlug(), 'subcategorySlug' => $subcategorySlug))
+            )
+        );
+
         $whereAmI = '<a href="' . $this->generateUrl('forum_core_default_homepage') . '">Forum</a>';
         $whereAmI .= ' > ' . '<a href="' . $this->generateUrl('forum_core_default_homepage', array('forumSlug' => $subcategory->getCategory()->getForum()->getSlug())) . '">' . $subcategory->getCategory()->getForum()->getName() . '</a>';
         $whereAmI .= ' > ' . '<a href="' . $this->generateUrl('forum_core_category_category', array('categorySlug' => $subcategory->getCategory()->getSlug())) . '">' . $subcategory->getCategory()->getName() . '</a>';
@@ -97,6 +106,7 @@ class SubcategoryController extends Controller
         return $this->render('CoreBundle:Subcategory:subcategory.html.twig', array(
             'subcategory' => $subcategory,
             'topics' => $topics,
+            'subcategoryForm' => $subcategoryForm->createView(),
             'whereAmI' => $whereAmI,
             'lastMessage' => $lastMessage,
             'totalPages' => $totalPages,

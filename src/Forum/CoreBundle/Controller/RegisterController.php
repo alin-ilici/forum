@@ -63,8 +63,9 @@ class RegisterController extends Controller
                 $this->sendMail($data);
 
                 $em->flush();
+                $this->get('session')->getFlashBag()->add('success', 'Your new account was successfully created! You can now log in using it.');
             } catch (\Exception $e) {
-                $this->get('session')->getFlashBag()->add('fail', 'There was a problem registering your account!<br/>' . $e->getMessage());
+                $this->get('session')->getFlashBag()->add('fail', 'There was a problem registering your account!' . $e->getMessage());
                 return $this->redirect($this->generateUrl('forum_core_register_index'));
             }
         }

@@ -41,3 +41,11 @@
 .pageNameAndDescription {
     margin-bottom: 0px;
 }
+
+#newOrEditTopicNameButton, #editSubcategoryButton {
+    margin-top: 20px;
+}
+
+#editSubcategoryButton {
+    margin-right: 10px;
+}

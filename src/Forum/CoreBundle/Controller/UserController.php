@@ -3,6 +3,7 @@
 namespace Forum\CoreBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class UserController extends Controller
 {
@@ -53,5 +54,37 @@ class UserController extends Controller
             'totalPages' => $totalPages,
             'currentPage' => (int)$page,
         ));
+    }
+
+    public function banUserAction($userId) {
+        if ($userId == null) {
+            return new JsonResponse('fail');
+        }
+
+        /** @var \Doctrine\ORM\EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+
+        /** @var \Forum\CoreBundle\Repository\UserRepository $userRepository */
+        $userRepository = $this->getDoctrine()->getRepository("CoreBundle:User");
+
+        /** @var \Forum\CoreBundle\Entity\User $user */
+        $user = $userRepository->findOneBy(array(
+            'id' => $userId
+        ));
+
+        if ($user->isEnabled()) {
+            $user->setIsActive(false);
+        } else {
+            $user->setIsActive(true);
+        }
+        $em->persist($user);
+
+        try {
+            $em->flush();
+
+            return new JsonResponse('success');
+        } catch (\Exception $e) {
+            return new JsonResponse('fail');
+        }
     }
 }

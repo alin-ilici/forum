@@ -318,6 +318,29 @@ class User extends Timestampable implements AdvancedUserInterface, \Serializable
     }
 
     /**
+     * Set isActive
+     *
+     * @param boolean $isActive
+     * @return User
+     */
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * Get isActive
+     *
+     * @return boolean
+     */
+    public function getIsActive()
+    {
+        return $this->isActive;
+    }
+
+    /**
      * Add topics
      *
      * @param \Forum\CoreBundle\Entity\Topic $topics

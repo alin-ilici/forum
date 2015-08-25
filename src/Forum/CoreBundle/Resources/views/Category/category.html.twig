@@ -5,6 +5,11 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('bundles/core/css/category.css') }}" />
 {% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/core/js/category.js') }}"></script>
+{% endblock %}
+
 {% block mainBody %}
     <div class="whereAmI">{{ whereAmI | raw }}</div>
 
@@ -13,7 +18,14 @@
         {% if category.description is not null %}
             <div class="categoryOrSubcategoryDescription">{{ category.description }}</div>
         {% endif %}
+
+        {% if app.user and 'ROLE_ADMINISTRATOR' in app.user.roles %}
+            <button type="button" id="newSubcategoryButton" class="btn btn-primary rightPosition">New subcategory</button>
+        {% endif %}
     </div>
+
+    <!-- Add flashbag -->
+    {{ include('CoreBundle::flashbag.html.twig') }}
 
     <table id="categoryPageTable">
         <caption class="forumName">
@@ -63,4 +75,27 @@
     <br/>
 
     <div class="whereAmI">{{ whereAmI | raw }}</div>
+
+    <!-- Add subcategory modal -->
+    <div class="modal fade" id="addSubcategoryModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Add subcategory</h4>
+                </div>
+                {{ form_start(subcategoryForm) }}
+                <div class="modal-body">
+                    {{ form_row(subcategoryForm.name) }}
+                    <br/>
+                    {{ form_row(subcategoryForm.description) }}
+                </div>
+                <div class="modal-footer">
+                    {{ form_widget(subcategoryForm.save) }}
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </div>
+                {{ form_end(subcategoryForm) }}
+            </div>
+        </div>
+    </div>
 {% endblock %}

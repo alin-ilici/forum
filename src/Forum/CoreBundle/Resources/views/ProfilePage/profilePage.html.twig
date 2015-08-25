@@ -47,6 +47,9 @@
                 <li role="presentation" class="{{ class.messages }}">
                     <a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Messages</a>
                 </li>
+                <li role="presentation" class="{{ class.files }}">
+                    <a href="#files" aria-controls="files" role="tab" data-toggle="tab">Files</a>
+                </li>
                 <li role="presentation" class="{{ class.notifications }}">
                     <a href="#notifications" aria-controls="notifications" role="tab" data-toggle="tab">Notifications</a>
                 </li>
@@ -133,7 +136,73 @@
                     </div>
                 </div>
 
-                <div role="tabpanel" class="tab-pane {{ class.notifications }}" id="notifications"></div>
+                <div role="tabpanel" class="tab-pane {{ class.files }}" id="files">
+                    <table class="messageFilesTable">
+                        {% set trClass = 'green1' %}
+                        {% for message in messages %}
+                            {% if message['message'].originalFileName is not null %}
+                                <tr class="{{ trClass }}">
+                                    <td class="messageName">
+                                        <a href="/bundles/core/messages_uploads/{{ message['message'].file }}" target="_blank">{{ message['message'].originalFileName }}</a>
+                                    </td>
+                                    <td class="messageAction">
+                                        <button type="button" class="btn btn-danger btn-sm removeMessageFile" value="{{ message['message'].id }}" what-table="message">Delete</button>
+                                    </td>
+                                </tr>
+
+                                {% if trClass == 'green1' %}
+                                    {% set trClass = 'green2' %}
+                                {% else %}
+                                    {% set trClass = 'green1' %}
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </table>
+                    <br/>
+
+                    <table class="messageFilesTable">
+                        {% set trClass = 'green1' %}
+                        {% for privateMessage in privateMessages %}
+                            <tr class="{{ trClass }}">
+                                <td class="messageName">
+                                    <a href="/bundles/core/private_messages_uploads/{{ privateMessage.file }}" target="_blank">{{ privateMessage.originalFileName }}</a>
+                                </td>
+                                <td class="messageAction">
+                                    <button type="button" class="btn btn-danger btn-sm removeMessageFile" value="{{ privateMessage.id }}" what-table="privateMessage">Delete</button>
+                                </td>
+                            </tr>
+
+                            {% if trClass == 'green1' %}
+                                {% set trClass = 'green2' %}
+                            {% else %}
+                                {% set trClass = 'green1' %}
+                            {% endif %}
+                        {% endfor %}
+                    </table>
+                </div>
+
+                <div role="tabpanel" class="tab-pane {{ class.notifications }}" id="notifications">
+                    <table id="notificationsTable">
+                        {% set trClass = 'green1' %}
+                        {% for notification in notifications %}
+                            <tr class="{{ trClass }}">
+                                <td>
+                                    {% if notification.type == 'newPrivateMessage' %}
+                                        <a href="{{ path('forum_core_conversation_show_conversations', { 'conversationSlug': notification.extraInfo.conversationSlug }) }}">You had a new private message from `{{ notification.forIdUser.username }}`!</a>
+                                    {% elseif notification.type == 'privateMessageResponse' %}
+                                        <a href="{{ path('forum_core_conversation_show_conversations', { 'conversationSlug': notification.extraInfo.conversationSlug }) ~ '#' ~ notification.extraInfo.privateMessageId }}">New reply from `{{ notification.forIdUser.username }}` in the conversation `{{ notification.extraInfo.conversationName }}`!</a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+
+                            {% if trClass == 'green1' %}
+                                {% set trClass = 'green2' %}
+                            {% else %}
+                                {% set trClass = 'green1' %}
+                            {% endif %}
+                        {% endfor %}
+                    </table>
+                </div>
 
                 <div role="tabpanel" class="tab-pane {{ class.settings }}" id="settings">
                     <button type="button" id="removeAvatar" class="btn btn-danger btn-sm" value="{{ user.username }}">Remove avatar</button>
@@ -240,6 +309,25 @@
             </div>
         </div>
     </form>
+
+    <!-- Delete file modal -->
+    <div class="modal fade" id="deleteFileModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Delete file</h4>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this file?
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="yesDeleteFileButton" class="btn btn-default btn-danger" data-dismiss="modal">Yes</button>
+                    <button type="button" class="btn btn-default btn-success" data-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <br/>
     <br/>

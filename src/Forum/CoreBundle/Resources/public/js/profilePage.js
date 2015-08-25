@@ -1,5 +1,9 @@
 $(document).ready(function()
 {
+    var rowToDelete;
+    var messageIdFileToDelete;
+    var whatTable;
+
     $('#changeAvatarModal').on('hidden.bs.modal', function(event)
     {
         $("#avatar").val('');
@@ -175,6 +179,42 @@ $(document).ready(function()
             parent.after('<div id="inputRetypePasswordVerMessage" class="alert alert-danger" role="alert">The passwords do not match!</div>');
             $('#submitChangePassword').addClass('disabled');
         }
+    });
+
+    $('body').on('click', '.removeMessageFile', function() {
+        rowToDelete = $(this).parent().parent();
+        messageIdFileToDelete = $(this).val();
+        if ($(this).attr('what-table') == 'message') {
+            whatTable = 'message';
+        } else if ($(this).attr('what-table') == 'privateMessage') {
+            whatTable = 'privateMessage';
+        }
+        $('#deleteFileModal').modal('show');
+    });
+
+    $('body').on('click', '#yesDeleteFileButton', function() {
+        var route;
+        if (whatTable == 'message') {
+            route = Routing.generate('forum_core_message_delete_message_file', { 'messageId': messageIdFileToDelete });
+        } else if (whatTable == 'privateMessage') {
+            route = Routing.generate('forum_core_private_message_delete_private_message_file', { 'privateMessageId': messageIdFileToDelete });
+        }
+
+        $.ajax({
+            type: 'post',
+            url: route,
+            dataType: 'json',
+            success: function(result) {
+                if (result == 'success') {
+                    rowToDelete.remove();
+                } else if (result == 'fail') {
+                    alert("An error occured!");
+                }
+            },
+            fail: function(result) {
+                alert("An error occured!");
+            }
+        });
     });
 
     // private message

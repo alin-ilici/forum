@@ -64,7 +64,7 @@
                 </td>
 
                 <td class="memberUsername">
-                    {% if app.user %}
+                    {% if member.isEnabled %}
                         <a href="{{ path('forum_core_profile_page_profile_page', { 'username': member.username }) }}">{{ member.username }}</a>
                     {% else %}
                         {{ member.username }}
@@ -82,7 +82,20 @@
                 {% if app.user %}
                     <td class="memberActions">
                         {% if app.user.username != member.username %}
-                            <button type="button" class="btn btn-success btn-sm sendMeAMessage" data-value="{{ member.username }}">Send me a private message</button>
+                            {% if member.isEnabled %}
+                                <button type="button" class="btn btn-success btn-sm sendMeAMessage" data-value="{{ member.username }}">Send me a private message</button>
+                                {% if 'ROLE_MODERATOR' in app.user.roles or 'ROLE_ADMINISTRATOR' in app.user.roles %}
+                                    <br/>
+                                    <br/>
+                                    <button type="button" class="btn btn-danger btn-sm banUser" data-value="{{ member.id }}">Ban user</button>
+                                {% endif %}
+                            {% else %}
+                                {% if 'ROLE_MODERATOR' in app.user.roles or 'ROLE_ADMINISTRATOR' in app.user.roles %}
+                                    <button type="button" class="btn btn-danger btn-sm banUser" data-value="{{ member.id }}">Unban user</button>
+                                {% else %}
+                                    <span style="color: red; font-weight: bold;">User banned!</span>
+                                {% endif %}
+                            {% endif %}
                         {% else %}
                             No action!
                         {% endif %}

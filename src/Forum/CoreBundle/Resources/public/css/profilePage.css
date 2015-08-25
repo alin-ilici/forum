@@ -122,3 +122,41 @@
     margin-left: auto;
     margin-right: auto;
 }
+
+#notificationsTable, .messageFilesTable {
+    width: 100%;
+}
+
+#notificationsTable tr td {
+    border-radius: 5px;
+}
+
+#notificationsTable a, .messageFilesTable a {
+    color: white;
+    font-size: 15px;
+}
+
+.messageFilesTable tr td {
+    border: 2px solid black;
+}
+
+.messageName {
+    width: 80%;
+}
+
+.messageAction {
+    width: 20%;
+    text-align: center;
+}
+
+.green1 {
+    background-color: #005C00;
+}
+
+.green1 td, .green2 td {
+    padding: 6px;
+}
+
+.green2 {
+    background-color: #4DB84D;
+}
