@@ -48,6 +48,9 @@
         <br/>
     {% endif %}
 
+    <!-- Add flashbag -->
+    {{ include('CoreBundle::flashbag.html.twig') }}
+
     <table id="subcategoryPageTable">
         <caption>
             Members
@@ -84,16 +87,16 @@
                         {% if app.user.username != member.username %}
                             {% if member.isEnabled %}
                                 <button type="button" class="btn btn-success btn-sm sendMeAMessage" data-value="{{ member.username }}">Send me a private message</button>
-                                {% if 'ROLE_MODERATOR' in app.user.roles or 'ROLE_ADMINISTRATOR' in app.user.roles %}
+                                {% if is_granted('ROLE_MODERATOR') %}
                                     <br/>
                                     <br/>
                                     <button type="button" class="btn btn-danger btn-sm banUser" data-value="{{ member.id }}">Ban user</button>
                                 {% endif %}
                             {% else %}
-                                {% if 'ROLE_MODERATOR' in app.user.roles or 'ROLE_ADMINISTRATOR' in app.user.roles %}
+                                {% if is_granted('ROLE_MODERATOR') %}
                                     <button type="button" class="btn btn-danger btn-sm banUser" data-value="{{ member.id }}">Unban user</button>
                                 {% else %}
-                                    <span style="color: red; font-weight: bold;">User banned!</span>
+                                    <span class="red bold">User banned!</span>
                                 {% endif %}
                             {% endif %}
                         {% else %}

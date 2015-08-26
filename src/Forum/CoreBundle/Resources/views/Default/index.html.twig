@@ -2,7 +2,12 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/core/css/default.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/core/css/forum.css') }}" />
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/core/js/forum.js') }}"></script>
 {% endblock %}
 
 {% block mainBody %}
@@ -10,6 +15,10 @@
 
     <!-- Add flashbag -->
     {{ include('CoreBundle::flashbag.html.twig') }}
+
+    {% if app.user and is_granted('ROLE_MODERATOR') %}
+        <button type="button" id="newCategoryButton" class="btn btn-primary rightPosition">New category</button>
+    {% endif %}
 
     {% for forum in forums %}
         <table id="forumPageTable">
@@ -61,7 +70,12 @@
                             <br/>
                             {{ lastTopic[category.slug].dateUpdated | date('d-m-Y H:i:s') }}
                             <br/>
-                            By {{ lastMessagePersonForLastTopic[category.slug][0].user.username }}
+                            By
+                            {% if app.user and lastMessagePersonForLastTopic[category.slug][0].user.isEnabled %}
+                                <a href="{{ path('forum_core_profile_page_profile_page', { 'username': lastMessagePersonForLastTopic[category.slug][0].user.username }) }}">{{ lastMessagePersonForLastTopic[category.slug][0].user.username }}</a>
+                            {% else %}
+                                {{ lastMessagePersonForLastTopic[category.slug][0].user.username }}
+                            {% endif %}
                         {% else %}
                             -
                         {% endif %}
@@ -74,4 +88,37 @@
     {% endfor %}
 
     <div class="whereAmI">{{ whereAmI | raw }}</div>
+
+    <!-- Add category modal -->
+    <div class="modal fade" id="addCategoryModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Add category</h4>
+                </div>
+                {{ form_start(categoryForm) }}
+                <div class="modal-body">
+                    <div class="requiredInfo">
+                        * Required information
+                    </div>
+                    <br/>
+
+                    {{ form_label(categoryForm.forum) }}
+                    <br/>
+                    {{ form_widget(categoryForm.forum) }}
+                    <br/>
+                    <br/>
+                    {{ form_row(categoryForm.name) }}
+                    <br/>
+                    {{ form_row(categoryForm.description) }}
+                </div>
+                <div class="modal-footer">
+                    {{ form_widget(categoryForm.save) }}
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </div>
+                {{ form_end(categoryForm) }}
+            </div>
+        </div>
+    </div>
 {% endblock %}

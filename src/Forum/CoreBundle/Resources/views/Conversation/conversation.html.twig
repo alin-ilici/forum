@@ -39,9 +39,13 @@
                         <img src="{{ asset('bundles/core/images/no-profile-img.gif') }}" class="participantAvatar" alt="Participant avatar image"/>
                     {% endif %}
                     <br/>
-                    <a href="{{ path('forum_core_profile_page_profile_page', { 'username': conversation.toUser.username }) }}">
+                    {% if conversation.toUser.isEnabled %}
+                        <a href="{{ path('forum_core_profile_page_profile_page', { 'username': conversation.toUser.username }) }}">
+                            {{ conversation.toUser.username }}
+                        </a>
+                    {% else %}
                         {{ conversation.toUser.username }}
-                    </a>
+                    {% endif %}
                 </td>
 
                 <td class="betweenParticipants">
@@ -55,9 +59,13 @@
                         <img src="{{ asset('bundles/core/images/no-profile-img.gif') }}" class="participantAvatar" alt="Participant avatar image"/>
                     {% endif %}
                     <br/>
-                    <a href="{{ path('forum_core_profile_page_profile_page', { 'username': conversation.fromUser.username }) }}">
+                    {% if conversation.fromUser.isEnabled %}
+                        <a href="{{ path('forum_core_profile_page_profile_page', { 'username': conversation.fromUser.username }) }}">
+                            {{ conversation.fromUser.username }}
+                        </a>
+                    {% else %}
                         {{ conversation.fromUser.username }}
-                    </a>
+                    {% endif %}
                 </td>
             </tr>
         </table>
@@ -77,19 +85,23 @@
 
             <tr class="messageReplierAndPostDate">
                 <td>
-                    <div class="dropdown">
-                        <button class="btn btn-default btn-sm dropdown-toggle" type="button" id="dropdownMenu{{ privateMessage.id }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                            {{ privateMessage.user.username }}
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu{{ privateMessage.id }}">
-                            <li>
-                                <a href="{{ path('forum_core_profile_page_profile_page', { 'username': privateMessage.user.username }) }}" class="viewProfile" data-value="{{ privateMessage.id }}">
-                                    View profile
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+                    {% if privateMessage.user.isEnabled %}
+                        <div class="dropdown">
+                            <button class="btn btn-default btn-sm dropdown-toggle" type="button" id="dropdownMenu{{ privateMessage.id }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                {{ privateMessage.user.username }}
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu{{ privateMessage.id }}">
+                                <li>
+                                    <a href="{{ path('forum_core_profile_page_profile_page', { 'username': privateMessage.user.username }) }}" class="viewProfile" data-value="{{ privateMessage.id }}">
+                                        View profile
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    {% else %}
+                        {{ privateMessage.user.username }}
+                    {% endif %}
                 </td>
                 <td>
                     <div class="leftPosition">

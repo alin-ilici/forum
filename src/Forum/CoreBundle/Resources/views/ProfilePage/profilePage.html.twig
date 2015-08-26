@@ -17,6 +17,9 @@
 
     <div class="whereAmI">{{ whereAmI | raw }}</div>
 
+    <!-- Add flashbag -->
+    {{ include('CoreBundle::flashbag.html.twig') }}
+
     <div id="mainBody">
         <div id="actualUsername">
             {{ user.username }}
@@ -137,7 +140,10 @@
                 </div>
 
                 <div role="tabpanel" class="tab-pane {{ class.files }}" id="files">
-                    <table class="messageFilesTable">
+                    <table class="messageFilesTable leftPosition marginLeft1">
+                        <caption>
+                            Messages
+                        </caption>
                         {% set trClass = 'green1' %}
                         {% for message in messages %}
                             {% if message['message'].originalFileName is not null %}
@@ -158,9 +164,11 @@
                             {% endif %}
                         {% endfor %}
                     </table>
-                    <br/>
 
-                    <table class="messageFilesTable">
+                    <table class="messageFilesTable rightPosition marginRight1">
+                        <caption>
+                            Private messages
+                        </caption>
                         {% set trClass = 'green1' %}
                         {% for privateMessage in privateMessages %}
                             <tr class="{{ trClass }}">
@@ -245,7 +253,7 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title">Change avatar</h4>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body blockUnoverflowed">
                         <div id="currentAvatar" class="leftPosition">
                             Current avatar:
                             <br/>

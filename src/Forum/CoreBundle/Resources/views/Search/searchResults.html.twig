@@ -55,6 +55,9 @@
         </nav>
     {% endif %}
 
+    <!-- Add flashbag -->
+    {{ include('CoreBundle::flashbag.html.twig') }}
+
     {% if results is empty %}
         <div class="alert alert-info noResults" role="alert">No results!</div>
     {% else %}
@@ -82,7 +85,11 @@
                         </td>
 
                         <td class="lastTopicColumn">
-                            {{ result.user.username }}
+                            {% if result.user.isEnabled %}
+                                <a href="{{ path('forum_core_profile_page_profile_page', { 'username': result.user.username }) }}">{{ result.user.username }}</a>
+                            {% else %}
+                                {{ result.user.username }}
+                            {% endif %}
                             <br/>
                             {{ result.dateCreated | date('d-m-Y H:i:s') }}
                         </td>
@@ -109,26 +116,30 @@
 
                     <tr class="messageReplierAndPostDate">
                         <td>
-                            <div class="dropdown">
-                                <button class="btn btn-default btn-sm dropdown-toggle" type="button" id="dropdownMenu{{ message['message'].id }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                    {{ message['message'].user.username }}
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu{{ message['message'].id }}">
-                                    <li>
-                                        <a href="{{ path('forum_core_profile_page_profile_page', { 'username': message['message'].user.username }) }}" class="viewProfile" data-value="{{ message['message'].id }}">
-                                            View profile
-                                        </a>
-                                    </li>
-                                    {% if app.user.username != message['message'].user.username %}
+                            {% if message['message'].user.isEnabled %}
+                                <div class="dropdown">
+                                    <button class="btn btn-default btn-sm dropdown-toggle" type="button" id="dropdownMenu{{ message['message'].id }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                        {{ message['message'].user.username }}
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu{{ message['message'].id }}">
                                         <li>
-                                            <a class="sendMeAMessage" data-value="{{ message['message'].user.username }}">
-                                                Send me a private message
+                                            <a href="{{ path('forum_core_profile_page_profile_page', { 'username': message['message'].user.username }) }}" class="viewProfile" data-value="{{ message['message'].id }}">
+                                                View profile
                                             </a>
                                         </li>
-                                    {% endif %}
-                                </ul>
-                            </div>
+                                        {% if app.user.username != message['message'].user.username %}
+                                            <li>
+                                                <a class="sendMeAMessage" data-value="{{ message['message'].user.username }}">
+                                                    Send me a private message
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                            {% else %}
+                                {{ message['message'].user.username }}
+                            {% endif %}
                         </td>
                         <td>
                             <div class="leftPosition">

@@ -54,7 +54,7 @@ class TopicController extends Controller
         $messages = $messageRepository->createQueryBuilder('m')
             ->where('m.topic = :id_topic')
             ->setParameter('id_topic', $topic->getId())
-            ->orderBy('m.dateCreated', 'ASC')
+            ->orderBy('m.dateUpdated', 'ASC')
             ->setFirstResult(($page - 1) * $maxMessagesPerPage)
             ->setMaxResults($maxMessagesPerPage)
             ->getQuery()

@@ -101,6 +101,19 @@ body {
     cursor: pointer;
 }
 
+.blockUnoverflowed {
+    display: block;
+    overflow: auto;
+}
+
+.marginLeft5 {
+    margin-left: 5%;
+}
+
+.marginRight5 {
+    margin-right: 5%;
+}
+
 .displayInLine {
     display: inline-block;
 }

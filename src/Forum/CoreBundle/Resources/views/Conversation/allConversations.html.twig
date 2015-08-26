@@ -55,7 +55,17 @@
                                 <a href="{{ path('forum_core_conversation_show_conversations', { 'conversationSlug': conversation['conversation'].slug }) }}">{{ conversation['conversation'].name }}</a>
                                 <br/>
                                 <span class="twelvePxFontSize">
-                                    Started by <a href="{{ path('forum_core_profile_page_profile_page', { 'username': conversation['conversation'].fromUser.username }) }}">{{ conversation['conversation'].fromUser.username }}</a>, sent to <a href="{{ path('forum_core_profile_page_profile_page', { 'username': conversation['conversation'].toUser.username }) }}">{{ conversation['conversation'].toUser.username }}</a>
+                                    Started by
+                                        {% if conversation['conversation'].fromUser.isEnabled %}
+                                            <a href="{{ path('forum_core_profile_page_profile_page', { 'username': conversation['conversation'].fromUser.username }) }}">{{ conversation['conversation'].fromUser.username }}</a>, sent to
+                                        {% else %}
+                                            {{ conversation['conversation'].fromUser.username }}, sent to
+                                        {% endif %}
+                                        {% if conversation['conversation'].toUser.isEnabled %}
+                                            <a href="{{ path('forum_core_profile_page_profile_page', { 'username': conversation['conversation'].toUser.username }) }}">{{ conversation['conversation'].toUser.username }}</a>
+                                        {% else %}
+                                            {{ conversation['conversation'].toUser.username }}
+                                        {% endif %}
                                 </span>
                             </td>
 
@@ -76,7 +86,12 @@
                             </td>
 
                             <td class="lastTopicColumn">
-                                By <a href="{{ path('forum_core_profile_page_profile_page', { 'username': conversation['lastPerson'].user.username }) }}">{{ conversation['lastPerson'].user.username }}</a>
+                                By
+                                {% if conversation['lastPerson'].user.isEnabled %}
+                                    <a href="{{ path('forum_core_profile_page_profile_page', { 'username': conversation['lastPerson'].user.username }) }}">{{ conversation['lastPerson'].user.username }}</a>
+                                {% else %}
+                                    {{ conversation['lastPerson'].user.username }}
+                                {% endif %}
                                 <br/>
                                 {{ conversation['lastPerson'].dateUpdated | date('d-M-Y H:i:s') }}
                             </td>
@@ -101,7 +116,17 @@
                                 <a href="{{ path('forum_core_conversation_show_conversations', { 'conversationSlug': conversation['conversation'].slug }) }}">{{ conversation['conversation'].name }}</a>
                                 <br/>
                                 <span class="twelvePxFontSize">
-                                    Started by <a href="{{ path('forum_core_profile_page_profile_page', { 'username': conversation['conversation'].fromUser.username }) }}">{{ conversation['conversation'].fromUser.username }}</a>, sent to <a href="{{ path('forum_core_profile_page_profile_page', { 'username': conversation['conversation'].toUser.username }) }}">{{ conversation['conversation'].toUser.username }}</a>
+                                    Started by
+                                    {% if conversation['conversation'].fromUser.isEnabled %}
+                                        <a href="{{ path('forum_core_profile_page_profile_page', { 'username': conversation['conversation'].fromUser.username }) }}">{{ conversation['conversation'].fromUser.username }}</a>, sent to
+                                     {% else %}
+                                        {{ conversation['conversation'].fromUser.username }}
+                                    {% endif %}
+                                    {% if conversation['conversation'].toUser.isEnabled %}
+                                        <a href="{{ path('forum_core_profile_page_profile_page', { 'username': conversation['conversation'].toUser.username }) }}">{{ conversation['conversation'].toUser.username }}</a>
+                                    {% else %}
+                                        {{ conversation['conversation'].toUser.username }}
+                                    {% endif %}
                                 </span>
                             </td>
 
@@ -122,7 +147,12 @@
                             </td>
 
                             <td class="lastTopicColumn">
-                                By <a href="{{ path('forum_core_profile_page_profile_page', { 'username': conversation['lastPerson'].user.username }) }}">{{ conversation['lastPerson'].user.username }}</a>
+                                By
+                                {% if conversation['lastPerson'].user.isEnabled %}
+                                    <a href="{{ path('forum_core_profile_page_profile_page', { 'username': conversation['lastPerson'].user.username }) }}">{{ conversation['lastPerson'].user.username }}</a>
+                                {% else %}
+                                    {{ conversation['lastPerson'].user.username }}
+                                {% endif %}
                                 <br/>
                                 {{ conversation['lastPerson'].dateUpdated | date('d-M-Y H:i:s') }}
                             </td>

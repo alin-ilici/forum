@@ -2,6 +2,8 @@
 
 namespace Forum\CoreBundle\Controller;
 
+use Forum\CoreBundle\Entity\Category;
+use Forum\CoreBundle\Form\CategoryType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -56,6 +58,14 @@ class DefaultController extends Controller
             }
         }
 
+        $categoryForm = $this->createForm(
+            new CategoryType(),
+            null,
+            array(
+                'action' => $this->generateUrl('forum_core_default_create_or_edit_category', array('forumSlug' => $forumSlug))
+            )
+        );
+
         $whereAmI = '<a href="' . $this->generateUrl('forum_core_default_homepage') . '">Forum</a>';
         if ($forumSlug != null) {
             $whereAmI .= ' > ' . '<a href="' . $this->generateUrl('forum_core_default_homepage', array('forumSlug' => $forumSlug)) . '">' . $forums[0]->getName() . '</a>';
@@ -65,7 +75,61 @@ class DefaultController extends Controller
             'forums' => $forums,
             'whereAmI' => $whereAmI,
             'lastTopic' => $lastTopic,
-            'lastMessagePersonForLastTopic' => $lastMessagePersonForLastTopic
+            'lastMessagePersonForLastTopic' => $lastMessagePersonForLastTopic,
+            'categoryForm' => $categoryForm->createView()
+        ));
+    }
+
+    public function createOrEditCategoryAction(Request $request, $forumSlug, $categorySlug) {
+        $em = $this->getDoctrine()->getManager();
+
+        /** @var \Forum\CoreBundle\Repository\ForumRepository $forumRepository */
+        $forumRepository = $this->getDoctrine()->getRepository("CoreBundle:Forum");
+
+        /** @var \Forum\CoreBundle\Repository\CategoryRepository $categoryRepository */
+        $categoryRepository = $this->getDoctrine()->getRepository("CoreBundle:Category");
+
+        /** @var \Forum\CoreBundle\Entity\Forum $forum */
+        $forum = $categoryRepository->findOneBy(array(
+            'slug' => $forumSlug
+        ));
+
+        /** @var \Forum\CoreBundle\Entity\Category $category */
+        $category = new Category();
+        if ($categorySlug != null) {
+            $category = $categoryRepository->findOneBy(array(
+                'slug' => $categorySlug
+            ));
+        }
+
+        $form = $this->createForm(
+            new CategoryType(),
+            $category,
+            array(
+                'action' => $this->generateUrl('forum_core_default_create_or_edit_category', array('forumSlug' => $forumSlug))
+            )
+        );
+
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $em->persist($category);
+
+            try {
+                $em->flush();
+                $this->get('session')->getFlashBag()->add('success', 'The new category was successfully created/edited!');
+                return $this->redirect($this->generateUrl(
+                    'forum_core_category_category',
+                    array('categorySlug' => $category->getSlug())
+                ));
+            } catch (\Exception $e) {
+                $this->get('session')->getFlashBag()->add('fail', 'There was a problem creating/editing the new subcategory!' . $e->getMessage());
+            }
+        }
+
+        return $this->redirect($this->generateUrl(
+            'forum_core_default_homepage',
+            array('forumSlug' => $forumSlug)
         ));
     }
 

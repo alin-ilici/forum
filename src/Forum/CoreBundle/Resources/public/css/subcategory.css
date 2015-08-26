@@ -42,10 +42,15 @@
     margin-bottom: 0px;
 }
 
-#newOrEditTopicNameButton, #editSubcategoryButton {
-    margin-top: 20px;
+#subcategoryPageButtons {
+    margin-top: -59px;
+    margin-right: 1%;
 }
 
-#editSubcategoryButton {
-    margin-right: 10px;
-}
+/*#newOrEditTopicNameButton, #editSubcategoryButton {*/
+    /*margin-top: 20px;*/
+/*}*/
+
+/*#editSubcategoryButton {*/
+    /*margin-right: 10px;*/
+/*}*/

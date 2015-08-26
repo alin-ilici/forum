@@ -7,6 +7,14 @@
     height: 30px;
 }
 
+.red {
+    color: red;
+}
+
+.bold {
+    font-weight: bold;
+}
+
 .noResults {
     width: 30%;
     margin-left: auto;

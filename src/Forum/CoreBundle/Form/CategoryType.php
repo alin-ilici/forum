@@ -5,7 +5,7 @@ namespace Forum\CoreBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class SubcategoryType extends AbstractType
+class CategoryType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -16,7 +16,7 @@ class SubcategoryType extends AbstractType
                 'name',
                 'text',
                 array(
-                    'label' => 'Subcategory name',
+                    'label' => 'Category name',
                     'required' => true,
                     'attr' => array(
                         'class' => 'form-control'
@@ -27,11 +27,19 @@ class SubcategoryType extends AbstractType
                 'description',
                 'text',
                 array(
-                    'label' => 'Subcategory description',
+                    'label' => 'Category description',
                     'required' => false,
                     'attr' => array(
                         'class' => 'form-control'
                     )
+                )
+            )
+            ->add(
+                'forum',
+                'entity',
+                array(
+                    'class' => 'CoreBundle:Forum',
+                    'choice_label' => 'name'
                 )
             )
             ->add(
@@ -48,6 +56,6 @@ class SubcategoryType extends AbstractType
 
     public function getName()
     {
-        return 'subcategory';
+        return 'category';
     }
 }

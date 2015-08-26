@@ -31,12 +31,16 @@ forum_core_default_forgot_password:
     path: /forgotPassword
     defaults: { _controller: CoreBundle:Default:forgotPassword }
 
+forum_core_default_create_or_edit_category:
+    path: /forum/createOrEditCategory/createOrEditCategory/{forumSlug}/{categorySlug}
+    defaults: { _controller: CoreBundle:Default:createOrEditCategory, forumSlug: null, categorySlug: null }
+
 forum_core_category_category:
     path: /category/{categorySlug}
     defaults: { _controller: CoreBundle:Category:category, categorySlug: null }
 
 forum_core_category_create_or_edit_subcategory:
-    path: /category/createOrEditSubcategory/{categorySlug}/{subcategorySlug}
+    path: /category/createOrEditSubcategory/createOrEditSubcategory/{categorySlug}/{subcategorySlug}
     defaults: { _controller: CoreBundle:Category:createOrEditSubcategory, categorySlug: null, subcategorySlug: null }
 
 forum_core_subcategory_subcategory:
@@ -44,7 +48,7 @@ forum_core_subcategory_subcategory:
     defaults: { _controller: CoreBundle:Subcategory:subcategory, subcategorySlug: null, sortBy: dateUpdated, page: null }
 
 forum_core_subcategory_create_or_edit_topic:
-    path: /createOrEditTopic/{subcategorySlug}/{topicSlug}
+    path: createOrEditTopic/{subcategorySlug}/{topicSlug}
     defaults: { _controller: CoreBundle:Subcategory:createOrEditTopic, subcategorySlug: null, topicSlug: null }
 
 forum_core_topic_topic:
@@ -66,10 +70,6 @@ forum_core_topic_move_message:
     defaults: { _controller: CoreBundle:Topic:moveMessage }
     options:
         expose: true
-
-#forum_core_register_send_mail:
-#    path: /register/sendMail
-#    defaults: { _controller: CoreBundle:Register:sendMail }
 
 forum_core_register_index:
     path: /register

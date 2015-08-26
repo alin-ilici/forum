@@ -19,9 +19,12 @@
             <div class="categoryOrSubcategoryDescription">{{ category.description }}</div>
         {% endif %}
 
-        {% if app.user and 'ROLE_ADMINISTRATOR' in app.user.roles %}
-            <button type="button" id="newSubcategoryButton" class="btn btn-primary rightPosition">New subcategory</button>
-        {% endif %}
+        <div id="categoryPageButtons" class="rightPosition">
+            {% if app.user and is_granted('ROLE_ADMINISTRATOR') %}
+                <button type="button" id="editCategoryButton" class="btn btn-primary makeSpace">Edit category</button>
+                <button type="button" id="newSubcategoryButton" class="btn btn-primary">New subcategory</button>
+            {% endif %}
+        </div>
     </div>
 
     <!-- Add flashbag -->
@@ -63,7 +66,12 @@
                         <a href="{{ path('forum_core_topic_topic', {topicSlug: lastTopic[subcategory.slug].slug}) }}">{{ lastTopic[subcategory.slug].name }}</a>
                         <br/>
                         {{ lastTopic[subcategory.slug].dateUpdated | date('d-m-Y H:i:s') }}
-                        By {{ lastTopic[subcategory.slug].user.username }}
+                        By
+                        {% if app.user and lastTopic[subcategory.slug].user.isEnabled %}
+                            <a href="{{ path('forum_core_profile_page_profile_page', { 'username': lastTopic[subcategory.slug].user.username }) }}">{{ lastTopic[subcategory.slug].user.username }}</a>
+                        {% else %}
+                            {{ lastTopic[subcategory.slug].user.username }}
+                        {% endif %}
                     {% else %}
                         -
                     {% endif %}
@@ -76,6 +84,39 @@
 
     <div class="whereAmI">{{ whereAmI | raw }}</div>
 
+    <!-- Edit category modal -->
+    <div class="modal fade" id="editCategoryModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Edit category</h4>
+                </div>
+                {{ form_start(categoryForm) }}
+                <div class="modal-body">
+                    <div class="requiredInfo">
+                        * Required information
+                    </div>
+                    <br/>
+
+                    {{ form_label(categoryForm.forum) }}
+                    <br/>
+                    {{ form_widget(categoryForm.forum) }}
+                    <br/>
+                    <br/>
+                    {{ form_row(categoryForm.name) }}
+                    <br/>
+                    {{ form_row(categoryForm.description) }}
+                </div>
+                <div class="modal-footer">
+                    {{ form_widget(categoryForm.save) }}
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </div>
+                {{ form_end(categoryForm) }}
+            </div>
+        </div>
+    </div>
+
     <!-- Add subcategory modal -->
     <div class="modal fade" id="addSubcategoryModal">
         <div class="modal-dialog">
@@ -86,6 +127,11 @@
                 </div>
                 {{ form_start(subcategoryForm) }}
                 <div class="modal-body">
+                    <div class="requiredInfo">
+                        * Required information
+                    </div>
+                    <br/>
+
                     {{ form_row(subcategoryForm.name) }}
                     <br/>
                     {{ form_row(subcategoryForm.description) }}

@@ -3,6 +3,7 @@
 namespace Forum\CoreBundle\Controller;
 
 use Forum\CoreBundle\Entity\Subcategory;
+use Forum\CoreBundle\Form\CategoryType;
 use Forum\CoreBundle\Form\SubcategoryType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,6 +38,14 @@ class CategoryController extends Controller
             $whereAmI .= ' > ' . '<a href="' . $this->generateUrl('forum_core_category_category', array('categorySlug' => $categorySlug)) . '">' . $category->getName() . '</a>';
         }
 
+        $categoryForm = $this->createForm(
+            new CategoryType(),
+            $category,
+            array(
+                'action' => $this->generateUrl('forum_core_default_create_or_edit_category', array('forumSlug' => $category->getForum()->getSlug(), 'categorySlug' => $categorySlug))
+            )
+        );
+
         $subcategoryForm = $this->createForm(
             new SubcategoryType(),
             null,
@@ -49,6 +58,7 @@ class CategoryController extends Controller
             'category' => $category,
             'lastTopic' => $lastTopic,
             'subcategoryForm' => $subcategoryForm->createView(),
+            'categoryForm' => $categoryForm->createView(),
             'whereAmI' => $whereAmI
         ));
     }
@@ -68,7 +78,7 @@ class CategoryController extends Controller
         ));
 
         /** @var \Forum\CoreBundle\Entity\Subcategory $subcategory */
-        $subcategory = null;
+        $subcategory = new Subcategory();
         if ($subcategorySlug != null) {
             $subcategory = $subcategoryRepository->findOneBy(array(
                 'slug' => $subcategorySlug
@@ -83,29 +93,24 @@ class CategoryController extends Controller
             )
         );
 
+        if ($subcategorySlug == null) {
+            $subcategory->setCategory($category);
+        }
+
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            if ($subcategorySlug == null) {
-                $data = $form->getData();
-
-                $subcategory = new Subcategory();
-                $subcategory->setCategory($category);
-                $subcategory->setName($data['name']);
-                $subcategory->setDescription($data['description']);
-            }
-
             $em->persist($subcategory);
 
             try {
                 $em->flush();
-                $this->get('session')->getFlashBag()->add('success', 'The new subcategory was created!');
+                $this->get('session')->getFlashBag()->add('success', 'The new subcategory was successfully created/edited!');
                 return $this->redirect($this->generateUrl(
                     'forum_core_subcategory_subcategory',
                     array('subcategorySlug' => $subcategory->getSlug())
                 ));
             } catch (\Exception $e) {
-                $this->get('session')->getFlashBag()->add('fail', 'There was a problem creating the new subcategory!' . $e->getMessage());
+                $this->get('session')->getFlashBag()->add('fail', 'There was a problem creating/editing the new subcategory!' . $e->getMessage());
             }
         }
 

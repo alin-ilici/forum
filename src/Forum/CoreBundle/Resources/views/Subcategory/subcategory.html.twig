@@ -43,14 +43,16 @@
                 <li><a href="{{ path('forum_core_subcategory_subcategory', { 'subcategorySlug': subcategory.slug, 'page': totalPages }) }}" aria-label="Next"><span aria-hidden="true">»</span></a></li>
             {% endif %}
         </ul>
-
-        {% if app.user %}
-            <button type="button" id="newOrEditTopicNameButton" class="btn btn-primary rightPosition">New topic</button>
-            {% if 'ROLE_ADMINISTRATOR' in app.user.roles %}
-                <button type="button" id="editSubcategoryButton" class="btn btn-primary rightPosition">Edit subcategory</button>
-            {% endif %}
-        {% endif %}
     </nav>
+
+    <div id="subcategoryPageButtons" class="rightPosition">
+        {% if app.user %}
+            {% if is_granted('ROLE_ADMINISTRATOR') %}
+                <button type="button" id="editSubcategoryButton" class="btn btn-primary makeSpace">Edit subcategory</button>
+            {% endif %}
+            <button type="button" id="newOrEditTopicNameButton" class="btn btn-primary">New topic</button>
+        {% endif %}
+    </div>
 
     <!-- Add flashbag -->
     {{ include('CoreBundle::flashbag.html.twig') }}
@@ -113,7 +115,11 @@
                 </td>
 
                 <td class="lastTopicColumn">
-                    {{ lastMessage[topic.slug].user.username }}
+                    {% if app.user and lastMessage[topic.slug].user.isEnabled %}
+                        <a href="{{ path('forum_core_profile_page_profile_page', { 'username': lastMessage[topic.slug].user.username }) }}">{{ lastMessage[topic.slug].user.username }}</a>
+                    {% else %}
+                        {{ lastMessage[topic.slug].user.username }}
+                    {% endif %}
                     <br/>
                     {{ lastMessage[topic.slug].dateUpdated | date('d-m-Y H:i:s') }}
                 </td>
@@ -238,6 +244,11 @@
                 </div>
                 {{ form_start(subcategoryForm) }}
                 <div class="modal-body">
+                    <div class="requiredInfo">
+                        * Required information
+                    </div>
+                    <br/>
+
                     {{ form_row(subcategoryForm.name) }}
                     <br/>
                     {{ form_row(subcategoryForm.description) }}
