@@ -1,5 +1,5 @@
 <!-- Modal -->
-<form id="formToSubmit">
+<form action="{{ path('forum_core_security_login_check') }}" method="post" id="formToSubmit">
     <div class="modal fade" id="logInForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -27,7 +27,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" id="submitLoginForm" class="btn btn-default">Log In</button>
+                    <button type="submit" id="submitLoginForm" class="btn btn-default">Log In</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>

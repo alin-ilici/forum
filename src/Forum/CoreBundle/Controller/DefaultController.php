@@ -210,10 +210,6 @@ class DefaultController extends Controller
         return $this->redirect($this->generateUrl('forum_core_default_homepage'));
     }
 
-    public function adminAction() {
-        return new Response('Admin page!');
-    }
-
     public function randomPassword()
     {
         $alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";

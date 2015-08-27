@@ -23,7 +23,9 @@ $(document).ready(function()
         window.location = Routing.generate('forum_core_register_index');
     });
 
-    $(document).on('click', '#submitLoginForm', function() {
+    $(document).on('click', '#submitLoginForm', function(e) {
+        e.preventDefault();
+
         $.ajax({
             type: 'post',
             url: Routing.generate('forum_core_security_login_check'),
@@ -49,6 +51,8 @@ $(document).ready(function()
                 }
             }
         });
+
+        return false;
     });
 
     $(document).on('shown.bs.modal', '#logInForm', function() {

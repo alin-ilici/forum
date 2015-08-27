@@ -51,7 +51,7 @@ class AuthenticationHandler implements AuthenticationSuccessHandlerInterface, Au
             if ($this->session->get('_security.main.target_path')) {
                 $url = $this->session->get('_security.main.target_path');
             } else {
-                $url = $this->router->generate('home_page');
+                $url = $this->router->generate('forum_core_default_homepage');
             }
 
             return new RedirectResponse($url);
