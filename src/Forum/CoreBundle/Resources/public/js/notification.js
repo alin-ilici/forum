@@ -34,6 +34,7 @@ function poll() {
                 setTimeout(poll, 10000);
             },
             error: function(results) {
+                poll();
             }
         });
     }
