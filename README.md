@@ -10,7 +10,7 @@ To use this project:
 
 
 
-3. Run "composer update" in the folder where you have cloned the repository (it is best to aceppt the default parameters that are configured when you're asked for the paramters.yml file).
+3. Run "composer update" in the folder where you have cloned the repository (it is best to accept the default parameters that are configured when you're asked for the paramters.yml file).
 
 
 
