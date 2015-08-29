@@ -56,7 +56,7 @@ security:
     access_control:
         # - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
         - { path: ^/login, access: 'isAnonymous()' }
-        - { path: ^/register, access: 'isAnonymous()' }
+        - { path: ^/register$, access: 'isAnonymous()' }
         - { path: ^/profilePage, access: 'isAuthenticated()' }
         - { path: ^/user, access: 'isAuthenticated()' }
         - { path: ^/privateMessaging, access: 'isAuthenticated()' }
