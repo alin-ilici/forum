@@ -72,7 +72,7 @@ function addNotification(results) {
     notifications = notifications +
         '<li role="separator" class="divider"></li>' +
         '<li>' +
-            '<a href="" id="seeAllNotifications">See all notifications</a>' +
+            '<a href="' + Routing.generate('forum_core_profile_page_profile_page', { 'username': $('#userId').text().trim() }) + '" id="seeAllNotifications">See all notifications</a>' +
         '</li>';
 
     $("#notificationDropdown .dropdown-menu").html(notifications);
