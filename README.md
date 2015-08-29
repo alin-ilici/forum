@@ -6,11 +6,11 @@ To use this project:
 
 
 
-2. Run "composer update" in the folder where you have cloned the repository.
+2. Change the branch to the one called 'production'.
 
 
 
-3. Configure your parameters.yml (for example, you can use, 'localhost' at 'database_host', 'forum' at 'database_name' and the rest leave untouched).
+3. Run "composer update" in the folder where you have cloned the repository (it is best to aceppt the default parameters that are configured when you're asked for the paramters.yml file).
 
 
 

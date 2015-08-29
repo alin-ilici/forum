@@ -247,7 +247,7 @@ class Message extends Timestampable
     }
 
     public function removeFile() {
-        if (null === $this->getFile()) {
+        if (null === $this->file) {
             return;
         }
 

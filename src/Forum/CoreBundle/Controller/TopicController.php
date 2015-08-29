@@ -174,6 +174,7 @@ class TopicController extends Controller
         );
 
         if (!empty($message)) {
+            $message->removeFile();
             $em->remove($message);
             $em->flush();
 
