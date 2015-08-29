@@ -281,7 +281,7 @@ body {
     padding: 5px 5px;
 }
 
-#uploadedFileNameDiv {
+#uploadedFileNameDiv, #uploadedFileNameDivPM {
     width: 50%;
 }
 
