@@ -26,4 +26,4 @@ To use this project:
 
 
 
-5. Enjoy it!
+Enjoy it!
