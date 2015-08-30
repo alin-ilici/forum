@@ -43,63 +43,63 @@ class Messages extends AbstractFixture implements OrderedFixtureInterface
         $userIds = $this->getAllUserIds($manager);
 
         $m1 = new Message();
-        $m1->setName('Aenean hendrerit non nibh sodales viverra. Nam sem tellus, dictum sed dui nec, faucibus mattis.');
+        $m1->setName('Buna dimineata. As dori sa stiu, daca se cunoaste până acum, de la ce varianta de Windows se va putea face upgrade , legal, la Win 10. Eu am instalat pe laptop Win 7 premium, iar pe desktop - ultimate, ambele cu licenta.');
         $m1->setTopic($topicIds[0]);
         $m1->setUser($userIds[0]);
 
         $manager->persist($m1);
 
         $m2 = new Message();
-        $m2->setName('Vestibulum quis sodales nulla. Nunc a massa neque. Etiam elit elit, condimentum vitae maximus et, consectetur a nunc. Vestibulum a ornare odio. Nulla sit amet.');
+        $m2->setName('Nu-mi aduc aminte sa fi existat vreodata upgrade gratuit de la o versiune la alta, considerand 8.1 un servicepack si nu o noua versiune.');
         $m2->setTopic($topicIds[0]);
         $m2->setUser($userIds[1]);
 
         $manager->persist($m2);
 
         $m3 = new Message();
-        $m3->setName('Mauris venenatis ipsum quam, id dictum lacus auctor eu. Quisque pellentesque sed erat eu malesuada. Nunc sodales lacus nec elit.');
+        $m3->setName('Era o poveste cu windows 8. 8.1 dar până la anu nimic nu e sigur!');
         $m3->setTopic($topicIds[0]);
         $m3->setUser($userIds[2]);
 
         $manager->persist($m3);
 
         $m4 = new Message();
-        $m4->setName('Quisque rutrum cursus semper. Fusce accumsan consectetur porta. Suspendisse potenti. Vestibulum vel nulla felis. Donec ultricies eu metus id suscipit.');
+        $m4->setName('Salut! Cineva a pus parola pe un laptop cu win 10 si apoi a uitat-o. Ce variante am acum? Multumesc!');
         $m4->setTopic($topicIds[1]);
         $m4->setUser($userIds[1]);
 
         $manager->persist($m4);
 
         $m5 = new Message();
-        $m5->setName('Nunc malesuada sodales tincidunt. Nullam auctor semper justo, rhoncus laoreet.');
+        $m5->setName('<a href="https://4sysops.com/archives/reset-a-windows-10-password/">Link util</a>');
         $m5->setTopic($topicIds[1]);
         $m5->setUser($userIds[2]);
 
         $manager->persist($m5);
 
         $m6 = new Message();
-        $m6->setName('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut malesuada, lectus nec finibus blandit, tortor.');
+        $m6->setName('Descarca administrator password remover, arde-l pe CD si boot-eaz-al! De acolo te descurci.');
         $m6->setTopic($topicIds[1]);
         $m6->setUser($userIds[0]);
 
         $manager->persist($m6);
 
         $m7 = new Message();
-        $m7->setName('Fusce venenatis pulvinar imperdiet. Integer mattis vel risus non imperdiet. Sed interdum fermentum bibendum. Etiam vestibulum, dui sit amet condimentum mattis, neque tellus feugiat magna, at commodo ex lacus ut.');
+        $m7->setName('Am instalat si eu win 10 azi dar am observat ca nu-mi inchide PC-ul cand dau shutdown.Se innegreste ecranul, se stinge... dar hardul este bagat in hibernare. Se pare ca nu e doar la mine. Sa fie un bug? Stie cineva cum se poate rezolva? Mi se pare penibil sa inchid calculatorul din butonul de pe unitate.Merci anticipat.');
         $m7->setTopic($topicIds[2]);
         $m7->setUser($userIds[2]);
 
         $manager->persist($m7);
 
         $m8 = new Message();
-        $m8->setName('Morbi pulvinar leo nisl, quis volutpat velit aliquet eget. Nulla maximus enim vitae nulla sagittis.');
+        $m8->setName('Si la mine s-a intamplat; am avut aceleasi simptome, in final a trebuit sa il inchid din buton tinand apasat 4 secunde.');
         $m8->setTopic($topicIds[2]);
         $m8->setUser($userIds[0]);
 
         $manager->persist($m8);
 
         $m9 = new Message();
-        $m9->setName('Curabitur venenatis ante orci. Phasellus condimentum tristique orci ac interdum. Integer mollis malesuada purus non porta. Donec blandit aliquet orci.');
+        $m9->setName('Da disable la hibernare. De altfel citeste si <a href="http://www.tenforums.com/tutorials/4189-fast-startup-turn-off-windows-10-a.html">aici</a> despre fast startup.');
         $m9->setTopic($topicIds[2]);
         $m9->setUser($userIds[1]);
 

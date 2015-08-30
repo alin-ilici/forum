@@ -43,21 +43,21 @@ class Topics extends AbstractFixture implements OrderedFixtureInterface
         $userIds = $this->getAllUserIds($manager);
 
         $t1 = new Topic();
-        $t1->setName('Maecenas ut augue justo. Maecenas.');
+        $t1->setName('Upgrade la Windows 10');
         $t1->setSubcategory($subcategoryIds[0]);
         $t1->setUser($userIds[0]);
 
         $manager->persist($t1);
 
         $t2 = new Topic();
-        $t2->setName('Maecenas suscipit mi nec erat');
+        $t2->setName('Resetare parola Windows 10');
         $t2->setSubcategory($subcategoryIds[0]);
         $t2->setUser($userIds[1]);
 
         $manager->persist($t2);
 
         $t3 = new Topic();
-        $t3->setName('Nam pretium tempor ipsum. Phasellus.');
+        $t3->setName('Windows 10 - shutdown incomplet');
         $t3->setSubcategory($subcategoryIds[0]);
         $t3->setUser($userIds[2]);
 

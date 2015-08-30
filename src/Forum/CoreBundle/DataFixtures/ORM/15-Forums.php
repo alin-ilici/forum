@@ -39,17 +39,17 @@ class Forums extends AbstractFixture implements OrderedFixtureInterface
     public function load(ObjectManager $manager)
     {
         $f1 = new Forum();
-        $f1->setName('Suspendisse');
+        $f1->setName('Soft Related / OS');
 
         $manager->persist($f1);
 
         $f2 = new Forum();
-        $f2->setName('Phasellus');
+        $f2->setName('Professional Zone');
 
         $manager->persist($f2);
 
         $f3 = new Forum();
-        $f3->setName('Curabitur');
+        $f3->setName('Pasiuni Comune');
 
         $manager->persist($f3);
 
