@@ -169,7 +169,7 @@
                                     Delete
                                 </button>
                             {% endif %}
-                            {% if (numberOfMessages > 1) and is_granted('ROLE_ADMINISTRATOR') %}
+                            {% if (numberOfMessages > 1) and is_granted('ROLE_MODERATOR') %}
                                 <button type="button" class="btn btn-primary btn-sm moveMessage" value="{{ message.id }}">
                                     Move
                                 </button>
