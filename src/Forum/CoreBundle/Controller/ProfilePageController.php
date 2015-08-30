@@ -36,6 +36,10 @@ class ProfilePageController extends Controller
             'username' => $username
         ));
 
+        if ($user == null || !$user->isEnabled()) {
+            return $this->redirect($this->generateUrl('forum_core_default_homepage'));
+        }
+
         /** @var \Forum\CoreBundle\Entity\Topic[] $topics */
         $topics = $topicRepository->findBy(array(
             'user' => $user->getId()
