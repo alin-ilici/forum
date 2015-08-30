@@ -26,4 +26,8 @@ To use this project:
 
 
 
+If you have any problems configuring the application, consider reading inside permissions.sh and repair.sh. They will most likely help you.
+
+
+
 Enjoy it!
